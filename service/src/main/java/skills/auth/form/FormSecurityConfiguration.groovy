@@ -89,6 +89,9 @@ class FormSecurityConfiguration {
     LocalUserDetailsService localUserDetailsService
 
     @Autowired
+    UserAuthService userAuthService
+
+    @Autowired
     void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(localUserDetailsService)
@@ -143,10 +146,13 @@ class FormSecurityConfiguration {
 
     @Bean
     SecurityContextRepository httpSessionSecurityContextRepository(OAuthUtils oAuthUtils, UserAuthService userAuthService) {
-        new DelegatingSecurityContextRepository(
+        SecurityContextRepository res = new DelegatingSecurityContextRepository(
                 new RequestAttributeSecurityContextRepository(),
                 new SkillsHttpSessionSecurityContextRepository(oAuthUtils: oAuthUtils, userAuthService: userAuthService)
         )
+        userAuthService.securityContextRepository = res
+
+        return res
     }
 
     @Bean(name = 'oauth2UserConverters')

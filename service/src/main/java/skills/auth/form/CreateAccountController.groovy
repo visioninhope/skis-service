@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import skills.PublicProps
 import skills.auth.AuthMode
+import skills.auth.AutoLoginService
 import skills.auth.SecurityMode
 import skills.auth.UserAuthService
 import skills.auth.UserInfo
@@ -53,6 +54,9 @@ class CreateAccountController {
 
     @Autowired
     UserAuthService userAuthService
+
+    @Autowired
+    AutoLoginService autoLoginService
 
     @Autowired
     PasswordEncoder passwordEncoder
@@ -93,7 +97,7 @@ class CreateAccountController {
         if (verifyEmailAddresses) {
             passwordManagementService.createEmailVerificationTokenAndNotifyUser(userInfo.username)
         } else {
-            userAuthService.autologin(userInfo, password, request, response)
+            autoLoginService.autologin(userInfo, password, request, response)
         }
     }
 
@@ -106,7 +110,7 @@ class CreateAccountController {
         userInfo.emailVerified = true
         userInfo = createUser(userInfo)
         userAuthService.grantRoot(userInfo.username)
-        userAuthService.autologin(userInfo, password, request, response)
+        autoLoginService.autologin(userInfo, password, request, response)
     }
 
     private UserInfo createUser(UserInfo userInfo) {

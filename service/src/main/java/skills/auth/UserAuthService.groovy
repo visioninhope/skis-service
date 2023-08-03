@@ -17,26 +17,16 @@ package skills.auth
 
 import callStack.profiler.Profile
 import groovy.util.logging.Slf4j
-import jakarta.annotation.PostConstruct
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy
 import org.springframework.security.web.context.SecurityContextRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 import skills.services.AccessSettingsStorageService
 import skills.services.admin.ProjAdminService
 import skills.services.inception.InceptionProjectService
@@ -44,7 +34,6 @@ import skills.storage.model.UserAttrs
 import skills.storage.model.auth.RoleName
 import skills.storage.model.auth.User
 import skills.storage.model.auth.UserRole
-import skills.storage.repos.QuizToSkillDefRepo
 import skills.storage.repos.UserRepo
 import skills.storage.repos.UserRoleRepo
 
@@ -72,24 +61,12 @@ class UserAuthService {
     @Autowired
     ProjAdminService projAdminService
 
-    @Autowired(required = false)  // only for SecurityMode.FormAuth
-    @Qualifier('formSecurityFilterChain')
-    SecurityFilterChain formSecurityFilterChain
-
-    @Autowired(required = false)  // only for SecurityMode.FormAuth
+    // injected by skills.auth.form.FormSecurityConfiguration.httpSessionSecurityContextRepository
     SecurityContextRepository securityContextRepository
 
     @Value('#{securityConfig.authMode}}')
     AuthMode authMode = AuthMode.DEFAULT_AUTH_MODE
 
-    private AutoLoginProcessor autoLoginProcessor
-
-    @PostConstruct
-    void init() {
-        if (formSecurityFilterChain) {
-            autoLoginProcessor = new AutoLoginProcessor(formSecurityFilterChain.getFilters().find { it.class == UsernamePasswordAuthenticationFilter }, securityContextRepository)
-        }
-    }
 
     @Transactional(readOnly = true)
     Collection<GrantedAuthority> loadAuthorities(String userId) {
@@ -151,11 +128,6 @@ class UserAuthService {
         return null
     }
 
-    void autologin(UserInfo userInfo, String password, HttpServletRequest request, HttpServletResponse response) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userInfo, password, userInfo.getAuthorities())
-        autoLoginProcessor.autoLogin(usernamePasswordAuthenticationToken, request, response)
-    }
-
     @Transactional(readOnly = true)
     boolean rootExists() {
         return accessSettingsStorageService.rootAdminExists()
@@ -174,33 +146,5 @@ class UserAuthService {
     @Transactional(readOnly = true)
     boolean userExists(String userId) {
         return userRepository.existsByUserIdIgnoreCase(userId)
-    }
-
-    static class AutoLoginProcessor extends UsernamePasswordAuthenticationFilter {
-        private UsernamePasswordAuthenticationFilter delegate
-        private UsernamePasswordAuthenticationToken currentAuthRequest = null
-
-        AutoLoginProcessor(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter, SecurityContextRepository securityContextRepository) {
-            this.delegate = usernamePasswordAuthenticationFilter
-            this.setSecurityContextRepository(securityContextRepository)
-            this.setAuthenticationSuccessHandler(this.delegate.getSuccessHandler())
-            this.setSessionAuthenticationStrategy(new ChangeSessionIdAuthenticationStrategy())
-        }
-
-        void autoLogin(UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke, HttpServletRequest request, HttpServletResponse response) {
-            this.currentAuthRequest = usernamePasswordAuthenticationToke
-            super.doFilter(request, response, () -> {})
-            this.currentAuthRequest = null
-        }
-
-        @Override
-        Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-            return this.delegate.getAuthenticationManager().authenticate(this.currentAuthRequest);
-        }
-
-        @Override
-        protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-            return true
-        }
     }
 }

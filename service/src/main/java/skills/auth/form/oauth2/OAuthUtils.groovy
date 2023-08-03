@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Conditional
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -32,6 +31,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.stereotype.Component
 import skills.auth.SecurityMode
+import skills.auth.UserAuthService
 import skills.auth.UserInfo
 
 @Component
@@ -43,10 +43,10 @@ class OAuthUtils {
     OAuth2UserConverterService userConverter
 
     @Autowired
-    skills.auth.UserAuthService userAuthService
+    OAuthRequestedMatcher oAuthRequestedMatcher
 
     @Autowired
-    OAuthRequestedMatcher oAuthRequestedMatcher
+    UserAuthService userAuthService
 
     Authentication convertToSkillsAuth(JwtAuthenticationToken auth) {
         // JwtAuthenticationToken is used when then the OAuth2 client uses the client_credentials grant_type we

@@ -15,24 +15,18 @@
  */
 package skills.auth.form.oauth2
 
+import jakarta.annotation.Resource
 import org.apache.commons.lang3.StringUtils
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Conditional
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Component
 import skills.auth.SecurityMode
 import skills.auth.SkillsAuthorizationException
-import skills.auth.UserAuthService
 import skills.auth.UserInfo
-
-import jakarta.annotation.Resource
 
 @Component
 @Conditional(SecurityMode.FormAuth)
 class OAuth2UserConverterService {
-
-    @Autowired
-    UserAuthService userAuthService
 
     @Resource(name='oauth2UserConverters')
     Map<String, OAuth2UserConverter> lookup = [:]
