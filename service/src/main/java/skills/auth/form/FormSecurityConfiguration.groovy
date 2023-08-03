@@ -86,9 +86,12 @@ class FormSecurityConfiguration {
     PasswordEncoder passwordEncoder
 
     @Autowired
+    LocalUserDetailsService localUserDetailsService
+
+    @Autowired
     void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(localUserDetailsService())
+                .userDetailsService(localUserDetailsService)
                 .passwordEncoder(passwordEncoder)
     }
 
@@ -136,12 +139,6 @@ class FormSecurityConfiguration {
     AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
         // provides the default AuthenticationManager as a Bean
         return http.getSharedObject(AuthenticationManager.class);
-    }
-
-    @Bean
-    @Conditional(SecurityMode.FormAuth)
-    UserDetailsService localUserDetailsService() {
-        new LocalUserDetailsService()
     }
 
     @Bean

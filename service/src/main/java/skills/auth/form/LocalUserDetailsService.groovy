@@ -16,11 +16,16 @@
 package skills.auth.form
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Conditional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Service
+import skills.auth.SecurityMode
 import skills.auth.UserInfoAndRoleService
 
+@Conditional(SecurityMode.FormAuth)
+@Service
 class LocalUserDetailsService implements UserDetailsService {
 
     @Autowired
