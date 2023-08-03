@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import skills.UIConfigProperties
 import skills.auth.*
+import skills.auth.inviteOnly.IsInviteOnlyAccessor
 import skills.controller.exceptions.ErrorCode
 import skills.controller.exceptions.SkillException
 import skills.controller.exceptions.SkillsValidator
@@ -92,7 +93,7 @@ class InviteOnlyProjectService {
     EmailNotifier notifier
 
     @Autowired
-    SettingsDataAccessor settingsDataAccessor
+    IsInviteOnlyAccessor isInviteOnlyAccessor
 
     @Autowired
     UserAttrsRepo userAttrsRepo
@@ -331,8 +332,7 @@ class InviteOnlyProjectService {
      */
     @Transactional(readOnly = true)
     boolean isInviteOnlyProject(String projectId) {
-        SkillsValidator.isNotBlank(projectId, "projectId")
-        return settingsDataAccessor.getProjectSetting(projectId, Settings.INVITE_ONLY_PROJECT.settingName)?.isEnabled()
+        return isInviteOnlyAccessor.isInviteOnlyProject(projectId)
     }
 
     /**

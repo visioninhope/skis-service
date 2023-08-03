@@ -15,15 +15,12 @@
  */
 package skills.auth.inviteOnly
 
-import com.github.benmanes.caffeine.cache.Caffeine
-import com.github.benmanes.caffeine.cache.LoadingCache
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.HttpServletRequest
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Lazy
 import org.springframework.core.annotation.Order
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager
@@ -41,7 +38,6 @@ import skills.auth.UserInfo
 import skills.auth.UserSkillsGrantedAuthority
 import skills.storage.model.auth.RoleName
 
-import java.time.Duration
 import java.util.function.Supplier
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -62,22 +58,11 @@ class InviteOnlyProjectAuthorizationManager implements AuthorizationManager<Requ
 
     private RequestMatcher projectsApiRequestMatcher
 
-    private LoadingCache<String, Boolean> privateProjects
-
     private static final Pattern CONTACT_EXCEPTION = ~/(?i)api\/projects\/[^\/]+\/contact/
     private static final Pattern JOIN_EXCEPTION = ~/(?i)app\/projects\/[^\/]+\/join\/.*/
     private static final Pattern VALIDATE_EXCEPTION = ~/(?i)app\/projects\/[^\/]+\/validateInvite\/.*/
 
     private static final List<Pattern> EXCEPTIONS = [CONTACT_EXCEPTION, JOIN_EXCEPTION, VALIDATE_EXCEPTION]
-
-    @Value('#{"${skills.config.privateProject.cache-expiration-time:PT5M}"}')
-    String privateProjectsCacheExpirationTime = "PT5M"
-
-    @Value('#{"${skills.config.privateProject.cache-refresh-time:PT30S}"}')
-    String privateProjectCacheRefreshTime = "PT90S"
-
-    @Autowired
-    PrivateProjectCacheLoader cacheLoader
 
     @Autowired
     @Lazy
@@ -85,14 +70,13 @@ class InviteOnlyProjectAuthorizationManager implements AuthorizationManager<Requ
 
     AuthenticatedAuthorizationManager authenticatedAuthorizationManager
 
+    @Autowired
+    IsInviteOnlyAccessor isInviteOnlyAccessor
+
     @PostConstruct
     void init() {
         authenticatedAuthorizationManager = AuthenticatedAuthorizationManager.authenticated()
         projectsApiRequestMatcher = new AntPathRequestMatcher("/**/*projects/**")
-        privateProjects = Caffeine.newBuilder()
-                .expireAfterWrite(Duration.parse(privateProjectsCacheExpirationTime))
-                .refreshAfterWrite(Duration.parse(privateProjectCacheRefreshTime))
-                .build(cacheLoader)
     }
 
     @Override
@@ -109,7 +93,7 @@ class InviteOnlyProjectAuthorizationManager implements AuthorizationManager<Requ
         if (projectsApiRequestMatcher.matches(request)) {
             log.debug("evaluating request [{}] for invite-only protection", request.getRequestURI())
             String projectId = extractProjectId(request)
-            Boolean isInviteOnly = cacheLoader.load(projectId)
+            Boolean isInviteOnly = isInviteOnlyAccessor.isInviteOnlyProject(projectId)
             if (isInviteOnly && !isExceptionUrl(request)) {
                 log.debug("project id [{}] requires invite only access", projectId)
                 Collection<? extends GrantedAuthority> authorities = getAuthorities(authentication.get())

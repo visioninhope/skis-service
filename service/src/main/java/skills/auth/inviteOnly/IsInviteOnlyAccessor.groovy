@@ -15,29 +15,31 @@
  */
 package skills.auth.inviteOnly
 
-import com.github.benmanes.caffeine.cache.CacheLoader
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import skills.services.admin.InviteOnlyProjectService
+import org.springframework.transaction.annotation.Transactional
+import skills.controller.exceptions.SkillsValidator
+import skills.services.settings.Settings
 import skills.services.settings.SettingsDataAccessor
-import skills.storage.model.ProjDef
-import skills.storage.repos.ProjDefRepo
 
+@CompileStatic
 @Slf4j
 @Component
-class PrivateProjectCacheLoader implements CacheLoader<String, Boolean>{
+class IsInviteOnlyAccessor {
 
-    @Lazy
     @Autowired
-    InviteOnlyProjectService inviteOnlyProjectService
+    SettingsDataAccessor settingsDataAccessor
 
-    @Override
-    Boolean load(String key) throws Exception {
-        if (StringUtils.EMPTY == key) {
+    @Transactional(readOnly = true)
+    boolean isInviteOnlyProject(String projectId) {
+        SkillsValidator.isNotNull(projectId, "projectId")
+        if (StringUtils.EMPTY == projectId) {
             return false
         }
-        return inviteOnlyProjectService.isInviteOnlyProject(key)
+
+        return settingsDataAccessor.getProjectSetting(projectId, Settings.INVITE_ONLY_PROJECT.settingName)?.isEnabled()
     }
 }
