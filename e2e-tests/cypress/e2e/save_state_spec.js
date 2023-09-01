@@ -392,7 +392,7 @@ describe('Save State Tests', () => {
   })
 
 
-  it('Saves and discards new quiz state', () => {
+  it('Saves and discards new quiz state', { keystrokeDelay: 0 },() => {
     cy.visit('/administrator/quizzes/')
     cy.get('[data-cy="noQuizzesYet"]')
 
@@ -488,7 +488,7 @@ describe('Save State Tests', () => {
 
   })
 
-  it('Saves and discards edit question state', () => {
+  it('Saves and discards edit question state', { keystrokeDelay: 0 },() => {
     cy.createQuizDef(1);
     cy.visit('/administrator/quizzes/quiz1/')
 
