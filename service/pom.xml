@@ -24,7 +24,7 @@
         <dependency>
             <groupId>io.awspring.cloud</groupId>
             <artifactId>spring-cloud-aws-dependencies</artifactId>
-            <version>3.0.2</version>
+            <version>${spring.cloud.aws.version}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -171,6 +171,10 @@
         <dependency>
             <groupId>io.awspring.cloud</groupId>
             <artifactId>spring-cloud-aws-starter-secrets-manager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-parameter-store</artifactId>
         </dependency>
         <dependency>
             <groupId>io.lettuce</groupId>

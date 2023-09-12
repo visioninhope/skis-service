@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.SdkBytes
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient
@@ -31,13 +32,10 @@ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRespon
 @ConfigurationProperties("skills.aws.secrets-manager.binary")
 class AWSSecretsManagerBeanPostProcessor implements BeanPostProcessor {
 
-    @Autowired
-    private SecretsManagerClient secretsManagerClient;
+    SecretsManagerClient secretsManagerClient;
 
     // injected by @ConfigurationProperties
     List<String> downloadToFiles
-
-    boolean loadedKeystore = false;
 
     private static class SecretFile {
         String secretName
@@ -63,8 +61,8 @@ class AWSSecretsManagerBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     Object postProcessBeforeInitialization(Object bean, String beanName) {
-        if (downloadToFiles && !loadedKeystore) {
-            loadedKeystore = true
+        // Code to be executed after properties are loaded but before beans are initialized
+        if (bean instanceof ConfigurableEnvironment && downloadToFiles) {
             loadSecretFileFromProps().each {
                 log.info("Downloading secret [{}] to [{}]", it.secretName, it.file.absolutePath)
                 GetSecretValueRequest request = GetSecretValueRequest.builder().secretId(it.secretName).build()
