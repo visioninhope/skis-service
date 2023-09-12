@@ -46,6 +46,8 @@
         <caffeine.version>3.1.1</caffeine.version>
 
         <pretty-time.version>5.0.3.Final</pretty-time.version>
+
+        <spring.cloud.aws.version>3.0.2</spring.cloud.aws.version>
     </properties>
 
     <parent>
