@@ -44,6 +44,8 @@ class AWSSecretsManagerBeanPostProcessor implements BeanPostProcessor {
     // injected by @ConfigurationProperties
     List<String> downloadToFiles
 
+    List<String> setAsSystemProps
+
     private boolean firstRun = true
 
     private static class SecretFile {
@@ -55,6 +57,11 @@ class AWSSecretsManagerBeanPostProcessor implements BeanPostProcessor {
         String s3BucketName
         String s3FileName
         File file
+    }
+
+    private static class SystemProp {
+        String name
+        String value
     }
 
     private List<SecretFile> loadSecretFileFromProps() {
@@ -98,29 +105,51 @@ class AWSSecretsManagerBeanPostProcessor implements BeanPostProcessor {
         }
     }
 
+    private List<SystemProp> loadSystemPropsFromProps() {
+        setAsSystemProps.collect { prop ->
+            String[] propSplit = prop.split("=")
+            String name = propSplit[0]
+            String value = propSplit[1]
+            if (!name || !value) {
+                throw new IllegalArgumentException("File [skills.aws.setAsSystemProps] property must follow <prop-name>=><prop-value> format instead was [${prop}]")
+            }
+            return new SystemProp(name: name, value: value)
+        }
+    }
+
     @Override
     Object postProcessBeforeInitialization(Object bean, String beanName) {
 
         // Code to be executed after properties are loaded but before beans are initialized
-        if (firstRun && downloadToFiles) {
+        if (firstRun) {
             firstRun = false
-            List<SecretFile> secretFiles = loadSecretFileFromProps()
-            List<S3File> s3Files = loadS3FilesFromProps()
+            if (downloadToFiles) {
+                List<SecretFile> secretFiles = loadSecretFileFromProps()
+                List<S3File> s3Files = loadS3FilesFromProps()
 
-            secretFiles.each {
-                log.info("Downloading secret [{}] to [{}]", it.secretName, it.file.absolutePath)
-                GetSecretValueRequest request = GetSecretValueRequest.builder().secretId(it.secretName).build()
-                GetSecretValueResponse secretValueResponse = secretsManagerClient.getSecretValue(request)
-                SdkBytes sdkBytes = secretValueResponse.secretBinary()
-                FileUtils.writeByteArrayToFile(it.file, sdkBytes.asByteArray())
+                secretFiles.each {
+                    log.info("Downloading secret [{}] to [{}]", it.secretName, it.file.absolutePath)
+                    GetSecretValueRequest request = GetSecretValueRequest.builder().secretId(it.secretName).build()
+                    GetSecretValueResponse secretValueResponse = secretsManagerClient.getSecretValue(request)
+                    SdkBytes sdkBytes = secretValueResponse.secretBinary()
+                    FileUtils.writeByteArrayToFile(it.file, sdkBytes.asByteArray())
+                }
+
+                s3Files.each {
+                    log.info("Downloading s3 file [{}] to [{}]", "${it.s3BucketName}/${it.s3FileName}", it.file.absolutePath)
+                    ResponseInputStream<GetObjectResponse> response = s3Client.getObject(
+                            request -> request.bucket(it.s3BucketName).key(it.s3FileName));
+                    byte [] bytes = StreamUtils.copyToByteArray (response)
+                    FileUtils.writeByteArrayToFile(it.file, bytes)
+                }
             }
 
-            s3Files.each {
-                log.info("Downloading s3 file [{}] to [{}]", "${it.s3BucketName}/${it.s3FileName}", it.file.absolutePath)
-                ResponseInputStream<GetObjectResponse> response = s3Client.getObject(
-                        request -> request.bucket(it.s3BucketName).key(it.s3FileName));
-                byte [] bytes = StreamUtils.copyToByteArray (response)
-                FileUtils.writeByteArrayToFile(it.file, bytes)
+            if (setAsSystemProps) {
+                List<SystemProp> systemProps = loadSystemPropsFromProps()
+                systemProps.each {
+                    log.info("Setting Java System Property [{}] to [{}]", "${it.name}", "${it.value.replaceAll('.', '*')}")
+                    System.properties.putIfAbsent(it.name, it.value)
+                }
             }
         }
         return bean
