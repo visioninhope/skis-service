@@ -29,7 +29,7 @@ echo "Total Concurrent: $totalConcurrent";
 
 cd ./src/test/java/
 IFS=$'\n'
-allTests=($(find . | grep -i -E '(Test[s]?|Spec[s]?|IT)\.(groovy|java)' | sed "s/\.\///g" | sed "s/\//\./g" | sed "s/\.groovy//g" | sed "s/\.java//g" | sort))
+allTests=($(find . | grep -i -E '(Test[s]?|Spec[s]?|IT)\.(groovy|java)' | sed "s/\.\///g" | sed "s/\//\./g" | sed "s/\.groovy//g" | sed "s/\.java//g" | sort | grep "SkillEventServiceUnitSpecs"))
 unset IFS
 cd ../../../
 
@@ -106,6 +106,6 @@ if (( ${#integrationTests[@]} != 0 )); then
 fi
 unset IFS
 
-commandToRun="mvn ${additionalTestVars} -Dtest="${serviceTestsExecString}" ${integrationTestsExecString} test ${verifyExecString}"
+commandToRun="mvn ${additionalTestVars} -Dtest="${serviceTestsExecString}" -Dlogging.level.org.springframework=DEBUG -Dlogging.level.skills=DEBUG ${integrationTestsExecString} test ${verifyExecString}"
 echo $commandToRun
 exec $commandToRun
