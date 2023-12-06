@@ -48,7 +48,7 @@ import jakarta.servlet.http.HttpServletResponse
 
 //@Conditional(SecurityConfiguration.FormAuth)
 @RestController
-@RequestMapping("/")
+@RequestMapping(value="/")
 @Slf4j
 class CreateAccountController {
 

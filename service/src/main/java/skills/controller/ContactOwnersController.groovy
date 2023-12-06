@@ -29,7 +29,7 @@ import skills.services.CustomValidator
 import skills.utils.InputSanitizer
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value="/api")
 @Slf4j
 @EnableCallStackProf
 class ContactOwnersController {

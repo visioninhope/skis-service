@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping(value="/public")
 class ClientAbortExceptionController {
 
     static final int LOTS_OF_CHARS = (1024 * 128) * 32

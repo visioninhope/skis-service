@@ -70,7 +70,7 @@ import java.util.Locale;
 
 @CrossOrigin(allowCredentials = "true", originPatterns = {"*"})
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value="/api")
 @AdminOrApproverGetRequestUsersOnlyWhenUserIdSupplied
 @skills.profile.EnableCallStackProf
 class UserSkillsController {

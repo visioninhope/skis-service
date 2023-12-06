@@ -36,7 +36,7 @@ import skills.services.settings.Settings
 import skills.services.settings.SettingsService
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping(value="/public")
 @Slf4j
 @EnableCallStackProf
 class PublicConfigController {

@@ -36,7 +36,7 @@ import static skills.services.PasswordManagementService.VERIFY_EMAIL_TOKEN_TYPE
 @Conditional(SecurityMode.FormAuth)
 @Slf4j
 @RestController()
-@RequestMapping("/")
+@RequestMapping(value="/")
 class EmailVerificationController {
 
     @Autowired

@@ -40,7 +40,7 @@ import skills.skillLoading.model.SkillBadgeSummary
 import jakarta.servlet.http.HttpServletRequest
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value="/api")
 @Slf4j
 @EnableCallStackProf
 class MyProgressController {

@@ -65,7 +65,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC
 import static org.springframework.data.domain.Sort.Direction.DESC
 
 @RestController
-@RequestMapping('/root')
+@RequestMapping(value='/root')
 @Slf4j
 @EnableCallStackProf
 class RootController {

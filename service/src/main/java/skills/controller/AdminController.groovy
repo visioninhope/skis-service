@@ -67,7 +67,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC
 import static org.springframework.data.domain.Sort.Direction.DESC
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value="/admin")
 @Slf4j
 @skills.profile.EnableCallStackProf
 class AdminController {

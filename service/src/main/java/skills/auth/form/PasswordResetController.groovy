@@ -38,7 +38,7 @@ import skills.storage.model.auth.User
 @Conditional(SecurityMode.FormAuth)
 @Slf4j
 @RestController()
-@RequestMapping("/")
+@RequestMapping(value="/")
 class PasswordResetController {
 
     @Autowired

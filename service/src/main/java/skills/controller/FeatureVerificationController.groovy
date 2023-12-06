@@ -25,7 +25,7 @@ import skills.profile.EnableCallStackProf
 import skills.services.FeatureService
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping(value="/public")
 @Slf4j
 @EnableCallStackProf
 class FeatureVerificationController {

@@ -33,7 +33,7 @@ import skills.quizLoading.model.StartQuizAttemptReq
 
 @CrossOrigin(allowCredentials = "true", originPatterns = ["*"])
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value="/api")
 @AdminOrApproverGetRequestUsersOnlyWhenUserIdSupplied
 @skills.profile.EnableCallStackProf
 @CompileStatic

@@ -23,7 +23,7 @@ import skills.profile.EnableCallStackProf
 import skills.services.AdminUsersService
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value="/admin")
 @Slf4j
 @EnableCallStackProf
 class AdminMetricsController {

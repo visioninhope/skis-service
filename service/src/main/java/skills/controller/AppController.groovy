@@ -42,7 +42,7 @@ import skills.services.quiz.QuizDefService
 import skills.utils.InputSanitizer
 
 @RestController
-@RequestMapping("/app")
+@RequestMapping(value="/app")
 @Slf4j
 @EnableCallStackProf
 class AppController {

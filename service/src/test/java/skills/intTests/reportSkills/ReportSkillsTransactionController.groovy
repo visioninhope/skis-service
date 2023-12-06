@@ -22,7 +22,7 @@ import skills.controller.request.model.SkillEventRequest
 import skills.services.events.SkillEventResult
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value="/api")
 class ReportSkillsTransactionController {
 
     @Autowired

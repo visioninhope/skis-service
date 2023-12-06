@@ -30,7 +30,7 @@ import skills.profile.EnableCallStackProf
 import skills.services.settings.SettingsService
 
 @RestController
-@RequestMapping("/app/public")
+@RequestMapping(value="/app/public")
 @Slf4j
 @EnableCallStackProf
 class AuthenticatedSettingsController {

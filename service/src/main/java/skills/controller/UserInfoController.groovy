@@ -51,7 +51,7 @@ import skills.storage.repos.UserRepo
 import skills.storage.repos.UserTagRepo
 
 @RestController
-@RequestMapping("/app")
+@RequestMapping(value="/app")
 @Slf4j
 @skills.profile.EnableCallStackProf
 class UserInfoController {

@@ -49,7 +49,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC
 import static org.springframework.data.domain.Sort.Direction.DESC
 
 @RestController
-@RequestMapping("/admin/quiz-definitions")
+@RequestMapping(value="/admin/quiz-definitions")
 @Slf4j
 @skills.profile.EnableCallStackProf
 class QuizController {

@@ -22,7 +22,7 @@ import skills.dbupgrade.DBUpgradeSafe
 import skills.profile.EnableCallStackProf
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping(value="/public")
 @Slf4j
 @EnableCallStackProf
 class ClientLoggingController {
