@@ -201,10 +201,10 @@ class RootController {
     @GetMapping('/users/roles/{roleName}')
     @ResponseBody
     TableResult getUserRolesWithRole(@PathVariable("roleName") RoleName roleName,
-                                     @RequestParam int limit,
-                                     @RequestParam int page,
-                                     @RequestParam String orderBy,
-                                     @RequestParam Boolean ascending) {
+                                     @RequestParam(value="limit") int limit,
+                                     @RequestParam(value="page") int page,
+                                     @RequestParam(value="orderBy") String orderBy,
+                                     @RequestParam(value="ascending") Boolean ascending) {
         PageRequest pagingRequest = createPagingRequest(limit, page, orderBy, ascending)
         return accessSettingsStorageService.getUserRolesWithRole(roleName, pagingRequest)
     }
@@ -373,16 +373,16 @@ class RootController {
     @RequestMapping(value = "/dashboardActions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @CompileStatic
-    TableResult getDashboardActions(@RequestParam int limit,
-                                    @RequestParam int page,
-                                    @RequestParam String orderBy,
-                                    @RequestParam Boolean ascending,
-                                    @RequestParam(required=false) String projectIdFilter,
-                                    @RequestParam(required=false) String itemFilter,
-                                    @RequestParam(required=false) String userFilter,
-                                    @RequestParam(required=false) String quizFilter,
-                                    @RequestParam(required=false) String itemIdFilter,
-                                    @RequestParam(required=false) String actionFilter) {
+    TableResult getDashboardActions(@RequestParam(value="limit") int limit,
+                                    @RequestParam(value="page") int page,
+                                    @RequestParam(value="orderBy") String orderBy,
+                                    @RequestParam(value="ascending") Boolean ascending,
+                                    @RequestParam(value="projectIdFilter", required=false) String projectIdFilter,
+                                    @RequestParam(value="itemFilter", required=false) String itemFilter,
+                                    @RequestParam(value="userFilter", required=false) String userFilter,
+                                    @RequestParam(value="quizFilter", required=false) String quizFilter,
+                                    @RequestParam(value="itemIdFilter", required=false) String itemIdFilter,
+                                    @RequestParam(value="actionFilter", required=false) String actionFilter) {
         PageRequest pageRequest = PageRequest.of(page - 1, limit, ascending ? ASC : DESC, orderBy)
         return userActionsHistoryService.getUsersActions(pageRequest,
                 projectIdFilter ? URLDecoder.decode(projectIdFilter, StandardCharsets.UTF_8) : null,

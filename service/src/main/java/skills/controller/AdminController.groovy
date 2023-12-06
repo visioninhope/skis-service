@@ -215,11 +215,11 @@ class AdminController {
 
     @RequestMapping(value ="/projects/{id}/invites/status", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    TableResult getInviteStatus(@PathVariable("id") String projectId, @RequestParam int limit,
-                                              @RequestParam int page,
-                                              @RequestParam String orderBy,
-                                              @RequestParam Boolean ascending,
-                                              @RequestParam(required = false, defaultValue = "") String query) {
+    TableResult getInviteStatus(@PathVariable("id") String projectId, @RequestParam(value="limit") int limit,
+                                              @RequestParam(value="page") int page,
+                                              @RequestParam(value="orderBy") String orderBy,
+                                              @RequestParam(value="ascending") Boolean ascending,
+                                              @RequestParam(required = false, defaultValue = "", value="query") String query) {
 
         PageRequest pagingRequest = TablePageUtil.createPagingRequestWithValidation(projectId, limit, page, orderBy, ascending)
         return inviteOnlyProjectService.getPendingInvites(projectId, URLDecoder.decode(query, StandardCharsets.UTF_8), pagingRequest)
@@ -960,11 +960,11 @@ class AdminController {
     @CompileStatic
     TableResult getUserPerformedSkills(@PathVariable("projectId") String projectId,
                                        @PathVariable("userId") String userId,
-                                       @RequestParam String query,
-                                       @RequestParam int limit,
-                                       @RequestParam int page,
-                                       @RequestParam String orderBy,
-                                       @RequestParam Boolean ascending) {
+                                       @RequestParam(value="query") String query,
+                                       @RequestParam(value="limit") int limit,
+                                       @RequestParam(value="page") int page,
+                                       @RequestParam(value="orderBy") String orderBy,
+                                       @RequestParam(value="ascending") Boolean ascending) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isNotBlank(userId, "User Id", projectId)
 
@@ -987,12 +987,12 @@ class AdminController {
     @ResponseBody
     @CompileStatic
     TableResultWithTotalPoints getProjectUsers(@PathVariable("projectId") String projectId,
-                                @RequestParam String query,
-                                @RequestParam int limit,
-                                @RequestParam int page,
-                                @RequestParam String orderBy,
-                                @RequestParam Boolean ascending,
-                                @RequestParam int minimumPoints) {
+                                @RequestParam(value="query") String query,
+                                @RequestParam(value="limit") int limit,
+                                @RequestParam(value="page") int page,
+                                @RequestParam(value="orderBy") String orderBy,
+                                @RequestParam(value="ascending") Boolean ascending,
+                                @RequestParam(value="minimumPoints") int minimumPoints) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isTrue(minimumPoints >=0, "Minimum Points is less than 0", projectId)
 
@@ -1025,12 +1025,12 @@ class AdminController {
     @ResponseBody
     TableResultWithTotalPoints getSubjectUsers(@PathVariable("projectId") String projectId,
                                 @PathVariable("subjectId") String subjectId,
-                                @RequestParam String query,
-                                @RequestParam int limit,
-                                @RequestParam int page,
-                                @RequestParam String orderBy,
-                                @RequestParam Boolean ascending,
-                                @RequestParam int minimumPoints) {
+                                @RequestParam(value="query") String query,
+                                @RequestParam(value="limit") int limit,
+                                @RequestParam(value="page") int page,
+                                @RequestParam(value="orderBy") String orderBy,
+                                @RequestParam(value="ascending") Boolean ascending,
+                                @RequestParam(value="minimumPoints") int minimumPoints) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isNotBlank(subjectId, "Subject Id", projectId)
         SkillsValidator.isTrue(minimumPoints >=0, "Minimum Points is less than 0", projectId)
@@ -1043,12 +1043,12 @@ class AdminController {
     @ResponseBody
     TableResultWithTotalPoints getSkillUsers(@PathVariable("projectId") String projectId,
                               @PathVariable("skillId") String skillId,
-                              @RequestParam String query,
-                              @RequestParam int limit,
-                              @RequestParam int page,
-                              @RequestParam String orderBy,
-                              @RequestParam Boolean ascending,
-                              @RequestParam int minimumPoints) {
+                              @RequestParam(value="query") String query,
+                              @RequestParam(value="limit") int limit,
+                              @RequestParam(value="page") int page,
+                              @RequestParam(value="orderBy") String orderBy,
+                              @RequestParam(value="ascending") Boolean ascending,
+                              @RequestParam(value="minimumPoints") int minimumPoints) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isNotBlank(skillId, "Skill Id", projectId)
         SkillsValidator.isTrue(minimumPoints >=0, "Minimum Points is less than 0", projectId)
@@ -1061,12 +1061,12 @@ class AdminController {
     @ResponseBody
     TableResult getBadgeUsers(@PathVariable("projectId") String projectId,
                               @PathVariable("badgeId") String badgeId,
-                              @RequestParam String query,
-                              @RequestParam int limit,
-                              @RequestParam int page,
-                              @RequestParam String orderBy,
-                              @RequestParam Boolean ascending,
-                              @RequestParam int minimumPoints) {
+                              @RequestParam(value="query") String query,
+                              @RequestParam(value="limit") int limit,
+                              @RequestParam(value="page") int page,
+                              @RequestParam(value="orderBy") String orderBy,
+                              @RequestParam(value="ascending") Boolean ascending,
+                              @RequestParam(value="minimumPoints") int minimumPoints) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isNotBlank(badgeId, "Badge Id", projectId)
         SkillsValidator.isTrue(minimumPoints >=0, "Minimum Points is less than 0", projectId)
@@ -1085,11 +1085,11 @@ class AdminController {
     TableResultWithTotalPoints getUserTagUsers(@PathVariable("projectId") String projectId,
                                                @PathVariable("userTagKey") String userTagKey,
                                                @PathVariable("userTagValue") String userTagValue,
-                                               @RequestParam String query,
-                                               @RequestParam int limit,
-                                               @RequestParam int page,
-                                               @RequestParam String orderBy,
-                                               @RequestParam Boolean ascending) {
+                                               @RequestParam(value="query") String query,
+                                               @RequestParam(value="limit") int limit,
+                                               @RequestParam(value="page") int page,
+                                               @RequestParam(value="orderBy") String orderBy,
+                                               @RequestParam(value="ascending") Boolean ascending) {
         SkillsValidator.isNotBlank(projectId, "Project Id")
         SkillsValidator.isNotBlank(userTagKey, "Tag Key", projectId)
         SkillsValidator.isNotBlank(userTagValue, "Tag Value", projectId)
@@ -1282,10 +1282,10 @@ class AdminController {
     @RequestMapping(value = "/projects/{projectId}/errors", method = [RequestMethod.GET], produces = "application/json")
     @ResponseBody
     TableResult getErrors(@PathVariable("projectId") String projectId,
-                                 @RequestParam int limit,
-                                 @RequestParam int page,
-                                 @RequestParam String orderBy,
-                                 @RequestParam Boolean ascending) {
+                                 @RequestParam(value="limit") int limit,
+                                 @RequestParam(value="page") int page,
+                                 @RequestParam(value="orderBy") String orderBy,
+                                 @RequestParam(value="ascending") Boolean ascending) {
 
         PageRequest pageRequest = PageRequest.of(page - 1, limit, ascending ? ASC : DESC, orderBy)
 
@@ -1474,13 +1474,13 @@ class AdminController {
 
     @RequestMapping(value="/projects/{projectId}/skills/catalog", method=RequestMethod.GET, produces = "application/json")
     TableResult getCatalogSkills(@PathVariable("projectId") String projectId,
-                                  @RequestParam int limit,
-                                  @RequestParam int page,
-                                  @RequestParam String orderBy,
-                                  @RequestParam Boolean ascending,
-                                  @RequestParam(required=false) String projectNameSearch,
-                                  @RequestParam(required=false) String subjectNameSearch,
-                                  @RequestParam(required=false) String skillNameSearch) {
+                                  @RequestParam(value="limit") int limit,
+                                  @RequestParam(value="page") int page,
+                                  @RequestParam(value="orderBy") String orderBy,
+                                  @RequestParam(value="ascending") Boolean ascending,
+                                  @RequestParam(value="projectNameSearch", required=false) String projectNameSearch,
+                                  @RequestParam(value="subjectNameSearch", required=false) String subjectNameSearch,
+                                  @RequestParam(value="skillNameSearch", required=false) String skillNameSearch) {
         TotalCountAwareResult<ProjectNameAwareSkillDefRes> res = skillCatalogService.getSkillsAvailableInCatalog(projectId,
                 URLDecoder.decode(projectNameSearch, StandardCharsets.UTF_8),
                 URLDecoder.decode(subjectNameSearch, StandardCharsets.UTF_8),
@@ -1500,10 +1500,10 @@ class AdminController {
 
     @RequestMapping(value = "/projects/{projectId}/skills/exported", method = RequestMethod.GET, produces = "application/json")
     TableResult getExportedSkills(@PathVariable("projectId") String projectId,
-                                        @RequestParam int limit,
-                                        @RequestParam int page,
-                                        @RequestParam String orderBy,
-                                        @RequestParam Boolean ascending) {
+                                        @RequestParam(value="limit") int limit,
+                                        @RequestParam(value="page") int page,
+                                        @RequestParam(value="orderBy") String orderBy,
+                                        @RequestParam(value="ascending") Boolean ascending) {
         TotalCountAwareResult<ExportedSkillRes> res = skillCatalogService.getSkillsExportedByProject(projectId, TablePageUtil.createPagingRequestWithValidation(projectId, limit, page, orderBy, ascending, orderBy=='importedProjectCount'))
 
         TableResult tr = new TableResult()
@@ -1522,10 +1522,10 @@ class AdminController {
 
     @RequestMapping(value = "/projects/{projectId}/skills/imported", method = RequestMethod.GET, produces = "application/json")
     List<SkillDefRes> getSkillsImportedFromCatalog(@PathVariable("projectId") String projectId,
-                                                   @RequestParam int limit,
-                                                   @RequestParam int page,
-                                                   @RequestParam String orderBy,
-                                                   @RequestParam Boolean ascending) {
+                                                   @RequestParam(value="limit") int limit,
+                                                   @RequestParam(value="page") int page,
+                                                   @RequestParam(value="orderBy") String orderBy,
+                                                   @RequestParam(value="ascending") Boolean ascending) {
         skillCatalogService.getSkillsImportedFromCatalog(projectId, TablePageUtil.createPagingRequestWithValidation(projectId, limit, page, orderBy, ascending))
     }
 
@@ -1671,14 +1671,14 @@ class AdminController {
     @ResponseBody
     @CompileStatic
     TableResult getDashboardActions(@PathVariable("projectId") String projectId,
-                                    @RequestParam int limit,
-                                    @RequestParam int page,
-                                    @RequestParam String orderBy,
-                                    @RequestParam Boolean ascending,
-                                    @RequestParam(required=false) String itemFilter,
-                                    @RequestParam(required=false) String userFilter,
-                                    @RequestParam(required=false) String itemIdFilter,
-                                    @RequestParam(required=false) String actionFilter) {
+                                    @RequestParam(value="limit") int limit,
+                                    @RequestParam(value="page") int page,
+                                    @RequestParam(value="orderBy") String orderBy,
+                                    @RequestParam(value="ascending") Boolean ascending,
+                                    @RequestParam(value="itemFilter", required=false) String itemFilter,
+                                    @RequestParam(value="userFilter", required=false) String userFilter,
+                                    @RequestParam(value="itemIdFilter", required=false) String itemIdFilter,
+                                    @RequestParam(value="actionFilter", required=false) String actionFilter) {
         PageRequest pageRequest = PageRequest.of(page - 1, limit, ascending ? ASC : DESC, orderBy)
         return userActionsHistoryService.getUsersActions(pageRequest,
                 projectId,
@@ -1708,10 +1708,10 @@ class AdminController {
     TableResult getExpiredSkills(@PathVariable(name = "projectId") String projectId,
                                            @RequestParam(name = "userIdForDisplay", required = false) String userIdParam,
                                            @RequestParam(name = "skillName", required = false) String skillName,
-                                           @RequestParam int page,
-                                           @RequestParam int limit,
-                                           @RequestParam String orderBy,
-                                           @RequestParam Boolean ascending) {
+                                           @RequestParam(value="page") int page,
+                                           @RequestParam(value="limit") int limit,
+                                           @RequestParam(value="orderBy") String orderBy,
+                                           @RequestParam(value="ascending") Boolean ascending) {
         PageRequest pageRequest = PageRequest.of(page - 1, limit, ascending ? ASC : DESC, orderBy)
         return userAchievementExpirationService.findAllExpiredAchievements(projectId, userIdParam, skillName, pageRequest);
     }
