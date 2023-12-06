@@ -96,7 +96,7 @@ class QuizController {
 
     @RequestMapping(value = "/{quizId}/skills/", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    List<QuizSkillResult> getSkillsForQuiz(@PathVariable("quizId") String quizId, @RequestParam String userId) {
+    List<QuizSkillResult> getSkillsForQuiz(@PathVariable("quizId") String quizId, @RequestParam(value="userId") String userId) {
         return quizDefService.getSkillsForQuiz(quizId, userId)
     }
 
@@ -158,10 +158,10 @@ class QuizController {
     @ResponseBody
     TableResult getUserQuestionAnswerAttempts(@PathVariable("quizId") String quizId,
                                        @PathVariable("answerDefId") Integer answerDefId,
-                                       @RequestParam int limit,
-                                       @RequestParam int page,
-                                       @RequestParam String orderBy,
-                                       @RequestParam Boolean ascending) {
+                                       @RequestParam(value="limit") int limit,
+                                       @RequestParam(value="page") int page,
+                                       @RequestParam(value="orderBy") String orderBy,
+                                       @RequestParam(value="ascending") Boolean ascending) {
         QuizValidator.isTrue(limit > 0, '[limit] must be > 0')
         QuizValidator.isTrue(limit <= 500, '[limit] must be <= 500')
         QuizValidator.isTrue(page >= 0, '[page] must be >= 0')
@@ -179,11 +179,11 @@ class QuizController {
     @RequestMapping(value = "/{quizId}/runs", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     TableResult getQuizRuns(@PathVariable("quizId") String quizId,
-                            @RequestParam String query,
-                            @RequestParam int limit,
-                            @RequestParam int page,
-                            @RequestParam String orderBy,
-                            @RequestParam Boolean ascending) {
+                            @RequestParam(value="query") String query,
+                            @RequestParam(value="limit") int limit,
+                            @RequestParam(value="page") int page,
+                            @RequestParam(value="orderBy") String orderBy,
+                            @RequestParam(value="ascending") Boolean ascending) {
         QuizValidator.isTrue(limit > 0, '[limit] must be > 0')
         QuizValidator.isTrue(limit <= 500, '[limit] must be <= 500')
         QuizValidator.isTrue(page >= 0, '[page] must be >= 0')
@@ -289,7 +289,7 @@ class QuizController {
 
     @RequestMapping(value = "/{quizId}/userTagCounts", method = [RequestMethod.GET], produces = "application/json")
     @ResponseBody
-    List<LabelCountItem> getUserTagCounts(@PathVariable("quizId") String quizId, @RequestParam String userTagKey) {
+    List<LabelCountItem> getUserTagCounts(@PathVariable("quizId") String quizId, @RequestParam(value="userTagKey") String userTagKey) {
         QuizValidator.isNotBlank(quizId, "Quiz Id")
         QuizValidator.isNotBlank(userTagKey, "User Tag Key")
         return quizDefService.getUserTagCounts(quizId, userTagKey)
@@ -307,14 +307,14 @@ class QuizController {
     @ResponseBody
     @CompileStatic
     TableResult getDashboardActions(@PathVariable("quizId") String quizId,
-                                    @RequestParam int limit,
-                                    @RequestParam int page,
-                                    @RequestParam String orderBy,
-                                    @RequestParam Boolean ascending,
-                                    @RequestParam(required=false) String itemFilter,
-                                    @RequestParam(required=false) String userFilter,
-                                    @RequestParam(required=false) String itemIdFilter,
-                                    @RequestParam(required=false) String actionFilter) {
+                                    @RequestParam(value="limit") int limit,
+                                    @RequestParam(value="page") int page,
+                                    @RequestParam(value="orderBy") String orderBy,
+                                    @RequestParam(value="ascending") Boolean ascending,
+                                    @RequestParam(required=false, value="itemFilter") String itemFilter,
+                                    @RequestParam(required=false, value="userFilter") String userFilter,
+                                    @RequestParam(required=false, value="itemIdFilter") String itemIdFilter,
+                                    @RequestParam(required=false, value="actionFilter") String actionFilter) {
         PageRequest pageRequest = PageRequest.of(page - 1, limit, ascending ? ASC : DESC, orderBy)
         return userActionsHistoryService.getUsersActions(pageRequest,
                 null,
