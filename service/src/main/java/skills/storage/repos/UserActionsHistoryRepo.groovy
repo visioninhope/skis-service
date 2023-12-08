@@ -54,11 +54,11 @@ interface UserActionsHistoryRepo extends CrudRepository<UserActionsHistory, Long
                     action.created as created
                 from UserActionsHistory action, UserAttrs userAttrs
                 where action.userId = userAttrs.userId
-                    and (:projectIdFilter is null OR lower(action.projectId) like lower(concat('%', :projectIdFilter, '%')))
+                    and (:projectIdFilter is null OR lower(action.projectId) like :projectIdFilter)
                     and (:itemFilter is null OR action.item = :itemFilter)
-                    and (:userFilter is null OR lower(userAttrs.userIdForDisplay) like lower(concat('%', :userFilter, '%')))
-                    and (:quizFilter is null OR lower(action.quizId) like lower(concat('%', :quizFilter, '%')))
-                    and (:itemIdFilter is null OR lower(action.itemId) like lower(concat('%', :itemIdFilter, '%')))
+                    and (:userFilter is null OR lower(userAttrs.userIdForDisplay) like :userFilter)
+                    and (:quizFilter is null OR lower(action.quizId) like :quizFilter)
+                    and (:itemIdFilter is null OR lower(action.itemId) like :itemIdFilter)
                     and (:actionFilter is null OR action.action = :actionFilter)
     ''')
     Page<UserActionsPreview> getActions(@Nullable @Param("projectIdFilter") String projectIdFilter,
@@ -72,8 +72,8 @@ interface UserActionsHistoryRepo extends CrudRepository<UserActionsHistory, Long
     @Nullable
     @Query('''select distinct action.action
                 from UserActionsHistory action
-                where (:projectId is null OR lower(action.projectId) = lower(:projectId))
-                    and (:quizId is null OR lower(action.quizId) = lower(:quizId))
+                where (:projectId is null OR lower(action.projectId) = :projectId)
+                    and (:quizId is null OR lower(action.quizId) = :quizId)
     ''')
     List<DashboardAction> findDistinctDashboardActions(@Nullable @Param("projectId") String projectId,
                                                         @Nullable @Param("quizId") String quizId)
@@ -81,8 +81,8 @@ interface UserActionsHistoryRepo extends CrudRepository<UserActionsHistory, Long
     @Nullable
     @Query('''select distinct action.item
                 from UserActionsHistory action
-                where (:projectId is null OR lower(action.projectId) = lower(:projectId))
-                    and (:quizId is null OR lower(action.quizId) = lower(:quizId))
+                where (:projectId is null OR lower(action.projectId) = :projectId)
+                    and (:quizId is null OR lower(action.quizId) = :quizId)
     ''')
     List<DashboardItem> findDistinctDashboardItems(@Nullable @Param("projectId") String projectId,
                                                        @Nullable @Param("quizId") String quizId)
