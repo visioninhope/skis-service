@@ -172,8 +172,8 @@ jobs:
         working-directory: e2e-tests
         record: true
         spec: |
-#           cypress/e2e/global_badges_spec.js
           cypress/e2e/badges_spec.js
+#           cypress/e2e/global_badges_spec.js
 #           cypress/e2e/settings_spec.js
 #           cypress/e2e/contact_admins_spec.js
 #           cypress/e2e/manage-my-projects_spec.js
