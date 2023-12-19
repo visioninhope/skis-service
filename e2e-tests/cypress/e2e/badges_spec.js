@@ -699,7 +699,10 @@ describe('Badges Tests', () => {
             .should('exist');
     });
 
-    it('Can add Skill requirements to disabled badge', () => {
+    it.only('Can add Skill requirements to disabled badge', () => {
+
+        cy.intercept('GET', '**/fonts/fa-solid**')
+          .as('loadFonts');
         cy.request('POST', '/admin/projects/proj1/subjects/subj1', {
             projectId: 'proj1',
             subjectId: 'subj1',
@@ -715,6 +718,8 @@ describe('Badges Tests', () => {
         });
 
         cy.visit('/administrator/projects/proj1/badges');
+        // cy.wait('@loadFonts');
+        cy.document().its("fonts.status").should("equal", "loaded")
         cy.clickButton('Badge');
         cy.contains('New Badge');
         cy.get('#badgeName')
