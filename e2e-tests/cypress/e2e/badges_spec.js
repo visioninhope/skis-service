@@ -699,7 +699,7 @@ describe('Badges Tests', () => {
             .should('exist');
     });
 
-    it.only('Can add Skill requirements to disabled badge', () => {
+    it('Can add Skill requirements to disabled badge', () => {
 
         cy.intercept('GET', '**/fonts/fa-solid**')
           .as('loadFonts');
