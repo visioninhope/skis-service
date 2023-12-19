@@ -171,7 +171,7 @@ jobs:
       with:
         working-directory: e2e-tests
         record: true
-#         spec: |
+        spec: |
 #           cypress/e2e/global_badges_spec.js
           cypress/e2e/badges_spec.js
 #           cypress/e2e/settings_spec.js
