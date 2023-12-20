@@ -715,6 +715,7 @@ describe('Badges Tests', () => {
         });
 
         cy.visit('/administrator/projects/proj1/badges');
+        cy.document().its("fonts.status").should("equal", "loaded")
         cy.clickButton('Badge');
         cy.contains('New Badge');
         cy.get('#badgeName')
