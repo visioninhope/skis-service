@@ -725,7 +725,7 @@ describe('Badges Tests', () => {
         cy.wait('@loadBadges');
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
-        cy.wait(500);
+        // cy.wait(500);
         cy.get('[data-cy="skillsSelector2"]')
             .click();
         cy.wait(500);
