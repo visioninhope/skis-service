@@ -615,6 +615,7 @@ describe('Badges Tests', () => {
 
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
+        cy.wait(500);
         cy.get('[data-cy="skillsSelector2"]')
             .click();
         cy.get('[data-cy="skillsSelector2"] .vs__dropdown-option')
@@ -669,6 +670,7 @@ describe('Badges Tests', () => {
 
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
+        cy.wait(500);
         cy.get('[data-cy="skillsSelector2"]')
             .click();
         cy.get('[data-cy="skillsSelector2"] .vs__dropdown-option')
@@ -716,7 +718,7 @@ describe('Badges Tests', () => {
 
         cy.visit('/administrator/projects/proj1/badges');
         cy.document().its("fonts.status").should("equal", "loaded")
-        cy.wait(1000);
+        // cy.wait(1000);
         cy.clickButton('Badge');
         cy.contains('New Badge');
         cy.get('#badgeName')
@@ -725,10 +727,10 @@ describe('Badges Tests', () => {
         cy.wait('@loadBadges');
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
-        // cy.wait(500);
+        cy.wait(500);
         cy.get('[data-cy="skillsSelector2"]')
             .click();
-        cy.wait(500);
+        // cy.wait(500);
         cy.get('[data-cy="skillsSelector2"] .vs__dropdown-option')
             .eq(0)
             .click();
@@ -776,6 +778,7 @@ describe('Badges Tests', () => {
         cy.wait('@loadBadges');
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
+        cy.wait(500);
         cy.get('[data-cy="skillsSelector2"]')
             .click();
         cy.get('[data-cy="skillsSelector2"] .vs__dropdown-option')
@@ -811,6 +814,7 @@ describe('Badges Tests', () => {
             .should('exist');
         cy.get('[data-cy=manageBtn_TestBadgeBadge]')
             .click();
+        cy.wait(500);
         cy.get('[data-cy=deleteSkill_skill1]')
             .click();
         cy.contains('YES, Delete It!')
