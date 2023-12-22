@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { extend, localize } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
+import { required } from 'vee-validate';
 import ValidatorFactory from '@/common-components/validators/ValidatorFactory';
 import '@/common-components/validators/CustomDescriptionValidator';
 import './OptionalNumericValidator';

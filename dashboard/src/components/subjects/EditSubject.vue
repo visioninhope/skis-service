@@ -34,9 +34,9 @@ limitations under the License.
                 <div class="media-body">
                   <div class="form-group">
                     <label for="subjName">Subject Name</label>
-                    <ValidationProvider
-                      rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250"
-                      v-slot="{ errors }" name="Subject Name">
+<!--                    <ValidationProvider-->
+<!--                      rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250"-->
+<!--                      v-slot="{ errors }" name="Subject Name">-->
                       <input type="text" class="form-control" id="subjName" @input="updateSubjectId"
                              v-model="subjectInternal.name" v-on:input="updateSubjectId"
                              v-on:keydown.enter="handleSubmit(updateSubject)"
@@ -46,7 +46,7 @@ limitations under the License.
                              aria-describedby="subjectNameError"
                              data-cy="subjectNameInput">
                       <small role="alert" class="form-text text-danger" data-cy="subjectNameError" id="subjectNameError">{{errors[0]}}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </div>
                 </div>
               </div>
@@ -58,7 +58,7 @@ limitations under the License.
                         @hidden="tooltipShowing=false"/>
 
               <div class="mt-3">
-                <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ errors }" name="Subject Description">
+<!--                <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ errors }" name="Subject Description">-->
                   <markdown-editor v-model="subjectInternal.description"
                                    :project-id="subjectInternal.projectId"
                                    :skill-id="isEdit ? subjectInternal.subjectId : null"
@@ -66,7 +66,7 @@ limitations under the License.
                                    aria-describedby="subjectDescError"
                                    :aria-invalid="errors && errors.length > 0"/>
                   <small role="alert" id="subjectDescError" class="form-text text-danger" data-cy="subjectDescError">{{ errors[0] }}</small>
-                </ValidationProvider>
+<!--                </ValidationProvider>-->
               </div>
 
               <help-url-input class="mt-3"
@@ -162,9 +162,9 @@ limitations under the License.
         restoredFromStorage: false,
       };
     },
-    created() {
-      this.assignCustomValidation();
-    },
+    // created() {
+    //   this.assignCustomValidation();
+    // },
     mounted() {
       document.addEventListener('focusin', this.trackFocus);
       this.loadComponent();

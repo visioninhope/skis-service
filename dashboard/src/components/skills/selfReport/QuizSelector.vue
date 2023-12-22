@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
 <div>
-  <ValidationProvider rules="required" v-slot="{errors}" name="Test">
+<!--  <ValidationProvider rules="required" v-slot="{errors}" name="Test">-->
     <v-select :options="availableQuizzes"
               v-model="selectedInternal"
               placeholder="Search available quizzes and surveys..."
@@ -49,7 +49,7 @@ limitations under the License.
       </template>
     </v-select>
     <small role="alert" class="form-text text-danger" data-cy="skillDescriptionError">{{ errors[0] }}</small>
-  </ValidationProvider>
+<!--  </ValidationProvider>-->
 </div>
 </template>
 

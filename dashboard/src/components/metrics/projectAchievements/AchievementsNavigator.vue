@@ -23,7 +23,7 @@ limitations under the License.
           </b-form-group>
         </div>
           <div class="col-6 col-md border-right">
-            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="From Date"
+<!--            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="From Date"-->
                                 ref="fromDateValidationProvider">
               <b-form-group label="From Date:" label-for="from-date-filter"
                             label-class="text-muted">
@@ -38,10 +38,10 @@ limitations under the License.
               <small role="alert" id="fromDateError" class="form-text text-danger" v-show="errors[0]"
                      data-cy="fromDateError">{{ errors[0] }}
               </small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
           <div class="col-6 col-md">
-            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="To Date"
+<!--            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="To Date"-->
                                 ref="toDateValidationProvider">
               <b-form-group label="To Date:" label-for="to-date-filter" label-class="text-muted">
                 <b-form-datepicker aria-label="to date filter" id="to-date-filter"
@@ -55,7 +55,7 @@ limitations under the License.
               <small role="alert" id="toDateError" class="form-text text-danger" v-show="errors[0]" data-cy="toDateError">{{
                   errors[0]
                 }}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
         </div>
         <div class="row px-3">
@@ -160,7 +160,7 @@ limitations under the License.
     name: 'AchievementsNavigator',
     components: { MetricsCard, AchievementType, SkillsBTable },
     mounted() {
-      this.customValidation();
+      // this.customValidation();
       this.reloadTable();
     },
     data() {
@@ -249,22 +249,22 @@ limitations under the License.
       },
       customValidation() {
         const self = this;
-        extend('dateOrder', {
-          message: 'From Date must come before To Date',
-          validate() {
-            let valid = true;
-            if (self.fromDayFilter && self.toDayFilter) {
-              valid = dayjs(self.fromDayFilter).isBefore(dayjs(self.toDayFilter));
-              if (valid) {
-                // manually clear errors in case the orig error occurred when setting startDate,
-                // but was fixed by updating endDate (or vise-versa)
-                resetProvider(self.$refs.fromDateValidationProvider);
-                resetProvider(self.$refs.toDateValidationProvider);
-              }
-            }
-            return valid;
-          },
-        });
+        // extend('dateOrder', {
+        //   message: 'From Date must come before To Date',
+        //   validate() {
+        //     let valid = true;
+        //     if (self.fromDayFilter && self.toDayFilter) {
+        //       valid = dayjs(self.fromDayFilter).isBefore(dayjs(self.toDayFilter));
+        //       if (valid) {
+        //         // manually clear errors in case the orig error occurred when setting startDate,
+        //         // but was fixed by updating endDate (or vise-versa)
+        //         resetProvider(self.$refs.fromDateValidationProvider);
+        //         resetProvider(self.$refs.toDateValidationProvider);
+        //       }
+        //     }
+        //     return valid;
+        //   },
+        // });
       },
       reset() {
         this.usernameFilter = '';

@@ -44,7 +44,7 @@ limitations under the License.
                    @hidden="tooltipHidden"/>
       </div>
     </div>
-    <ValidationProvider :rules="rules" v-slot="{ errors }" :debounce="500" :name="label" ref="idVp">
+<!--    <ValidationProvider :rules="rules" v-slot="{ errors }" :debounce="500" :name="label" ref="idVp">-->
       <input type="text" class="form-control" id="idInput" v-model="internalValue" :disabled="!canEdit"
               @input="dataChanged" aria-required="true"
               :aria-invalid="errors && errors.length > 0"
@@ -52,23 +52,23 @@ limitations under the License.
               aria-describedby="idError"
              data-cy="idInputValue">
       <small role="alert" class="form-text text-danger" data-cy="idError" id="idError">{{ errors[0]}}</small>
-    </ValidationProvider>
+<!--    </ValidationProvider>-->
   </div>
 </template>
 
 <script>
-  import { extend, ValidationProvider } from 'vee-validate';
+  // import { extend, ValidationProvider } from 'vee-validate';
   // eslint-disable-next-line camelcase
-  import { alpha_num } from 'vee-validate/dist/rules';
+  import { alpha_num } from 'vee-validate';
   import debounce from 'lodash.debounce';
 
-  extend('alpha_num', alpha_num);
+  // extend('alpha_num', alpha_num);
 
   export default {
     name: 'IdInput',
-    components: {
-      ValidationProvider,
-    },
+    // components: {
+    //   ValidationProvider,
+    // },
     props: {
       label: String,
       value: String,

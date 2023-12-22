@@ -33,10 +33,10 @@ limitations under the License.
           <div class="col-12">
             <div class="form-group">
               <label for="projectIdInput">* {{ nameLabelTxt }}</label>
-              <ValidationProvider rules="required|minNameLength|maxProjectNameLength|uniqueName|customNameValidator|nullValueNotAllowed"
-                                  v-slot="{errors}"
-                                  :debounce="250"
-                                  name="Project Name">
+<!--              <ValidationProvider rules="required|minNameLength|maxProjectNameLength|uniqueName|customNameValidator|nullValueNotAllowed"-->
+<!--                                  v-slot="{errors}"-->
+<!--                                  :debounce="250"-->
+<!--                                  name="Project Name">-->
                 <input class="form-control" type="text" v-model="internalProject.name"
                        v-on:input="updateProjectId"
                        v-on:keydown.enter="handleSubmit(updateProject)"
@@ -47,7 +47,7 @@ limitations under the License.
                       aria-errormessage="projectNameError"
                       aria-describedby="projectNameError"/>
                 <small role="alert" class="form-text text-danger" data-cy="projectNameError" id="projectNameError">{{ errors[0] }}</small>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </div>
 
@@ -71,8 +71,8 @@ limitations under the License.
             <ValidationObserver v-slot="{ pending, invalid }">
               <div class="row">
                 <div class="col-lg">
-                  <ValidationProvider rules="projectCommunityRequirements"
-                                      name="Failed Minimum Requirement" v-slot="{ errors }">
+<!--                  <ValidationProvider rules="projectCommunityRequirements"-->
+<!--                                      name="Failed Minimum Requirement" v-slot="{ errors }">-->
                     <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity"
                                      @change="userCommunityChanged"
                                      name="check-button" inline switch data-cy="restrictCommunity">
@@ -86,7 +86,7 @@ limitations under the License.
                       </div>
                       <span v-html="errors[0]"/>
                     </div>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div v-if="userCommunityDocsLink" class="col-lg-auto" data-cy="userCommunityDocsLink">
                   <a :href="userCommunityDocsLink" target="_blank" style="text-decoration: underline">{{ userCommunityDocsLabel }}</a>
@@ -103,15 +103,15 @@ limitations under the License.
         </div>
         <div class="row">
           <div class="mt-2 col-12">
-              <ValidationProvider rules="maxDescriptionLength|customProjectDescriptionValidator" :debounce="250" v-slot="{errors}"
-                                  name="Project Description">
+<!--              <ValidationProvider rules="maxDescriptionLength|customProjectDescriptionValidator" :debounce="250" v-slot="{errors}"-->
+<!--                                  name="Project Description">-->
                 <markdown-editor v-if="!isEdit || descriptionLoaded"
                                  v-model="internalProject.description"
                                  :project-id="internalProject.projectId"
                                  :allow-attachments="isEdit || !showManageUserCommunity"
                                  @input="updateDescription" />
                 <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">{{ errors[0] }}</small>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
           </div>
         </div>
 
@@ -183,9 +183,9 @@ limitations under the License.
         restoredFromStorage: false,
       };
     },
-    created() {
-      this.registerValidation();
-    },
+    // created() {
+    //   this.registerValidation();
+    // },
     mounted() {
       this.internalProject.enableProtectedUserCommunity = this.isRestrictedUserCommunity(this.project.userCommunity);
       this.initialValueForEnableProtectedUserCommunity = this.internalProject.enableProtectedUserCommunity;

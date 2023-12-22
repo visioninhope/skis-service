@@ -19,11 +19,11 @@ limitations under the License.
 
     <div class="card">
       <div class="card-header">System</div>
-      <ValidationObserver ref="observer" v-slot="{invalid, pristine}" slim>
+<!--      <ValidationObserver ref="observer" v-slot="{invalid, pristine}" slim>-->
         <div class="card-body">
           <div class="form-group">
             <label class="label" for="resetTokenExpiration">* Token Expiration <InlineHelp target-id="resetTokenExpirationHelp" msg="How long password reset and email confirmation tokens remain valid before they expire"/></label>
-            <ValidationProvider rules="required|iso8601" name="Token Expiration" v-slot="{ errors }" :debounce=500>
+<!--            <ValidationProvider rules="required|iso8601" name="Token Expiration" v-slot="{ errors }" :debounce=500>-->
               <input class="form-control" type="text" v-model="resetTokenExpiration" name="resetTokenExpiration"
                      data-cy="resetTokenExpiration" aria-required="true"
                       id="resetTokenExpiration"
@@ -31,34 +31,34 @@ limitations under the License.
                       aria-errormessage="resetTokenExpirationError" aria-describedby="resetTokenExpirationError"/>
               <small class="text-info" id="resetTokenExpirationFormat">supports ISO 8601 time duration format, e.g., 2H, 30M, 1H30M, 1M42S, etc</small>
               <p role="alert" class="text-danger" v-show="errors[0]" data-cy="resetTokenExpirationError" id="resetTokenExpirationError">{{errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
 
           <div class="form-group">
             <label class="label" for="customHeader">Custom Header <InlineHelp target-id="customHeaderHelp" msg="HTML (and in-line css) to display as a header for the dashboard application"/></label>
-            <ValidationProvider rules="noscript|max:3000" name="Custom Header" v-slot="{ errors }">
+<!--            <ValidationProvider rules="noscript|max:3000" name="Custom Header" v-slot="{ errors }">-->
               <textarea class="form-control" name="customHeader" data-cy="customHeader" rows="3" v-model="customHeader"
                   id="customHeader"
                   :aria-invalid="errors && errors.length > 0"
                   aria-errormessage="customHeaderError" aria-describedby="customHeaderError"/>
               <p role="alert" class="text-danger" v-show="errors[0]" data-cy="customHeaderError" id="customHeaderError">{{errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
 
           <div class="form-group">
             <label class="label" for="customFooter">Custom Footer <InlineHelp target-id="customFooterHelp" msg="HTML (and in-line css) to display as a footer for the dashboard application"/></label>
-            <ValidationProvider rules="noscript|max:3000" name="Custom Footer" v-slot="{ errors }">
+<!--            <ValidationProvider rules="noscript|max:3000" name="Custom Footer" v-slot="{ errors }">-->
               <textarea class="form-control" name="customFooter" data-cy="customFooter" v-model="customFooter" rows="3"
                         id="customFooter"
                         :aria-invalid="errors && errors.length > 0"
                         aria-errormessage="customFooterError" aria-describedby="customFooterError"/>
               <p role="alert" class="text-danger" v-show="errors[0]" data-cy="customFooterError" id="customFooterError">{{errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
 
           <div class="form-group">
-            <ValidationProvider rules="noscript" v-slot="{errors}"
-                                name="User Agreement">
+<!--            <ValidationProvider rules="noscript" v-slot="{errors}"-->
+<!--                                name="User Agreement">-->
               <markdown-editor v-model="userAgreement"
                                @input="updateUserAgreement"
                                label="User Agreement"
@@ -69,7 +69,7 @@ limitations under the License.
                                :aria-invalid="errors && errors.length > 0">
               </markdown-editor>
               <small role="alert" id="userAgreementError" class="form-text text-danger mb-3" data-cy="userAgreement">{{ errors[0] }}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
 
           <p v-if="invalid && overallErrMsg" class="text-center text-danger" role="alert">***{{ overallErrMsg }}***</p>
@@ -81,23 +81,23 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </ValidationObserver>
+<!--      </ValidationObserver>-->
     </div>
 
   </div>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
-  import { email, max } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { email, max } from 'vee-validate';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import SubPageHeader from '../utils/pages/SubPageHeader';
   import SettingsService from './SettingsService';
   import ToastSupport from '../utils/ToastSupport';
   import InlineHelp from '../utils/InlineHelp';
 
-  extend('email', email);
-  extend('max', max);
+  // extend('email', email);
+  // extend('max', max);
 
   export default {
     name: 'SystemSettings',
@@ -182,27 +182,27 @@ limitations under the License.
     },
   };
 
-  const timePeriodRegex = /^(PT)?(?=(?:0\.)?\d+[HMS])((?:0\.)?\d+H)?((?:0\.)?\d+M)?((?:0\.)?\d+S)?$/;
-  extend('iso8601', {
-    message: 'Invalid ISO 8601 Time Duration',
-    validate(value) {
-      if (value) {
-        return value.match(timePeriodRegex) !== null;
-      }
-      return false;
-    },
-  });
-
-  const scriptRegex = /<[^>]*script/;
-  extend('noscript', {
-    message: '<script> tags are not allowed',
-    validate(value) {
-      if (value) {
-        return value.match(scriptRegex) === null;
-      }
-      return false;
-    },
-  });
+  // const timePeriodRegex = /^(PT)?(?=(?:0\.)?\d+[HMS])((?:0\.)?\d+H)?((?:0\.)?\d+M)?((?:0\.)?\d+S)?$/;
+  // extend('iso8601', {
+  //   message: 'Invalid ISO 8601 Time Duration',
+  //   validate(value) {
+  //     if (value) {
+  //       return value.match(timePeriodRegex) !== null;
+  //     }
+  //     return false;
+  //   },
+  // });
+  //
+  // const scriptRegex = /<[^>]*script/;
+  // extend('noscript', {
+  //   message: '<script> tags are not allowed',
+  //   validate(value) {
+  //     if (value) {
+  //       return value.match(scriptRegex) === null;
+  //     }
+  //     return false;
+  //   },
+  // });
 
 </script>
 

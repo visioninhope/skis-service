@@ -27,7 +27,7 @@ limitations under the License.
 
       <div class="form-group mb-1">
         <label for="pointIncrement">* Point Increment</label>
-        <ValidationProvider rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{errors}" name="Point Increment">
+<!--        <ValidationProvider rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{errors}" name="Point Increment">-->
           <input class="form-control" type="text"  v-model="pointIncrement"
                  aria-required="true"
                  data-cy="skillPointIncrement"
@@ -37,7 +37,7 @@ limitations under the License.
                  aria-errormessage="skillPointIncrementError"
                  :aria-invalid="errors && errors.length > 0"/>
           <small role="alert" class="form-text text-danger" data-cy="skillPointIncrementError" id="skillPointIncrementError">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
 
       <p v-if="invalid && overallErrMsg" class="text-center text-danger">***{{ overallErrMsg }}***</p>

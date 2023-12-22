@@ -28,7 +28,7 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ errors }">
+<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ errors }">-->
                 <textarea class="form-control" name="htmlEmailHeader" data-cy="htmlEmailHeader" rows="3" v-model="htmlHeader"
                           id="htmlEmailHeader"
                           :aria-invalid="errors && errors.length > 0"
@@ -37,7 +37,7 @@ limitations under the License.
                   <p role="alert" class="text-danger"
                      v-show="!errors[0] && htmlHeaderRequired && !htmlHeader"
                      data-cy="htmlEmailHeaderRequired">HTML Header is required</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </b-tab>
           <b-tab>
@@ -50,7 +50,7 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ errors }">
+<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ errors }">-->
                 <textarea class="form-control" name="plaintextEmailHeader" data-cy="plaintextEmailHeader" rows="3" v-model="plainTextHeader"
                           id="plaintextEmailHeader"
                           :aria-invalid="errors && errors.length > 0"
@@ -59,7 +59,7 @@ limitations under the License.
                   <p role="alert" class="text-danger"
                      v-show="!errors[0] && plaintextHeaderRequired && !plainTextHeader"
                      data-cy="plaintextEmailHeaderRequired">Plaintext Header is required</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </b-tab>
         </b-tabs>
@@ -77,7 +77,7 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ errors }">
+<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ errors }">-->
               <textarea class="form-control" name="htmlEmailFooter" data-cy="htmlEmailFooter" v-model="htmlFooter" rows="3"
                         id="htmlEmailFooter"
                         :aria-invalid="errors && errors.length > 0"
@@ -86,7 +86,7 @@ limitations under the License.
                 <p role="alert" class="text-danger"
                    v-show="!errors[0] && htmlFooterRequired && !htmlFooter"
                    data-cy="htmlEmailFooterRequired">HTML Footer is required</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </b-tab>
           <b-tab>
@@ -99,7 +99,7 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ errors }">
+<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ errors }">-->
               <textarea class="form-control" name="plaintextEmailFooter" data-cy="plaintextEmailFooter" v-model="plainTextFooter" rows="3"
                         id="plaintextEmailFooter"
                         :aria-invalid="errors && errors.length > 0"
@@ -108,7 +108,7 @@ limitations under the License.
                 <p role="alert" class="text-danger"
                    v-show="!errors[0] && plaintextFooterRequired && !plainTextFooter"
                    data-cy="plaintextEmailFooterRequired">Plaintext Footer is required</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </b-tab>
         </b-tabs>
@@ -129,25 +129,25 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
-  import { max, required } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { max, required } from 'vee-validate';
   import SettingsService from './SettingsService';
   import ToastSupport from '../utils/ToastSupport';
   import InlineHelp from '../utils/InlineHelp';
 
-  extend('max', max);
-  extend('required', required);
-
-  const scriptRegex = /<[^>]*script/;
-  extend('noscript', {
-    message: '<script> tags are not allowed',
-    validate(value) {
-      if (value) {
-        return value.match(scriptRegex) === null;
-      }
-      return false;
-    },
-  });
+  // extend('max', max);
+  // extend('required', required);
+  //
+  // const scriptRegex = /<[^>]*script/;
+  // extend('noscript', {
+  //   message: '<script> tags are not allowed',
+  //   validate(value) {
+  //     if (value) {
+  //       return value.match(scriptRegex) === null;
+  //     }
+  //     return false;
+  //   },
+  // });
 
   const settingGroup = 'GLOBAL.EMAIL';
   export default {

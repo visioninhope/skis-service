@@ -55,10 +55,10 @@ import {
 } from 'bootstrap-vue';
 
 import { SkillsConfiguration, SkillsReporter } from '@skilltree/skills-client-js';
-import {
-  localize, ValidationProvider, ValidationObserver, setInteractionMode,
-} from 'vee-validate';
-import en from 'vee-validate/dist/locale/en.json';
+// import {
+//   localize, ValidationProvider, ValidationObserver, setInteractionMode,
+// } from 'vee-validate';
+import en from 'vee-validate';
 import Vuex from 'vuex';
 import VueApexCharts from 'vue-apexcharts';
 import VueAnnouncer from '@vue-a11y/announcer';
@@ -79,15 +79,15 @@ import './filters/DateFilter';
 import './filters/UserRoleFilter';
 // import './filters/TimeFromNowFilter';
 import './directives/SkillsOnMountDirective';
-import RegisterValidators from './validators/RegisterValidators';
+// import RegisterValidators from './validators/RegisterValidators';
 import './directives/FocusDirective';
 import App from './App';
 import router from './router';
 import store from './store/store';
 
 Vue.component('apexchart', VueApexCharts);
-Vue.component('ValidationProvider', ValidationProvider);
-Vue.component('ValidationObserver', ValidationObserver);
+// Vue.component('ValidationProvider', ValidationProvider);
+// Vue.component('ValidationObserver', ValidationObserver);
 Vue.use(Vuex);
 
 Vue.use(ButtonPlugin);
@@ -268,7 +268,7 @@ router.afterEach((to, from) => {
 });
 
 store.dispatch('loadConfigState').finally(() => {
-  RegisterValidators.init();
+  // RegisterValidators.init();
   store.dispatch('restoreSessionIfAvailable').finally(() => {
     InceptionConfigurer.configure();
     /* eslint-disable no-new */

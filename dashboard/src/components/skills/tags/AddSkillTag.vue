@@ -33,7 +33,7 @@ limitations under the License.
           </div>
           <div class="mt-3" aria-hidden="true"/>
         </div>
-        <ValidationProvider name="Skill Tags" :debounce=500 v-slot="{errors}" rules="maxSkillTagLength">
+<!--        <ValidationProvider name="Skill Tags" :debounce=500 v-slot="{errors}" rules="maxSkillTagLength">-->
           <label for="newTag">Create New Tag</label>
           <b-form-input id="newTag" v-model="newTagValue"
                         data-cy="newTagInput"
@@ -41,7 +41,7 @@ limitations under the License.
                         @keydown.enter="handleSubmit(tagSkills)"
           />
           <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="newTagError" id="newTagError">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </b-container>
       <div slot="modal-footer" class="w-100">
         <b-button variant="success"

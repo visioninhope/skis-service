@@ -28,11 +28,11 @@ limitations under the License.
           <div class="col-12">
             <div class="form-group">
           <label for="quizNameInput">* Name</label>
-          <ValidationProvider
-            rules="required|minNameLength|maxQuizNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
-            :debounce="500"
-            v-slot="{errors}"
-            name="Quiz Name">
+<!--          <ValidationProvider-->
+<!--            rules="required|minNameLength|maxQuizNameLength|nullValueNotAllowed|uniqueName|customNameValidator"-->
+<!--            :debounce="500"-->
+<!--            v-slot="{errors}"-->
+<!--            name="Quiz Name">-->
             <input id="quizNameInput"
                    class="form-control" type="text" v-model="quizInternal.name"
                    v-on:input="updateQuizId"
@@ -44,7 +44,7 @@ limitations under the License.
                    aria-describedby="quizNameError"/>
             <small role="alert" class="form-text text-danger" data-cy="quizNameError"
                    id="quizNameError">{{ errors[0] }}</small>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
         </div>
           </div>
         </div>
@@ -77,15 +77,15 @@ limitations under the License.
 
         <div class="row mt-3" v-if="showDescription">
           <div class="col-12">
-            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="400"
-                                v-slot="{errors}"
-                                name="Quiz/Survey Description">
+<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="400"-->
+<!--                                v-slot="{errors}"-->
+<!--                                name="Quiz/Survey Description">-->
               <markdown-editor id="quizDescription"
                                :quiz-id="isEdit ? quizInternal.quizId : null"
                                v-model="quizInternal.description" data-cy="quizDescription"></markdown-editor>
               <small role="alert" class="form-text text-danger mb-3"
                      data-cy="quizDescriptionError">{{ errors[0] }}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
         </div>
 
@@ -168,9 +168,9 @@ limitations under the License.
         restoredFromStorage: false,
       };
     },
-    created() {
-      this.registerValidation();
-    },
+    // created() {
+    //   this.registerValidation();
+    // },
     mounted() {
       document.addEventListener('focusin', this.trackFocus);
       this.loadComponent();

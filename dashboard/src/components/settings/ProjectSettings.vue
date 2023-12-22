@@ -69,8 +69,8 @@ limitations under the License.
             </div>
           </div>
 
-          <ValidationProvider rules="root_help_url|customUrlValidator" v-slot="{errors}"
-                              name="Root Help Url">
+<!--          <ValidationProvider rules="root_help_url|customUrlValidator" v-slot="{errors}"-->
+<!--                              name="Root Help Url">-->
             <div class="row mt-3">
               <div class="col-md-5 col-xl-3 text-secondary" id="rootHelpUrlLabel">
                 Root Help Url:
@@ -95,7 +95,7 @@ limitations under the License.
                        data-cy="rootHelpUrlError">{{ errors[0] }}</small>
               </div>
             </div>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
 
           <div class="row mt-3">
             <div class="col-md-5 col-xl-3 text-secondary" id="selfReportLabel">
@@ -183,8 +183,8 @@ limitations under the License.
 
               <b-collapse id="customLabelsCollapse" :visible="showCustomLabelsConfigToggle">
                 <b-card class="mt-1">
-                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"
-                                      name="Project Display Text">
+<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
+<!--                                      name="Project Display Text">-->
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="projectDisplayTextLabel">
                         Project Display Text:
@@ -206,9 +206,9 @@ limitations under the License.
                                data-cy="projectDisplayTextError">{{ errors[0] }}</small>
                       </div>
                     </div>
-                  </ValidationProvider>
-                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"
-                                      name="Subject Display Text">
+<!--                  </ValidationProvider>-->
+<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
+<!--                                      name="Subject Display Text">-->
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="subjectDisplayTextLabel">
                         Subject Display Text:
@@ -230,8 +230,8 @@ limitations under the License.
                                data-cy="subjectDisplayTextError">{{ errors[0] }}</small>
                       </div>
                     </div>
-                  </ValidationProvider>
-                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"
+<!--                  </ValidationProvider>-->
+<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
                                       name="Group Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="groupDisplayTextLabel">
@@ -254,10 +254,10 @@ limitations under the License.
                                data-cy="groupDisplayTextError">{{ errors[0] }}</small>
                       </div>
                     </div>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
 
-                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"
-                                      name="Skill Display Text">
+<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
+<!--                                      name="Skill Display Text">-->
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="skillDisplayTextLabel">
                         Skill Display Text:
@@ -279,9 +279,9 @@ limitations under the License.
                                data-cy="skillDisplayTextError">{{ errors[0] }}</small>
                       </div>
                     </div>
-                  </ValidationProvider>
-                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"
-                                      name="Level Display Text">
+<!--                  </ValidationProvider>-->
+<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
+<!--                                      name="Level Display Text">-->
                     <div class="row">
                       <div class="col-md-5 col-xl-3 text-secondary" id="levelDisplayTextLabel">
                         Level Display Text:
@@ -303,7 +303,7 @@ limitations under the License.
                                data-cy="levelDisplayTextError">{{ errors[0] }}</small>
                       </div>
                     </div>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </b-card>
               </b-collapse>
             </div>
@@ -357,7 +357,7 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend, ValidationProvider } from 'vee-validate';
+  // import { extend, ValidationProvider } from 'vee-validate';
   import { SkillsReporter } from '@skilltree/skills-client-js';
   import MsgBoxMixin from '@/components/utils/modal/MsgBoxMixin';
   import SettingService from './SettingsService';
@@ -371,15 +371,15 @@ limitations under the License.
   const discoverableProgressAndRanking = 'dpr';
   const privateInviteOnly = 'pio';
 
-  extend('root_help_url', {
-    message: (field) => `${field} must start with "http(s)"`,
-    validate(value) {
-      if (!value) {
-        return true;
-      }
-      return value.startsWith('http') || value.startsWith('https');
-    },
-  });
+  // extend('root_help_url', {
+  //   message: (field) => `${field} must start with "http(s)"`,
+  //   validate(value) {
+  //     if (!value) {
+  //       return true;
+  //     }
+  //     return value.startsWith('http') || value.startsWith('https');
+  //   },
+  // });
 
   export default {
     name: 'ProjectSettings',
@@ -389,7 +389,7 @@ limitations under the License.
       InlineHelp,
       SimpleCard,
       SubPageHeader,
-      ValidationProvider,
+      // ValidationProvider,
     },
     data() {
       return {

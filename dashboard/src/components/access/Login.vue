@@ -34,7 +34,7 @@ limitations under the License.
 
               <div class="form-group">
                 <label for="username" class="text-primary">Email Address</label>
-                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=500 v-slot="{errors}">
+<!--                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=500 v-slot="{errors}">-->
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-envelope"></i></span>
@@ -48,7 +48,7 @@ limitations under the License.
                   <small role="alert" id="emailHelp" class="form-text text-danger" v-show="errors[0]">{{
                     errors[0]}}
                   </small>
-                </ValidationProvider>
+<!--                </ValidationProvider>-->
               </div>
               <div class="form-group">
                 <div class="row">
@@ -59,7 +59,7 @@ limitations under the License.
                     <small class="text-muted"><b-link tabindex="0" @click="forgotPassword" data-cy="forgotPassword">Forgot Password?</b-link></small>
                   </div>
                 </div>
-                <ValidationProvider name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">
+<!--                <ValidationProvider name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">-->
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -74,7 +74,7 @@ limitations under the License.
                   <small role="alert" id="passwordHelp" class="form-text text-danger" v-show="errors[0]">{{
                     errors[0]}}
                   </small>
-                </ValidationProvider>
+<!--                </ValidationProvider>-->
               </div>
               <div class="row">
                 <div class="col text-right">
@@ -114,17 +114,17 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
-  import { required, email } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { required, email } from 'vee-validate';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
 
-  extend('required', {
-    ...required,
-    message: '{_field_} is required',
-  });
-  extend('email', email);
+  // extend('required', {
+  //   ...required,
+  //   message: '{_field_} is required',
+  // });
+  // extend('email', email);
 
   export default {
     name: 'LoginForm',

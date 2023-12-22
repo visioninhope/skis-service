@@ -28,7 +28,7 @@ limitations under the License.
             # of Questions per Quiz Attempt:
           </div>
           <div class="col">
-            <ValidationProvider name="Quiz Length" vid="quizNumQuestions" rules="required|greaterThanOrEqualToPassing:@quizPassingQuestions" v-slot="{errors}">
+<!--            <ValidationProvider name="Quiz Length" vid="quizNumQuestions" rules="required|greaterThanOrEqualToPassing:@quizPassingQuestions" v-slot="{errors}">-->
               <b-form-select v-model="settings.quizLength.value"
                              :options="quizLengthOptions"
                              aria-labelledby="quizNumQuestions"
@@ -37,7 +37,7 @@ limitations under the License.
               <small role="alert" class="form-text text-danger" v-show="errors[0]">{{
                   errors[0]}}
               </small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
         </div>
         <div class="row mt-3">
@@ -45,7 +45,7 @@ limitations under the License.
             Passing Requirement:
           </div>
           <div class="col">
-            <ValidationProvider name="Number of Required Questions" vid="quizPassingQuestions" rules="required|lessThanOrEqualToLength:@quizNumQuestions" v-slot="{errors}">
+<!--            <ValidationProvider name="Number of Required Questions" vid="quizPassingQuestions" rules="required|lessThanOrEqualToLength:@quizNumQuestions" v-slot="{errors}">-->
               <b-form-select v-model="settings.passingReq.value"
                              :options="numRequiredQuestionsOptions"
                              aria-labelledby="quizPassingReq"
@@ -53,7 +53,7 @@ limitations under the License.
               <small role="alert" class="form-text text-danger" v-show="errors[0]">{{
                   errors[0]}}
               </small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
         </div>
       </div>
       <div class="row mt-3">
@@ -71,7 +71,7 @@ limitations under the License.
               </b-form-checkbox>
             </div>
             <div class="col" v-if="!settings.numAttempts.unlimited">
-              <ValidationProvider name="Number of Attempts" rules="optionalNumeric|required|min_value:1|max_value:1000" v-slot="{errors}">
+<!--              <ValidationProvider name="Number of Attempts" rules="optionalNumeric|required|min_value:1|max_value:1000" v-slot="{errors}">-->
               <b-form-input
                 aria-labelledby="quizMaxNumOfAttempts"
                 data-cy="numAttemptsInput"
@@ -79,7 +79,7 @@ limitations under the License.
                 <small role="alert" class="form-text text-danger" v-show="errors[0]">{{
                     errors[0]}}
                 </small>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ limitations under the License.
               <div class="col-auto my-auto" v-if="!settings.quizTimeLimit.unlimited">
                 <div class="row">
                   <div class="col-12 col-sm">
-                    <ValidationProvider name="Quiz Time Limit Hours" rules="optionalNumeric|required|min_value:0|max_value:24" v-slot="{errors}">
+<!--                    <ValidationProvider name="Quiz Time Limit Hours" rules="optionalNumeric|required|min_value:0|max_value:24" v-slot="{errors}">-->
                       <div class="input-group">
                         <input class="form-control d-inline" type="text" v-model="hoursForQuiz"
                                aria-labelledby="quizTimeLimitHours"
@@ -150,10 +150,10 @@ limitations under the License.
                         </div>
                       </div>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]">{{errors[0]}}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </div>
                   <div class="col-12 col-sm">
-                    <ValidationProvider name="Quiz Time Limit Minutes" rules="optionalNumeric|required|min_value:0|max_value:59" v-slot="{errors}">
+<!--                    <ValidationProvider name="Quiz Time Limit Minutes" rules="optionalNumeric|required|min_value:0|max_value:59" v-slot="{errors}">-->
                       <div class="input-group">
                         <input class="form-control d-inline" type="text" v-model="minutesForQuiz"
                                aria-labelledby="quizTimeLimit"
@@ -165,7 +165,7 @@ limitations under the License.
                         </div>
                       </div>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]">{{errors[0]}}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </div>
                 </div>
               </div>
@@ -310,7 +310,7 @@ limitations under the License.
       this.loadAndUpdateQuizSettings()
         .then(() => {
           this.isLoadingSettings = false;
-          this.setupValidation();
+          // this.setupValidation();
         });
     },
     methods: {

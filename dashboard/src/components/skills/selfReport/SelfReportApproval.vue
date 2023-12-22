@@ -139,8 +139,8 @@ limitations under the License.
           <p class="h6">This will reject user's request(s) to get points. Users will be notified and you can provide an optional message below.</p>
         </div>
       </div>
-      <ValidationProvider rules="maxSelfReportRejectionMessageLength|customDescriptionValidator" :debounce="250" v-slot="{errors}"
-                          name="Rejection Message">
+<!--      <ValidationProvider rules="maxSelfReportRejectionMessageLength|customDescriptionValidator" :debounce="250" v-slot="{errors}"-->
+<!--                          name="Rejection Message">-->
         <b-form-textarea rows="5" type="text" id="approvalRequiredMsg"
                          v-model="reject.rejectMsg"
                          aria-describedby="rejectionTitleInModal"
@@ -150,7 +150,7 @@ limitations under the License.
                          aria-errormessage="approvalRequiredMsgError"
                          :aria-invalid="errors && errors.length > 0"/>
         <small role="alert" id="approvalRequiredMsgError" class="form-text text-danger mb-3" data-cy="rejectionInputMsgError">{{ errors[0] }}</small>
-      </ValidationProvider>
+<!--      </ValidationProvider>-->
       <template #modal-footer>
         <button type="button" class="btn btn-outline-danger text-uppercase" @click="reject.showModal=false"
                 data-cy="cancelRejectionBtn">

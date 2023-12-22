@@ -32,7 +32,7 @@ limitations under the License.
             <div class="media-body">
               <div class="form-group">
                 <label for="badgeName">* Badge Name</label>
-                <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
+<!--                <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|nullValueNotAllowed|uniqueName|customNameValidator"-->
                                     v-slot="{errors}" name="Badge Name" :debounce="250">
                   <input v-focus class="form-control" id="badgeName" type="text" v-model="badgeInternal.name"
                          @input="updateBadgeId" aria-required="true" data-cy="badgeName"
@@ -42,7 +42,7 @@ limitations under the License.
                          aria-describedby="badgeNameError"/>
                   <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="badgeNameError" id="badgeNameError">{{ errors[0] }}
                   </small>
-                </ValidationProvider>
+<!--                </ValidationProvider>-->
               </div>
             </div>
           </div>
@@ -54,14 +54,14 @@ limitations under the License.
                     @hidden="tooltipShowing=false"/>
 
           <div class="mt-3">
-            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}"
+<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}"-->
                                 name="Badge Description">
               <markdown-editor v-model="badgeInternal.description"
                                :project-id="badgeInternal.projectId"
                                :skill-id="isEdit ? badgeInternal.skillId : null"
                                @input="updateDescription"></markdown-editor>
               <small role="alert" class="form-text text-danger mb-3" data-cy="badgeDescriptionError">{{ errors[0] }}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
 
           <b-card class="mt-1" v-if="!global" data-cy="bonusAwardCard">
@@ -82,7 +82,7 @@ limitations under the License.
                     <div class="media-body">
                       <div class="form-group">
                         <label for="awardName">Award Name</label>
-                        <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|customNameValidator"
+<!--                        <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|customNameValidator"-->
                                             v-slot="{errors}" name="Award Name" :debounce="250">
                           <input v-focus class="form-control" id="awardName" type="text" v-model="badgeInternal.awardAttrs.name"
                                  aria-required="true" data-cy="awardName"
@@ -93,7 +93,7 @@ limitations under the License.
                                  aria-describedby="awardNameError"/>
                           <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="awardNameError" id="awardNameError">{{ errors[0] }}
                           </small>
-                        </ValidationProvider>
+<!--                        </ValidationProvider>-->
                       </div>
                     </div>
                   </div>
@@ -101,7 +101,7 @@ limitations under the License.
               </div>
               <div class="row" v-if="badgeInternal.timeLimitEnabled">
                 <div class="col-12 col-sm">
-                  <ValidationProvider rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{errors}" name="Days">
+<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{errors}" name="Days">-->
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationDays"
                              value="8" :disabled="!badgeInternal.timeLimitEnabled"
@@ -116,10 +116,10 @@ limitations under the License.
                       </div>
                     </div>
                     <small role="alert" class="form-text text-danger" data-cy="badgeDaysError" id="badgeDaysError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="col-12 col-sm">
-                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{errors}" name="Hours">
+<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{errors}" name="Hours">-->
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationHrs"
                              value="8" :disabled="!badgeInternal.timeLimitEnabled"
@@ -134,10 +134,10 @@ limitations under the License.
                       </div>
                     </div>
                     <small role="alert" class="form-text text-danger" data-cy="badgeHoursError" id="badgeHoursError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="col-12 col-sm">
-                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{errors}" name="Minutes">
+<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{errors}" name="Minutes">-->
                     <div class="input-group">
                       <input class="form-control d-inline"  type="text" v-model="badgeInternal.expirationMins"
                              value="0" :disabled="!badgeInternal.timeLimitEnabled" ref="timeLimitMinutes" data-cy="timeLimitMinutes"
@@ -152,7 +152,7 @@ limitations under the License.
                       </div>
                     </div>
                     <small role="alert" class="form-text text-danger" data-cy="badgeMinutesError" id="badgeMinutesError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
               </div>
             </div>
@@ -180,23 +180,23 @@ limitations under the License.
               <b-row v-if="limitTimeframe" no-gutters class="justify-content-md-center mt-3" key="gemTimeFields">
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* Start Date</label>
-                  <ValidationProvider rules="required|dateOrder" v-slot="{errors}" name="Start Date"
+<!--                  <ValidationProvider rules="required|dateOrder" v-slot="{errors}" name="Start Date"-->
                                       ref="startDateValidationProvider">
                     <datepicker :inline="true" v-model="badgeInternal.startDate" name="startDate"
                                 key="gemFrom" data-cy="startDatePicker"
                                 aria-required="true"></datepicker>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="startDateError">{{ errors[0] }}
                     </small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </b-col>
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* End Date</label>
-                  <ValidationProvider rules="required|dateOrder|noHistoricalEnd" v-slot="{errors}" name="End Date"
-                                      ref="endDateValidationProvider">
+<!--                  <ValidationProvider rules="required|dateOrder|noHistoricalEnd" v-slot="{errors}" name="End Date"-->
+<!--                                      ref="endDateValidationProvider">-->
                     <datepicker :inline="true" v-model="badgeInternal.endDate" name="endDate"
                                 key="gemTo" data-cy="endDatePicker" aria-required="true"></datepicker>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="endDateError">{{errors[0]}}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </b-col>
               </b-row>
             </b-collapse>
@@ -338,9 +338,9 @@ limitations under the License.
         isAwardIcon: false,
       };
     },
-    created() {
-      this.assignCustomValidation();
-    },
+    // created() {
+    //   this.assignCustomValidation();
+    // },
     mounted() {
       document.addEventListener('focusin', this.trackFocus);
       this.loadComponent();

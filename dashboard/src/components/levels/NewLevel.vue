@@ -27,17 +27,17 @@ limitations under the License.
             <div class="media-body">
                 <template v-if="isEdit">
                   <label for="editLevel-level">* Level</label>
-                  <ValidationProvider name="Level" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100">
+<!--                  <ValidationProvider name="Level" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100">-->
                     <b-form-input v-focus id="editLevel-level" v-model="levelInternal.level" name="level" :disabled="isEdit"
                     aria-required="true" data-cy="levelId" v-on:keydown.enter="handleSubmit(saveLevel)"
                                   :aria-invalid="errors && errors.length > 0"
                                   aria-errormessage="levelIdError"
                                   aria-describedby="levelIdError"></b-form-input>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="levelIdError" id="levelIdError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                   <template v-if="!levelAsPoints">
                     <label for="editLevel-percent" class="mt-3">* Percent</label>
-                    <ValidationProvider name="Percent" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100|overlap">
+<!--                    <ValidationProvider name="Percent" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100|overlap">-->
                       <b-form-input id="editLevel-percent" v-model="levelInternal.percent" name="percent" aria-required="true" data-cy="levelPercent"
                                     v-on:keydown.enter="handleSubmit(saveLevel)"
                                     :aria-invalid="errors && errors.length > 0"
@@ -45,26 +45,26 @@ limitations under the License.
                                     aria-describedby="levelPercentError">
                       </b-form-input>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="levelPercentError" id="levelPercentError">{{ errors[0] }}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </template>
                   <template v-else>
                     <label for="editLevel-pointsFrom" class="mt-3">* Points From</label>
-                    <ValidationProvider name="Points From" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">
+<!--                    <ValidationProvider name="Points From" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">-->
                       <b-form-input id="editlevel-pointsFrom" v-model="levelInternal.pointsFrom" name="pointsFrom" aria-required="true"
                                     v-on:keydown.enter="handleSubmit(saveLevel)" data-cy="editLevelPoints"
                                     :aria-invalid="errors && errors.length > 0"
                                     aria-errormessage="levelPointsFromError" aria-describedby="levelPointsFromError"></b-form-input>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]" id="levelPointsFromError">{{ errors[0] }}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                     <div v-if="!levelInternal.isLast">
                       <label for="editLevel-pointsTo" class="mt-3">* Points To</label>
-                      <ValidationProvider name="Points To" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">
+<!--                      <ValidationProvider name="Points To" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">-->
                         <b-form-input id="editLevel-pointsTo" v-model="levelInternal.pointsTo" name="pointsTo" aria-required="true"
                                       v-on:keydown.enter="handleSubmit(saveLevel)"
                                       :aria-invalid="errors && errors.length > 0"
                                       aria-errormessage="levelPointsToError" aria-describedby="levelPointsToError"></b-form-input>
                         <small role="alert" class="form-text text-danger" v-show="errors[0]" id="levelPointsToError">{{ errors[0] }}</small>
-                      </ValidationProvider>
+<!--                      </ValidationProvider>-->
                     </div>
                   </template>
 
@@ -80,24 +80,24 @@ limitations under the License.
                 <template v-else>
                   <template v-if="!levelAsPoints">
                     <label for="newLevel-percent">* Percent %</label>
-                    <ValidationProvider name="Percent %" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100|overlap">
+<!--                    <ValidationProvider name="Percent %" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|max_value:100|overlap">-->
                       <b-form-input v-focus id="newLevel-percent" v-model="levelInternal.percent"
                                     name="percent" aria-required="true" data-cy="levelPercent"
                                     v-on:keydown.enter="handleSubmit(saveLevel)"
                                     :aria-invalid="errors && errors.length > 0"
                                     aria-errormessage="levelPercentError" aria-describedby="levelPercentError"></b-form-input>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="levelPercentError" id="levelPercentError">{{ errors[0] }}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </template>
                   <template v-else>
                     <label for="newLevel-points" class="mt-3">* Points</label>
-                    <ValidationProvider name="Points" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">
+<!--                    <ValidationProvider name="Points" :debounce=500 v-slot="{errors}" rules="optionalNumeric|required|min_value:0|overlap">-->
                       <b-form-input id="newlevel-points" v-model="levelInternal.points" name="points" aria-required="true"
                                     v-on:keydown.enter="handleSubmit(saveLevel)" data-cy="newLevelPoints"
                                     :aria-invalid="errors && errors.length > 0"
                                     aria-errormessage="levelPointsError" aria-describedby="levelPointsError"></b-form-input>
                       <small role="alert" class="form-text text-danger" v-show="errors[0]" id="levelPointsError">{{ errors[0] }}</small>
-                    </ValidationProvider>
+<!--                    </ValidationProvider>-->
                   </template>
 <!--                  <label for="newLevel-name" class="mt-3">Name <span class="text-muted">(optional)</span></label>-->
 <!--                  <ValidationProvider name="Name" :debounce=500 v-slot="{errors}" rules="maxLevelNameLength|uniqueName">-->
@@ -140,21 +140,21 @@ limitations under the License.
 <script>
   import { extend } from 'vee-validate';
   // eslint-disable-next-line camelcase
-  import { min_value, max_value } from 'vee-validate/dist/rules';
+  // import { min_value, max_value } from 'vee-validate';
   // import IconPicker from '../utils/iconPicker/IconPicker';
   // import IconManager from '../utils/iconPicker/IconManager';
   import InputSanitizer from '../utils/InputSanitizer';
 
-  extend('min_value', {
-    // eslint-disable-next-line camelcase
-    ...min_value,
-    message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.min} or greater`,
-  });
-  extend('max_value', {
-    // eslint-disable-next-line camelcase
-    ...max_value,
-    message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.max} or less`,
-  });
+  // extend('min_value', {
+  //   // eslint-disable-next-line camelcase
+  //   ...min_value,
+  //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.min} or greater`,
+  // });
+  // extend('max_value', {
+  //   // eslint-disable-next-line camelcase
+  //   ...max_value,
+  //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.max} or less`,
+  // });
 
   export default {
     name: 'NewLevel',
@@ -189,47 +189,47 @@ limitations under the License.
       const gt = (value, compareTo) => value > compareTo;
       const lt = (value, compareTo) => value < compareTo;
 
-      extend('overlap', {
-        message: '{_field_} must not overlap with other levels',
-        validate(value) {
-          let valid = true;
-          if (self.boundaries) {
-            let previousValid = true;
-            let nextValid = true;
-            let gtOp = self.levelAsPoints ? gte : gt;
-            const ltOp = self.levelAsPoints ? lte : lt;
-
-            if (self.boundaries.previous !== null) {
-              if (self.boundaries.next === null) {
-                // use gt regardless of points configuration if it's the last level
-                gtOp = gt;
-              }
-              previousValid = gtOp(value, self.boundaries.previous);
-            }
-            if (self.boundaries.next !== null) {
-              nextValid = ltOp(value, self.boundaries.next);
-            }
-
-            valid = nextValid && previousValid;
-          }
-          return valid;
-        },
-      });
-
-      extend('uniqueName', {
-        message: (field) => `${field} is already taken.`,
-        validate(value) {
-          let valid = true;
-          if (self.allLevels && value && value.localeCompare(self.level.name, 'en', { sensitivity: 'base' }) !== 0) {
-            const lcVal = value.toLowerCase();
-            const existingLevelWithName = self.allLevels.find((elem) => elem.name && elem.name.toLowerCase() === lcVal);
-            if (existingLevelWithName) {
-              valid = false;
-            }
-          }
-          return valid;
-        },
-      });
+      // extend('overlap', {
+      //   message: '{_field_} must not overlap with other levels',
+      //   validate(value) {
+      //     let valid = true;
+      //     if (self.boundaries) {
+      //       let previousValid = true;
+      //       let nextValid = true;
+      //       let gtOp = self.levelAsPoints ? gte : gt;
+      //       const ltOp = self.levelAsPoints ? lte : lt;
+      //
+      //       if (self.boundaries.previous !== null) {
+      //         if (self.boundaries.next === null) {
+      //           // use gt regardless of points configuration if it's the last level
+      //           gtOp = gt;
+      //         }
+      //         previousValid = gtOp(value, self.boundaries.previous);
+      //       }
+      //       if (self.boundaries.next !== null) {
+      //         nextValid = ltOp(value, self.boundaries.next);
+      //       }
+      //
+      //       valid = nextValid && previousValid;
+      //     }
+      //     return valid;
+      //   },
+      // });
+      //
+      // extend('uniqueName', {
+      //   message: (field) => `${field} is already taken.`,
+      //   validate(value) {
+      //     let valid = true;
+      //     if (self.allLevels && value && value.localeCompare(self.level.name, 'en', { sensitivity: 'base' }) !== 0) {
+      //       const lcVal = value.toLowerCase();
+      //       const existingLevelWithName = self.allLevels.find((elem) => elem.name && elem.name.toLowerCase() === lcVal);
+      //       if (existingLevelWithName) {
+      //         valid = false;
+      //       }
+      //     }
+      //     return valid;
+      //   },
+      // });
     },
     computed: {
       title() {

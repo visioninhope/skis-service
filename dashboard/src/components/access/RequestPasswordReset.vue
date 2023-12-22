@@ -28,7 +28,7 @@ limitations under the License.
 
               <div class="form-group">
                 <label for="username" class="text-secondary font-weight-bold">* Email Address</label>
-                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=300 v-slot="{errors}">
+<!--                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=300 v-slot="{errors}">-->
                   <input type="text" class="form-control" id="username" tabindex="1" placeholder="Enter email"
                          aria-errormessage="emailHelp"
                          aria-describedby="emailHelp"
@@ -40,7 +40,7 @@ limitations under the License.
                       errors[0] }}
                     </small>
                     <small class="text-danger" v-if="serverError" data-cy="resetFailedError" role="alert">{{ serverError }}</small>
-                </ValidationProvider>
+<!--                </ValidationProvider>-->
               </div>
               <button type="submit" class="btn btn-outline-hc" tabindex="3" :disabled="invalid || (disabled === true)" data-cy="resetPassword">
                 Reset Password <i class="fas fa-arrow-circle-right" aria-hidden="true"/>
@@ -56,14 +56,14 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
-  import { required, email } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { required, email } from 'vee-validate';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
 
-  extend('required', required);
-  extend('email', email);
+  // extend('required', required);
+  // extend('email', email);
 
   export default {
     name: 'RequestPasswordResetForm',

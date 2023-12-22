@@ -155,7 +155,7 @@ limitations under the License.
                   <div class="input-group">
                     <div class="col-auto mr-0 pr-0" :class="{'text-muted': expirationType !== 'DAILY'}">
                       <span for="dailyDays-sb">Achievement will expire after</span>
-                      <ValidationProvider :rules="{ 'optionalNumeric':true, 'required':expirationType === 'DAILY', 'min_value':1, 'max_value':999 }" :debounce="250" v-slot="{ errors }" name="Expiration Days">
+<!--                      <ValidationProvider :rules="{ 'optionalNumeric':true, 'required':expirationType === 'DAILY', 'min_value':1, 'max_value':999 }" :debounce="250" v-slot="{ errors }" name="Expiration Days">-->
                         <input class="form-control m-1" type="text"
                                style="max-width: 4rem;"
                                v-model="dailyDays"
@@ -169,7 +169,7 @@ limitations under the License.
                                :aria-invalid="errors && errors.length > 0"/>
                         <span>day{{dailyDays > 1 ? 's' : ''}} of inactivity</span>
                         <small role="alert" class="form-text text-danger" data-cy="dailyDaysError" id="dailyDaysError">{{ errors[0] }}</small>
-                      </ValidationProvider>
+<!--                      </ValidationProvider>-->
                     </div>
                   </div>
                 </b-form>

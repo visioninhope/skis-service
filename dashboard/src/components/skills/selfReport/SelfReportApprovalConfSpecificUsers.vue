@@ -20,7 +20,7 @@ limitations under the License.
         <i class="fas fa-user-plus text-primary" aria-hidden="true"/> Split Workload <span class="font-italic text-primary">By Specific Users</span>
       </div>
     </template>
-    <ValidationProvider name="User Id" v-slot="{errors}" rules="userNoSpaceInUserIdInNonPkiMode|uniqueUserConf">
+<!--    <ValidationProvider name="User Id" v-slot="{errors}" rules="userNoSpaceInUserIdInNonPkiMode|uniqueUserConf">-->
       <div class="row mx-2 no-gutters">
         <div class="col px-1">
           <existing-user-input
@@ -43,7 +43,7 @@ limitations under the License.
           </b-button>
         </div>
       </div>
-    </ValidationProvider>
+<!--    </ValidationProvider>-->
 
     <skills-spinner v-if="loading" :is-loading="loading" class="mb-5"/>
     <div v-if="!loading">
@@ -154,9 +154,9 @@ limitations under the License.
         return this.table.items && this.table.items.length > 0;
       },
     },
-    created() {
-      this.assignCustomValidation();
-    },
+    // created() {
+    //   this.assignCustomValidation();
+    // },
     mounted() {
       const hasConf = this.userInfo.userConf && this.userInfo.userConf.length > 0;
       if (hasConf) {

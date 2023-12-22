@@ -17,10 +17,10 @@ limitations under the License.
   <div>
     <sub-page-header title="Add Skill Events"/>
     <simple-card style="min-height: 20rem;">
-      <ValidationObserver v-slot="{invalid}" slim>
+<!--      <ValidationObserver v-slot="{invalid}" slim>-->
         <div id="add-user-div" class="row mt-2 mb-4">
           <div class="col-12 col-md-6 pb-2 pb-md-0">
-            <ValidationProvider name="User Id" v-slot="{errors}" rules="userNoSpaceInUserIdInNonPkiMode">
+<!--            <ValidationProvider name="User Id" v-slot="{errors}" rules="userNoSpaceInUserIdInNonPkiMode">-->
               <existing-user-input :project-id="projectId"
                                    v-model="currentSelectedUser"
                                    :can-enter-new-user="!pkiAuthenticated"
@@ -30,13 +30,13 @@ limitations under the License.
                                    :aria-invalid="errors && errors.length > 0"
                                    data-cy="userIdInput"/>
               <small role="alert" id="userIdInputError" class="form-text text-danger" v-show="errors[0]">{{ errors[0]}}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
           <div class="col-auto">
-            <ValidationProvider name="Event Date" rules="required">
+<!--            <ValidationProvider name="Event Date" rules="required">-->
               <datepicker input-class="border-0" wrapper-class="form-control" v-model="dateAdded" name="Event Date" data-cy="eventDatePicker"
                           :use-utc="false" :disabled-dates="datePickerState.disabledDates" aria-required="true" aria-label="event date" ref="eventDatePicker"/>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
           <div class="col-auto">
             <div v-b-tooltip.hover :title="minPointsTooltip">
@@ -47,7 +47,7 @@ limitations under the License.
             </div>
           </div>
         </div>
-      </ValidationObserver>
+<!--      </ValidationObserver>-->
 
       <div class="row mt-2" v-for="(user) in reversedUsersAdded" v-bind:key="user.key" data-cy="addedUserEventsInfo">
         <div class="col">

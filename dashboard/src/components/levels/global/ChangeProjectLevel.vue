@@ -25,7 +25,7 @@ limitations under the License.
           <b-form-input id="existingLevel" :readonly="true" v-model="oldLevel" />
           <div class="mt-3" aria-hidden="true"/>
           <label for="newLevel">New level</label>
-          <ValidationProvider name="New Level" :debounce=500 v-slot="{errors}" rules="required|min_value:0|max_value:100">
+<!--          <ValidationProvider name="New Level" :debounce=500 v-slot="{errors}" rules="required|min_value:0|max_value:100">-->
             <!-- this stupid thing doesn't load on mount -->
             <level-selector v-model="newLevel"
                             :load-immediately="true"
@@ -36,7 +36,7 @@ limitations under the License.
                             :aria-invalid="errors && errors.length > 0"
                             placeholder="select new project level"></level-selector>
             <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="newLevelError" id="newLevelError">{{ errors[0] }}</small>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
       </b-container>
       <div slot="modal-footer" class="w-100">
         <b-button variant="success"

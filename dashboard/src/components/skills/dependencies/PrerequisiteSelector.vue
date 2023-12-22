@@ -44,11 +44,11 @@ limitations under the License.
       </div>
     </b-overlay>
 
-      <ValidationProvider ref="learningPathValidator" :immediate="true"
-                          rules="validLearningPath" v-slot="{errors, valid}" name="Skill Name">
-        <input v-model="toSkillId" class="d-none" aria-hidden="true" aria-label="Used to validate learning path route"/>
+<!--      <ValidationProvider ref="learningPathValidator" :immediate="true"-->
+<!--                          rules="validLearningPath" v-slot="{errors, valid}" name="Skill Name">-->
+<!--        <input v-model="toSkillId" class="d-none" aria-hidden="true" aria-label="Used to validate learning path route"/>-->
         <div v-if="!valid" class="mx-3 alert alert-danger" data-cy="learningPathError"><i class="fas fa-exclamation-triangle" aria-hidden="true"/><span v-html="errors[0]" class="px-3"/></div>
-      </ValidationProvider>
+<!--      </ValidationProvider>-->
 
     </ValidationObserver>
   </metrics-card>
@@ -90,7 +90,7 @@ limitations under the License.
     },
     mounted() {
       this.loadAllSkills();
-      this.registerValidation();
+      // this.registerValidation();
     },
     computed: {
       isLoading() {

@@ -29,7 +29,7 @@ limitations under the License.
               <div class="card-body p-4">
                 <div class="form-group">
                   <label for="firstName" class="text-primary">* First Name</label>
-                  <ValidationProvider name="First Name" rules="required|maxFirstNameLength" v-slot="{errors}" :debounce=500>
+<!--                  <ValidationProvider name="First Name" rules="required|maxFirstNameLength" v-slot="{errors}" :debounce=500>-->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -42,11 +42,11 @@ limitations under the License.
                              aria-describedby="firstnameError"/>
                     </div>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
                   <label for="lastName" class="text-primary">* Last Name</label>
-                  <ValidationProvider name="Last Name" rules="required|maxLastNameLength" :debounce=500 v-slot="{errors}">
+<!--                  <ValidationProvider name="Last Name" rules="required|maxLastNameLength" :debounce=500 v-slot="{errors}">-->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
@@ -59,11 +59,11 @@ limitations under the License.
                              aria-describedby="lastnameError"/>
                     </div>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
                   <label for="email" class="text-primary">* Email</label>
-                  <ValidationProvider name="Email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{errors}">
+<!--                  <ValidationProvider name="Email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{errors}">-->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-envelope"></i></span>
@@ -76,11 +76,11 @@ limitations under the License.
                              aria-describedby="emailErrors"/>
                     </div>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" id="emailErrors">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
                   <label for="password" class="text-primary">* Password</label>
-                  <ValidationProvider vid="password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">
+<!--                  <ValidationProvider vid="password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">-->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -93,11 +93,11 @@ limitations under the License.
                              aria-describedby="passwordError"/>
                     </div>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
                   <label for="password_confirmation" class="text-primary">* Confirm Password</label>
-                  <ValidationProvider vid="password_confirmation" name="Password" rules="required|confirmed:password" :debounce=500 v-slot="{errors}">
+<!--                  <ValidationProvider vid="password_confirmation" name="Password" rules="required|confirmed:password" :debounce=500 v-slot="{errors}">-->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -110,7 +110,7 @@ limitations under the License.
                              aria-describedby="passwordConfirmationError"/>
                     </div>
                     <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordConfirmationError">{{ errors[0] }}</small>
-                  </ValidationProvider>
+<!--                  </ValidationProvider>-->
                 </div>
                 <div class="field is-grouped">
                   <div class="control">
@@ -157,24 +157,24 @@ limitations under the License.
   </div>
 </template>
 <script>
-  import { extend } from 'vee-validate';
-  import { required, email, confirmed } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { required, email, confirmed } from 'vee-validate';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
 
-  extend('required', {
-    ...required,
-    message: '{_field_} is required',
-  });
-  extend('email', email);
-  extend('confirmed', confirmed);
-  extend('uniqueEmail', {
-    message: (fieldName) => `${fieldName} is already used for another account.`,
-    validate(value) {
-      return AccessService.userWithEmailExists(value);
-    },
-  });
+  // extend('required', {
+  //   ...required,
+  //   message: '{_field_} is required',
+  // });
+  // extend('email', email);
+  // extend('confirmed', confirmed);
+  // extend('uniqueEmail', {
+  //   message: (fieldName) => `${fieldName} is already used for another account.`,
+  //   validate(value) {
+  //     return AccessService.userWithEmailExists(value);
+  //   },
+  // });
 
   export default {
     name: 'RequestAccount',

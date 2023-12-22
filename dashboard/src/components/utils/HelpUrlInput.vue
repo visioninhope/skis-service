@@ -23,8 +23,8 @@ limitations under the License.
                    @hidden="tooltipHidden"
                    msg="If project level 'Root Help Url' is specified then this path will be relative to 'Root Help Url'"/>
     </label>
-      <ValidationProvider rules="help_url|customUrlValidator" v-slot="{errors}"
-                          name="Help URL/Path">
+<!--      <ValidationProvider rules="help_url|customUrlValidator" v-slot="{errors}"-->
+<!--                          name="Help URL/Path">-->
           <b-input-group>
             <template #prepend v-if="projConfigRootHelpUrl">
               <b-input-group-text><i class="fas fa-cogs mr-1"></i>
@@ -50,31 +50,30 @@ limitations under the License.
           </b-input-group>
         <small role="alert" class="form-text text-danger" id="skillHelpUrlError"
                data-cy="skillHelpUrlError">{{ errors[0] }}</small>
-      </ValidationProvider>
+<!--      </ValidationProvider>-->
   </div>
 </template>
 
 <script>
-  import { extend, ValidationProvider } from 'vee-validate';
+  // import { extend, ValidationProvider } from 'vee-validate';
   import ProjConfigMixin from '@/components/projects/ProjConfigMixin';
   import InlineHelp from './InlineHelp';
 
-  extend('help_url', {
-    message: (field) => `${field} must use http://, https://, or be a relative url.`,
-    validate(value) {
-      if (!value) {
-        return true;
-      }
-      return value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
-    },
-  });
+  // extend('help_url', {
+  //   message: (field) => `${field} must use http://, https://, or be a relative url.`,
+  //   validate(value) {
+  //     if (!value) {
+  //       return true;
+  //     }
+  //     return value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
+  //   },
+  // });
 
   export default {
     name: 'HelpUrlInput',
     mixins: [ProjConfigMixin],
     components: {
       InlineHelp,
-      ValidationProvider,
     },
     props: {
       value: String,

@@ -23,7 +23,7 @@ limitations under the License.
           <div class="card-body">
             <div v-if="!pkiAuthenticated">
               <label for="profileFirstName">* First Name</label>
-              <ValidationProvider name="First Name" :debounce=500 v-slot="{errors}" rules="required|maxFirstNameLength">
+<!--              <ValidationProvider name="First Name" :debounce=500 v-slot="{errors}" rules="required|maxFirstNameLength">-->
                 <div class="input-group">
                   <input class="form-control"
                          type="text" v-model="loginFields.first" name="first" aria-required="true"
@@ -32,10 +32,10 @@ limitations under the License.
                           aria-errormessage="firstnameError" aria-describedby="firstnameError"/>
                 </div>
                 <p role="alert" class="text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0]}}</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
 
               <label class="mt-2" for="profileLastName">* Last Name</label>
-              <ValidationProvider name="Last Name" :debounce=500 v-slot="{errors}" rules="required|maxLastNameLength">
+<!--              <ValidationProvider name="Last Name" :debounce=500 v-slot="{errors}" rules="required|maxLastNameLength">-->
                 <div class="input-group">
                   <input class="form-control" type="text" v-model="loginFields.last" name="last" aria-required="true"
                       id="profileLastName"
@@ -43,10 +43,10 @@ limitations under the License.
                       aria-errormessage="lastnameError" aria-describedby="lastnameError"/>
                 </div>
                 <p role="alert" class="text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0]}}</p>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
             <label class="mt-2" for="profileNickname">Primary Name</label>
-            <ValidationProvider name="Primary Name" :debounce=500 v-slot="{errors}" rules="maxNicknameLength">
+<!--            <ValidationProvider name="Primary Name" :debounce=500 v-slot="{errors}" rules="maxNicknameLength">-->
               <div class="input-group">
                 <input class="form-control" type="text" v-model="loginFields.nickname" name="nickname"
                     id="profileNickname"
@@ -54,7 +54,7 @@ limitations under the License.
                     aria-errormessage="nicknameError" aria-describedby="nicknameError"/>
               </div>
               <p role="alert" class="text-danger" v-show="errors[0]" id="nicknameError">{{ errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
 
             <div class="mt-2">
               <button class="btn btn-outline-success" @click="updateUserInfo" :disabled="invalid || !hasChangedValues()" data-cy="generalSettingsSave">

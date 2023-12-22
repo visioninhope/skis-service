@@ -31,10 +31,10 @@ limitations under the License.
           <div class="col-12">
             <div class="form-group">
               <label for="groupNameInput">* Group Name</label>
-              <ValidationProvider rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueGroupName|customNameValidator"
-                                  v-slot="{errors}"
-                                  :debounce="250"
-                                  name="Group Name">
+<!--              <ValidationProvider rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueGroupName|customNameValidator"-->
+<!--                                  v-slot="{errors}"-->
+<!--                                  :debounce="250"-->
+<!--                                  name="Group Name">-->
                 <input class="form-control" type="text" v-model="internalGroup.name"
                        v-on:input="updateId"
                        v-on:keydown.enter="handleSubmit(updateGroup)"
@@ -45,7 +45,7 @@ limitations under the License.
                        aria-errormessage="groupNameError"
                        aria-describedby="groupNameError"/>
                 <small role="alert" class="form-text text-danger" data-cy="groupNameError" id="groupNameError">{{ errors[0] }}</small>
-              </ValidationProvider>
+<!--              </ValidationProvider>-->
             </div>
           </div>
 
@@ -61,7 +61,7 @@ limitations under the License.
 
         <div class="mt-3">
           <div class="control">
-            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Group Description">
+<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Group Description">-->
               <markdown-editor v-if="internalGroup && (!isEdit || !isLoading)"
                                v-model="internalGroup.description"
                                :project-id="internalGroup.projectId"
@@ -71,7 +71,7 @@ limitations under the License.
                                aria-describedby="groupDescriptionError"
                                data-cy="groupDescription"/>
               <small role="alert" id="groupDescriptionError" class="form-text text-danger" data-cy="groupDescriptionError">{{ errors[0] }}</small>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
         </div>
 
@@ -133,9 +133,9 @@ limitations under the License.
         tooltipShowing: false,
       };
     },
-    created() {
-      this.registerValidation();
-    },
+    // created() {
+    //   this.registerValidation();
+    // },
     mounted() {
       this.original = {
         name: this.group.name,

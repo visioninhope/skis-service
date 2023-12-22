@@ -25,7 +25,7 @@ limitations under the License.
       <b-container v-if="!loading" fluid data-cy="editQuestionModal">
         <ReloadMessage v-if="restoredFromStorage" @discard-changes="discardChanges" />
 
-        <ValidationProvider rules="required|maxDescriptionLength|nullValueNotAllowed|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Question">
+<!--        <ValidationProvider rules="required|maxDescriptionLength|nullValueNotAllowed|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Question">-->
           <markdown-editor v-if="showQuestion && questionDefInternal"
                            :quiz-id="quizId"
                            label="Question"
@@ -36,7 +36,7 @@ limitations under the License.
                            v-model="questionDefInternal.question"
                            data-cy="questionText"/>
           <small role="alert" class="form-text text-danger" data-cy="questionTextErr">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
 
         <div class="mt-3 mb-2">
           <span class="font-weight-bold text-primary">Answers</span>
@@ -81,13 +81,13 @@ limitations under the License.
           <div class="mb-1" v-if="isQuizType">
             <span class="text-secondary">Check one or more correct answer(s) on the left:</span>
           </div>
-          <ValidationProvider
-            rules="atLeastOneCorrectAnswer|atLeastTwoAnswersFilledIn|correctAnswersMustHaveText|maxNumQuestions"
-            :debounce="200"
-            :immediate="false"
-            name="Answers">
+<!--          <ValidationProvider-->
+<!--            rules="atLeastOneCorrectAnswer|atLeastTwoAnswersFilledIn|correctAnswersMustHaveText|maxNumQuestions"-->
+<!--            :debounce="200"-->
+<!--            :immediate="false"-->
+<!--            name="Answers">-->
               <configure-answers v-model="questionDefInternal.answers" :quiz-type="questionDef.quizType" />
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
         </div>
 
         <div v-if="submitButtonClicked && invalid" class="alert alert-danger mt-3" data-cy="editQuestionsErrs">
@@ -224,7 +224,7 @@ limitations under the License.
     },
     mounted() {
       this.loadComponent();
-      this.registerValidators();
+      // this.registerValidators();
       if (this.questionDef.questionType === QuestionType.Rating && this.isEdit) {
         this.currentScaleValue = this.questionDef.answers.length;
       }

@@ -20,7 +20,7 @@ limitations under the License.
         <i class="fas fa-user-tag text-primary" aria-hidden="true"/> Split Workload <span class="font-italic text-primary">By {{ tagLabel }}</span>
       </div>
     </template>
-    <ValidationProvider ref="validationProvider" :name="`${tagLabel}`" v-slot="{errors}" rules="maxTagValueLengthInApprovalWorkloadConfig|alpha_num|uniqueTagConf">
+<!--    <ValidationProvider ref="validationProvider" :name="`${tagLabel}`" v-slot="{errors}" rules="maxTagValueLengthInApprovalWorkloadConfig|alpha_num|uniqueTagConf">-->
     <div class="row mx-2 no-gutters">
       <div class="col px-1">
           <b-form-input v-model="enteredTag"
@@ -42,7 +42,7 @@ limitations under the License.
         </b-button>
       </div>
     </div>
-    </ValidationProvider>
+<!--    </ValidationProvider>-->
 
     <skills-b-table v-if="hadData" class="mt-3"
                     data-cy="tagKeyConfTable"
@@ -101,9 +101,9 @@ limitations under the License.
       tagLabel: String,
       tagKey: String,
     },
-    created() {
-      this.assignCustomValidation();
-    },
+    // created() {
+    //   this.assignCustomValidation();
+    // },
     mounted() {
       this.table.options.fields = [
         {

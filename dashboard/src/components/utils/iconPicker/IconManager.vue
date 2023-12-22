@@ -56,7 +56,7 @@ limitations under the License.
             <i class="fas fa-wrench"></i> Custom
           </template>
           <div data-cy="customIconUpload">
-            <ValidationProvider vid="customIcon" ref="validationProvider" name="Custom Icon" v-slot="{ errors }" rules="image|imageDimensions|duplicateFilename">
+<!--            <ValidationProvider vid="customIcon" ref="validationProvider" name="Custom Icon" v-slot="{ errors }" rules="image|imageDimensions|duplicateFilename">-->
               <b-form-file
                   v-model="currentCustomIconFile"
                   placeholder="Drag your file here to upload"
@@ -66,7 +66,7 @@ limitations under the License.
             <b-alert show variant="danger" v-show="errors[0]" class="text-center" data-cy="customIconErr">
               <i class="fas fa-exclamation-circle"/> {{ errors[0] }} <i class="fas fa-exclamation-circle"/>
             </b-alert>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
 
             <div class="row text-info justify-content-center mt-4">
             <div class="col-4 mb-4" v-for="{cssClassname, filename} in customIconList" :key="cssClassname">
@@ -100,8 +100,8 @@ limitations under the License.
   import debounce from 'lodash.debounce';
   import VirtualList from 'vue-virtual-scroll-list';
   import enquire from 'enquire.js';
-  import { extend } from 'vee-validate';
-  import { image } from 'vee-validate/dist/rules';
+  // import { extend } from 'vee-validate';
+  // import { image } from 'vee-validate';
   import FileUploadService from '@/common-components/utilities/FileUploadService';
   import fontAwesomeIconsCanonical from './font-awesome-index';
   import materialIconsCanonical from './material-index';
@@ -157,61 +157,61 @@ limitations under the License.
     return isValid;
   };
 
-  extend('image', {
-    ...image,
-    message: 'File is not an image format',
-  });
-  extend('imageDimensions', {
-    message: () => `Invalid image dimensions, dimensions must be square and must be between ${self.minCustomIconDimensions.width} x ${self.minCustomIconDimensions.width} and ${self.maxCustomIconDimensions.width} x ${self.maxCustomIconDimensions.width}`,
-    validate(value) {
-      return new Promise((resolve) => {
-        if (value) {
-          const file = value;
-          const customIcon = new Image();
-          customIcon.src = window.URL.createObjectURL(file);
-          customIcon.onload = () => {
-            const width = customIcon.naturalWidth;
-            const height = customIcon.naturalHeight;
-            window.URL.revokeObjectURL(customIcon.src);
-
-            if (!isValidCustomIconDimensions(self, width, height)) {
-              resolve({
-                valid: false,
-              });
-            } else {
-              resolve({
-                valid: true,
-              });
-            }
-          };
-        } else {
-          resolve({
-            valid: true,
-          });
-        }
-      });
-    },
-  });
-
-  extend('duplicateFilename', {
-    message: 'Custom Icon with this filename already exists',
-    validate(value) {
-      return new Promise((resolve) => {
-        if (value) {
-          const file = value;
-
-          const index = definitiveCustomIconList.findIndex((item) => item.filename === file.name);
-          if (index >= 0) {
-            resolve({
-              valid: false,
-            });
-            return;
-          }
-        }
-        resolve({ valid: true });
-      });
-    },
-  });
+  // extend('image', {
+  //   ...image,
+  //   message: 'File is not an image format',
+  // });
+  // extend('imageDimensions', {
+  //   message: () => `Invalid image dimensions, dimensions must be square and must be between ${self.minCustomIconDimensions.width} x ${self.minCustomIconDimensions.width} and ${self.maxCustomIconDimensions.width} x ${self.maxCustomIconDimensions.width}`,
+  //   validate(value) {
+  //     return new Promise((resolve) => {
+  //       if (value) {
+  //         const file = value;
+  //         const customIcon = new Image();
+  //         customIcon.src = window.URL.createObjectURL(file);
+  //         customIcon.onload = () => {
+  //           const width = customIcon.naturalWidth;
+  //           const height = customIcon.naturalHeight;
+  //           window.URL.revokeObjectURL(customIcon.src);
+  //
+  //           if (!isValidCustomIconDimensions(self, width, height)) {
+  //             resolve({
+  //               valid: false,
+  //             });
+  //           } else {
+  //             resolve({
+  //               valid: true,
+  //             });
+  //           }
+  //         };
+  //       } else {
+  //         resolve({
+  //           valid: true,
+  //         });
+  //       }
+  //     });
+  //   },
+  // });
+  //
+  // extend('duplicateFilename', {
+  //   message: 'Custom Icon with this filename already exists',
+  //   validate(value) {
+  //     return new Promise((resolve) => {
+  //       if (value) {
+  //         const file = value;
+  //
+  //         const index = definitiveCustomIconList.findIndex((item) => item.filename === file.name);
+  //         if (index >= 0) {
+  //           resolve({
+  //             valid: false,
+  //           });
+  //           return;
+  //         }
+  //       }
+  //       resolve({ valid: true });
+  //     });
+  //   },
+  // });
 
   const validateIconDimensions = (dimensions) => {
     const { width, height } = dimensions;

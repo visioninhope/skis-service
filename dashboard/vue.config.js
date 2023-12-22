@@ -97,6 +97,23 @@ plugins.push(new BundleAnalyzerPlugin({
 
 module.exports = {
   // lintOnSave: false,
+  chainWebpack: (config) => {
+    config.resolve.alias.set('vue', '@vue/compat')
+
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap((options) => {
+        return {
+          ...options,
+          compilerOptions: {
+            compatConfig: {
+              MODE: 2
+            }
+          }
+        }
+      })
+  },
   pluginOptions: {
     webpackBundleAnalyzer: {
       openAnalyzer: false,
@@ -106,7 +123,6 @@ module.exports = {
   devServer: {
     host: 'localhost',
     port: 8082,
-    overlay: true,
     proxy: {
       '^/admin/': proxyConf,
       '^/app/': proxyConf,

@@ -65,7 +65,7 @@ limitations under the License.
                      placeholder="Upload file from my computer by clicking Browse or drag-n-dropping it here..."
                      drop-placeholder="Drop file here..." />
 
-        <ValidationProvider v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ errors }" name="Video File" :immediate="true">
+<!--        <ValidationProvider v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ errors }" name="Video File" :immediate="true">-->
         <b-input-group>
           <template #prepend>
             <b-input-group-text><i class="fas fa-server mr-1"></i>
@@ -81,12 +81,12 @@ limitations under the License.
           </b-input-group-append>
         </b-input-group>
         <small role="alert" class="form-text text-danger" id="videoFileError" data-cy="videoFileError">{{errors[0]}}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
 
         <div v-if="videoConf.file && videoUploadWarningMessage" data-cy="videoUploadWarningMessage"
           class="alert alert-danger mt-1"><i class="fas fa-exclamation-circle" aria-hidden="true"/> {{ videoUploadWarningMessage }}</div>
 
-        <ValidationProvider v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ errors }" name="Video URL">
+<!--        <ValidationProvider v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ errors }" name="Video URL">-->
             <b-form-input id="videoUrlInput"
                           v-model="videoConf.url"
                           data-cy="videoUrl"
@@ -94,7 +94,7 @@ limitations under the License.
                           placeholder="Please enter external URL"
                           :disabled="isReadOnly" />
           <small role="alert" class="form-text text-danger" id="videoUrlError" data-cy="videoUrlErr">{{errors[0]}}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </b-form-group>
 
       <b-form-group label-for="videoCaptionsInput">
@@ -108,7 +108,7 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <ValidationProvider rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Captions">
+<!--        <ValidationProvider rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Captions">-->
           <b-form-textarea
             id="videoCaptionsInput"
             v-model="videoConf.captions"
@@ -119,11 +119,11 @@ limitations under the License.
             :disabled="isReadOnly"
           ></b-form-textarea>
           <small role="alert" class="form-text text-danger" id="videoCaptionsError" data-cy="videoCaptionsError">{{errors[0]}}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </b-form-group>
 
       <b-form-group label="Transcript:" label-for="videoTranscriptInput">
-        <ValidationProvider rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Video Transcript">
+<!--        <ValidationProvider rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Video Transcript">-->
         <b-form-textarea
           id="videoTranscriptInput"
           v-model="videoConf.transcript"
@@ -134,7 +134,7 @@ limitations under the License.
           :disabled="isReadOnly"
         ></b-form-textarea>
           <small role="alert" id="videoTranscriptError" class="form-text text-danger" data-cy="videoTranscriptError">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </b-form-group>
 
       <div v-if="overallErrMsg" class="alert alert-danger">
@@ -262,9 +262,9 @@ limitations under the License.
         savedAtLeastOnce: false,
       };
     },
-    created() {
-      this.assignCustomValidation();
-    },
+    // created() {
+    //   this.assignCustomValidation();
+    // },
     mounted() {
       this.loadSettings();
       this.loadSkillInfo();

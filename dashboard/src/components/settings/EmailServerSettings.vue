@@ -20,50 +20,50 @@ limitations under the License.
             <label class="label" for="publicUrl">* Public URL <InlineHelp target-id="publicUrlHelp" msg="Because it is possible for the SkillTree dashboard
             to be deployed behind a load balancer or proxy, it is necessary to configure the public url so that email
             based communications from the system can provide valid links back to the SkillTree dashboard."/></label>
-            <ValidationProvider rules="required" name="Public URL" v-slot="{ errors }" :debounce=500>
+<!--            <ValidationProvider rules="required" name="Public URL" v-slot="{ errors }" :debounce=500>-->
               <input class="form-control" type="text" v-model="emailInfo.publicUrl" name="publicUrl"
                      data-cy="publicUrlInput" aria-required="true"
                     id="publicUrl"
                     :aria-invalid="errors && errors.length > 0"
                     aria-errormessage="publicUrlError" aria-describedby="publicUrlError"/>
               <p role="alert" class="text-danger" v-show="errors[0]" id="publicUrlError" data-cy="publicUrlError">{{errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
           <div class="form-group">
             <label class="label" for="fromEmail">* From Email <InlineHelp target-id="fromEmailHelp" msg="The From email address used in all email originating from the SkillTree application"/></label>
-            <ValidationProvider :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ errors }" :debounce=500>
+<!--            <ValidationProvider :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ errors }" :debounce=500>-->
               <input class="form-control" type="text" v-model="emailInfo.fromEmail" name="fromEmail"
                      data-cy="fromEmailInput" id="fromEmail"
                     :aria-invalid="errors && errors.length  > 0"
                     aria-errormessage="fromEmailError" aria-describedby="fromEmailError"/>
               <p role="alert" class="text-danger" v-show="errors[0]" data-cy="fromEmailError" id="fromEmailError">{{errors[0]}}</p>
-            </ValidationProvider>
+<!--            </ValidationProvider>-->
           </div>
       <div class="form-group">
         <label class="label" for="emailHost">* Host</label>
-        <ValidationProvider name="Host" :debounce=500 v-slot="{errors}" rules="required">
+<!--        <ValidationProvider name="Host" :debounce=500 v-slot="{errors}" rules="required">-->
           <input class="form-control" type="text" v-model="emailInfo.host" name="host"
                  data-cy="hostInput" aria-required="true"
                   :aria-invalid="errors && errors.length > 0"
                   aria-errormessage="hostError" aria-describedby="hostError"
                   id="emailHost"/>
           <p role="alert" class="text-danger" v-show="errors[0]" data-cy="hostError" id="hostError">{{errors[0]}}</p>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
       <div class="form-group">
         <label class="label" for="emailPort">* Port</label>
-        <ValidationProvider name="Port" :debounce=500 v-slot="{errors}" rules="required|min_value:1|max_value:65535">
+<!--        <ValidationProvider name="Port" :debounce=500 v-slot="{errors}" rules="required|min_value:1|max_value:65535">-->
           <input class="form-control" type="text" v-model="emailInfo.port" name="port"
                  data-cy="portInput" aria-required="true"
                   :aria-invalid="errors && errors.length > 0"
                   aria-errormessage="portError" aria-describedby="portError"
                   id="emailPort"/>
           <p role="alert" class="text-danger" v-show="errors[0]" data-cy="portError" id="portError">{{errors[0] }}</p>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
       <div class="form-group">
         <label class="label" for="emailProtocol">* Protocol</label>
-        <ValidationProvider name="Protocol" :debounce=500 v-slot="{errors}" rules="required">
+<!--        <ValidationProvider name="Protocol" :debounce=500 v-slot="{errors}" rules="required">-->
           <input class="form-control" type="text" v-model="emailInfo.protocol" name="protocol"
                  data-cy="protocolInput" aria-required="true"
                   :aria-invalid="errors && errors.length > 0"
@@ -71,7 +71,7 @@ limitations under the License.
                   id="emailProtocol"/>
           <p role="alert" class="text-danger" v-show="errors[0]" data-cy="protocolError" id="protocolError">{{
             errors[0] }}</p>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
       <div class="form-group">
         <b-form-checkbox v-model="emailInfo.tlsEnabled" switch data-cy="tlsSwitch">
@@ -86,25 +86,25 @@ limitations under the License.
       <div id="auth-div" v-if="emailInfo.authEnabled">
         <div class="form-group">
           <label class="label" for="emailUsername">* Username</label>
-          <ValidationProvider name="Username" :debounce=500 v-slot="{errors}" rules="required">
+<!--          <ValidationProvider name="Username" :debounce=500 v-slot="{errors}" rules="required">-->
             <input class="form-control" type="text" v-model="emailInfo.username" name="username"
                    data-cy="emailUsername" aria-required="true"
                    :aria-invalid="errors && errors.length > 0"
                     aria-errormessage="emailUsernameError" aria-describedby="emailUsernameError"
                     id="emailUsername"/>
             <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailUsernameError" id="emailUsernameError">{{errors[0]}}</p>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
         </div>
         <div class="form-group">
           <label class="label" for="emailPassword">* Password</label>
-          <ValidationProvider name="Password" :debounce=500 v-slot="{errors}" rules="required">
+<!--          <ValidationProvider name="Password" :debounce=500 v-slot="{errors}" rules="required">-->
             <input class="form-control" type="text" v-model="emailInfo.password" name="password"
                    data-cy="emailPassword" aria-required="true"
                     :aria-invalid="errors && errors.length > 0"
                     aria-errormessage="emailPasswordError" aria-describedby="emailPasswordError"
                     id="emailPassword"/>
             <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailPasswordError" id="emailPasswordError">{{errors[0]}}</p>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
         </div>
       </div>
 
@@ -130,23 +130,23 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  // import { extend } from 'vee-validate';
   // eslint-disable-next-line camelcase
-  import { min_value, max_value } from 'vee-validate/dist/rules';
+  // import { min_value, max_value } from 'vee-validate';
   import SettingsService from './SettingsService';
   import ToastSupport from '../utils/ToastSupport';
   import InlineHelp from '../utils/InlineHelp';
 
-  extend('min_value', {
-    // eslint-disable-next-line camelcase
-    ...min_value,
-    message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.min} or greater`,
-  });
-  extend('max_value', {
-    // eslint-disable-next-line camelcase
-    ...max_value,
-    message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.max} or less`,
-  });
+  // extend('min_value', {
+  //   // eslint-disable-next-line camelcase
+  //   ...min_value,
+  //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.min} or greater`,
+  // });
+  // extend('max_value', {
+  //   // eslint-disable-next-line camelcase
+  //   ...max_value,
+  //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.max} or less`,
+  // });
 
   export default {
     name: 'EmailServerSettings',
