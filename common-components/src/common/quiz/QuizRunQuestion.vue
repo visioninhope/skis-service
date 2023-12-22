@@ -30,7 +30,7 @@ limitations under the License.
 
       <ValidationObserver ref="singleQuestionObserver">
       <div v-if="isTextInput">
-        <ValidationProvider rules="required|customDescriptionValidator" v-slot="{errors}" :name="`Answer to question #${num}`" :debounce="400" :immediate="false">
+<!--        <ValidationProvider rules="required|customDescriptionValidator" v-slot="{errors}" :name="`Answer to question #${num}`" :debounce="400" :immediate="false">-->
           <b-form-textarea
               :id="`question-${num}`"
               data-cy="textInputAnswer"
@@ -43,20 +43,20 @@ limitations under the License.
           <small :id="`question${num}_textInputAnswerErr`"
                  role="alert" class="form-text text-danger"
                  data-cy="textInputAnswerErr">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
       <div v-else-if="isRating">
-        <ValidationProvider rules="ratingSelected" v-slot="{errors}" :name="`Question ${num}`" :immediate="false">
+<!--        <ValidationProvider rules="ratingSelected" v-slot="{errors}" :name="`Question ${num}`" :immediate="false">-->
           <b-form-rating v-model="answerRating" no-border inline :id="`question-${num}`"
                          size="lg" variant="warning" :stars="numberOfStars"/>
           <small :id="`question${num}_ratingError`"
                  role="alert" class="form-text text-danger"
                  data-cy="ratingError">{{ errors[0] }}</small>
-        </ValidationProvider>
+<!--        </ValidationProvider>-->
       </div>
       <div v-else>
         <div v-if="isMultipleChoice" class="text-secondary font-italic small" data-cy="multipleChoiceMsg">(Select <b>all</b> that apply)</div>
-          <ValidationProvider rules="atLeastOneSelected" v-slot="{errors}" :name="`Question ${num}`" :immediate="false">
+<!--          <ValidationProvider rules="atLeastOneSelected" v-slot="{errors}" :name="`Question ${num}`" :immediate="false">-->
             <quiz-run-answers class="mt-1 pl-1"
                               @selected-answer="selectionChanged"
                               v-model="answerOptions"
@@ -66,7 +66,7 @@ limitations under the License.
             <small :id="`question${num}_multipleChoiceErr`"
                    role="alert" class="form-text text-danger"
                    data-cy="choiceAnswerErr">{{ errors[0] }}</small>
-          </ValidationProvider>
+<!--          </ValidationProvider>-->
       </div>
       </ValidationObserver>
     </div>
