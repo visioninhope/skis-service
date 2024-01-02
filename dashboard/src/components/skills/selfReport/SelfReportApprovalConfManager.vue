@@ -45,7 +45,7 @@ limitations under the License.
       </template>
 
       <template v-slot:cell(roleName)="data">
-        {{ data.value | userRole }}
+        {{ $filters.formatUserRole(data.value) }}
       </template>
 
       <template v-slot:cell(workload)="data">

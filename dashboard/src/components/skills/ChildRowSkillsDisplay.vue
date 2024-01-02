@@ -46,9 +46,9 @@ limitations under the License.
         <media-info-card :title="`${totalPoints} Points`"
                          icon-class="fas fa-calculator text-success"
                          data-cy="skillOverviewTotalpoints">
-          <strong>{{ skillInfo.pointIncrement | number }}</strong> points <i
+          <strong>{{ $filters.formatNum(skillInfo.pointIncrement) }}</strong> points <i
           class="fa fa-times text-muted" aria-hidden="true"/>
-          <strong> {{ skillInfo.numPerformToCompletion | number }}</strong> repetition<span
+          <strong> {{ $filters.formatNum(skillInfo.numPerformToCompletion) }}</strong> repetition<span
           v-if="skillInfo.numPerformToCompletion>1">s</span> to Completion
         </media-info-card>
       </div>

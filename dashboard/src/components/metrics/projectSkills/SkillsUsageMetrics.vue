@@ -81,13 +81,13 @@ limitations under the License.
       </template>
 
       <template v-slot:cell(numUserAchieved)="data">
-        <span class="ml-2">{{ data.value | number}}</span>
+        <span class="ml-2">{{ $filters.formatNum(data.value) }}</span>
         <b-badge v-if="data.item.isOverlookedTag" variant="danger" class="ml-2">Overlooked Skill</b-badge>
         <b-badge v-if="data.item.isTopSkillTag" variant="info" class="ml-2">Top Skill</b-badge>
       </template>
 
       <template v-slot:cell(numUsersInProgress)="data">
-        <span class="ml-2">{{ data.value | number }}</span>
+        <span class="ml-2">{{ $filters.formatNum(data.value) }}</span>
         <b-badge v-if="data.item.isHighActivityTag" variant="success" class="ml-2">High Activity</b-badge>
       </template>
 
@@ -95,10 +95,10 @@ limitations under the License.
         <b-badge v-if="data.item.isNeverAchievedTag" variant="warning" class="ml-2">Never</b-badge>
         <div v-else>
           <div>
-            {{ data.value | date }}
+            {{ $filters.formatDate(data.value) }}
           </div>
           <div class="text-muted small">
-            <span>{{ data.value | timeFromNow }}</span>
+            <span>{{ $filters.timeFromNow(data.value) }}</span>
           </div>
         </div>
       </template>
@@ -107,10 +107,10 @@ limitations under the License.
         <b-badge v-if="data.item.isNeverReportedTag" variant="warning" class="ml-2">Never</b-badge>
         <div v-else>
           <div>
-            <span>{{ data.value | date }}</span>
+            <span>{{ $filters.formatDate(data.value) }}</span>
           </div>
           <div class="text-muted small">
-            {{ data.value | timeFromNow }}
+            {{ $filters.timeFromNow(data.value) }}
           </div>
         </div>
       </template>

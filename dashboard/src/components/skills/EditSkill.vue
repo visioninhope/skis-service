@@ -119,7 +119,7 @@ limitations under the License.
                   <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fas fa-equals"/></div>
                   </div>
-                  <div class="form-control font-italic" style="background: #eeeeee;">{{ totalPoints | number }}</div>
+                  <div class="form-control font-italic" style="background: #eeeeee;">{{ $filters.formatNum(totalPoints) }}</div>
                 </div>
               </div>
             </div>

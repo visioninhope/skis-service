@@ -21,7 +21,7 @@ limitations under the License.
       today
     </span>
     <span v-else>
-      {{ value | timeFromNow }}
+      {{ $filters.timeFromNow(value) }}
     </span>
 </template>
 

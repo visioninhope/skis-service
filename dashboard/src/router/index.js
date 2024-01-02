@@ -1181,6 +1181,4 @@ const router = createRouter({
   ],
 });
 
-Vue.use(router);
-
 export default router;

@@ -96,7 +96,7 @@ limitations under the License.
               <div class="col text-right">
                 <span class="text-primary font-weight-bold"
                       :aria-label="`${data.value} out of ${totalPoints} total points`"
-                      data-cy="progressCurrentPoints">{{ data.value | number }}</span> / <span class="font-italic" data-cy="progressTotalPoints">{{ totalPoints | number }}</span>
+                      data-cy="progressCurrentPoints">{{ $filters.formatNum(data.value) }}</span> / <span class="font-italic" data-cy="progressTotalPoints">{{ $filters.formatNum(totalPoints) }}</span>
               </div>
             </div>
             <b-progress :max="totalPoints" class="mb-3" height="5px" variant="info">

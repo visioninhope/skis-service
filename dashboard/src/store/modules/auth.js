@@ -170,7 +170,7 @@ const actions = {
     commit('showUa', false, { root: true });
     axios.get('/logout')
       .then(() => {
-        router.replace('/skills-login');
+        router.push({ path: '/skills-login', replace: true });
     });
   },
   setLogoutTimer({ dispatch }, expirationDate) {

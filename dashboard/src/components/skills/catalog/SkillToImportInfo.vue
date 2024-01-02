@@ -20,7 +20,7 @@ limitations under the License.
         <i class="fas fa-laptop skills-color-selfreport"></i> <span class="font-italic">Self Report:</span> <span class="text-primary">{{ selfReport }}</span>
       </div>
       <div class="col-auto">
-        <i class="fas fa-book text-info"></i> <span class="font-italic">Exported:</span> <span class="text-primary">{{ skill.exportedOn | date }}</span> <span class="text-secondary">({{ skill.exportedOn | timeFromNow }})</span>
+        <i class="fas fa-book text-info"></i> <span class="font-italic">Exported:</span> <span class="text-primary">{{ $filters.formatDate(skill.exportedOn) }}</span> <span class="text-secondary">({{ $filters.timeFromNow(skill.exportedOn) }})</span>
       </div>
     </div>
     <div class="row mt-1">
@@ -55,9 +55,11 @@ limitations under the License.
 <script>
   import MarkdownText from '@/common-components/utilities/MarkdownText';
   import ShowMore from '@/components/skills/selfReport/ShowMore';
+  import formatDate from '@/filters/DateFilter';
 
   export default {
     name: 'SkillToImportInfo',
+    methods: { formatDate },
     components: { MarkdownText, ShowMore },
     props: {
       skill: Object,

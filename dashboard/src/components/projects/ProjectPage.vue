@@ -73,7 +73,7 @@ limitations under the License.
           <i class="fas fa-clock text-success header-status-icon" aria-hidden="true" /> <project-dates :created="project.created" :load-last-reported-date="true"/>
         </div>
         <div v-if="userProjRole">
-          <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ userProjRole | userRole }}</span>
+          <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ $filters.formatUserRole(userProjRole) }}</span>
         </div>
       </div>
       <div slot="footer">

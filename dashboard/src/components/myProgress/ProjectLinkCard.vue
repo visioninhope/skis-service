@@ -24,7 +24,7 @@ limitations under the License.
           <div class="h4 text-uppercase text-truncate" data-cy="project-card-project-name" :aria-label="`Project ${proj.projectName}`" :title="proj.projectName ">{{ proj.projectName }}</div>
           <div class="h5 text-secondary" data-cy="project-card-project-level">{{ proj.levelDisplayName }} {{ proj.level }}</div>
           <div data-cy="project-card-project-rank">
-            <b-badge :variant="rankVariant" :aria-label="`Ranked ${proj.rank} out of ${proj.totalUsers} project users`">Rank: {{ proj.rank | number }} / {{ proj.totalUsers | number}}</b-badge>
+            <b-badge :variant="rankVariant" :aria-label="`Ranked ${proj.rank} out of ${proj.totalUsers} project users`">Rank: {{ $filters.formatNum(proj.rank) }} / {{ $filters.formatNum(proj.totalUsers) }}</b-badge>
           </div>
         </b-col>
       </b-row>
@@ -41,7 +41,7 @@ limitations under the License.
       </div>
 
       <div class="text-center">
-        <span :id="`projectProgressLabel_${proj.projectId}`" aria-hidden="true" class="small text-center" data-cy="project-card-project-points">{{ proj.points | number }} / {{ proj.totalPoints | number }}</span>
+        <span :id="`projectProgressLabel_${proj.projectId}`" aria-hidden="true" class="small text-center" data-cy="project-card-project-points">{{ $filters.formatNum(proj.points) }} / {{ $filters.formatNum(proj.totalPoints) }}</span>
       </div>
       <div class="position-absolute text-muted d-none small click-indicator" style="right: 15px; bottom: 10px;">Click to View</div>
 

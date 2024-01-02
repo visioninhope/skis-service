@@ -68,7 +68,7 @@ limitations under the License.
       <b-card v-if="quizResult.gradedRes.passed" bg-variant="light" class="text-center skills-card-theme-border" data-cy="quizRuntime">
         <b-card-text>
           <div class="h3" data-cy="title">
-            {{ quizResult.gradedRes.started | duration(quizResult.gradedRes.completed) }}
+            {{ $filters.formatDatesDuration(quizResult.gradedRes.started, quizResult.gradedRes.completed) }}
           </div>
           <div class="text-secondary mt-2" data-cy="subTitle">
            Time to Complete

@@ -35,7 +35,7 @@ limitations under the License.
       </template>
 
       <template #cell(totalPoints)="data">
-        {{ data.value | number }}
+        {{ $filters.formatNum(data.value) }}
       </template>
     </skills-b-table>
   </div>

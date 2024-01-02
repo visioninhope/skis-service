@@ -15,7 +15,7 @@
  */
 import Vue from 'vue';
 
-const truncateFormatter = (strValue, truncateTo = 30) => {
+const truncate = (strValue, truncateTo = 30) => {
   const regexStr = `^.{0,${truncateTo}}[\\S]*`;
   const regex1 = new RegExp(regexStr, 'gi');
 
@@ -31,9 +31,5 @@ const truncateFormatter = (strValue, truncateTo = 30) => {
   re = re.replace(regex2, '$1...');
   return re;
 };
-Vue.filter('truncate', truncateFormatter);
 
-// this allows to call this function from an js code; to learn more about that read about javascript modules
-// import NumberFilter from 'src/NumberFilter.js'
-//    NumberFilter(myNumber)
-export default truncateFormatter;
+export default truncate;

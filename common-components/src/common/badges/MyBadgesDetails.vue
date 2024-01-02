@@ -53,7 +53,7 @@ limitations under the License.
                               <div v-if="displayBadgeProject && badge.projectName" class="text-muted text-center text-truncate" data-cy="badgeProjectName">
                                 <small>Proj<span class="d-md-none d-xl-inline">ect</span>: {{badge.projectName}}</small>
                               </div>
-                              <div data-cy="dateBadgeAchieved" class="text-muted mb-2"><i class="far fa-clock text-secondary" style="font-size: 0.8rem;"></i> {{ badge.dateAchieved | relativeTime() }}</div>
+                              <div data-cy="dateBadgeAchieved" class="text-muted mb-2"><i class="far fa-clock text-secondary" style="font-size: 0.8rem;"></i> {{ $filters.formatRelativeTime(badge.dateAchieved) }}</div>
 
                               <div v-if="badge.achievedWithinExpiration" class="bonus-award mt-2 border-top">
                                 <div class="award-icon"><i :class="badge.awardAttrs.iconClass + ' skills-color-orange'"></i></div>

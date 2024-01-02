@@ -42,7 +42,7 @@ limitations under the License.
         <div v-for="(stat) in options.stats" :key="stat.label" class="col my-3" style="min-width: 10rem;">
           <div :data-cy="`pagePreviewCardStat_${stat.label}`">
             <p class="text-uppercase text-muted count-label">{{ stat.label }}</p>
-            <strong class="h5">{{ stat.count | number }}</strong>
+            <strong class="h5">{{ $filters.formatNum(stat.count) }}</strong>
             <i v-if="stat.warn" class="fas fa-exclamation-circle text-warning ml-1"
                style="font-size: 1.5rem;"
                v-b-tooltip.hover="stat.warnMsg"

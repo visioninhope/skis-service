@@ -70,7 +70,7 @@ limitations under the License.
                   class="text-secondary font-italic">{{ afterCommunityLabel }}</span>
               </div>
               <div class="mt-2">
-                <i class="fas fa-user-shield text-success" style="font-size: 1.05rem;" aria-hidden="true"></i> <i>Role:</i> <span data-cy="userRole">{{ data.item.userRole | userRole }}</span>
+                <i class="fas fa-user-shield text-success" style="font-size: 1.05rem;" aria-hidden="true"></i> <i>Role:</i> <span data-cy="userRole">{{ $filters.formatUserRole(data.item.userRole) }}</span>
               </div>
             </div>
             <div class="col-auto ml-auto mr-0">
@@ -109,28 +109,28 @@ limitations under the License.
         </template>
 
         <template v-slot:cell(numSubjects)="data">
-          {{ data.value | number }}
+          {{ $filters.formatNum(data.value) }}
         </template>
         <template v-slot:cell(numSkills)="data">
-          {{ data.value | number }}
+          {{ $filters.formatNum(data.value) }}
         </template>
         <template v-slot:cell(totalPoints)="data">
-          {{ data.value | number }}
+          {{ $filters.formatNum(data.value) }}
         </template>
         <template v-slot:cell(numBadges)="data">
-          {{ data.value | number }}
+          {{ $filters.formatNum(data.value) }}
         </template>
         <template v-slot:cell(numErrors)="data">
-          {{ data.value | number }}
+          {{ $filters.formatNum(data.value) }}
         </template>
 
         <template v-slot:cell(created)="data">
           <div>
-            <span>{{ data.value | date }}</span>
+            <span>{{ $filters.formatDate(data.value) }}</span>
             <b-badge v-if="isToday(data.value)" variant="info" class="ml-2">Today</b-badge>
           </div>
           <div class="text-muted small">
-            {{ data.value | timeFromNow }}
+            {{ $filters.timeFromNow(data.value) }}
           </div>
         </template>
       </skills-b-table>

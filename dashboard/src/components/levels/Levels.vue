@@ -54,12 +54,12 @@ limitations under the License.
         <template v-slot:cell(points)="data">
           <span v-if="data.item.pointsFrom !== null && data.item.pointsFrom !== undefined">
             <span>
-              {{ data.item.pointsFrom | number }}
+              {{ $filters.formatNum(data.item.pointsFrom) }}
             </span>
             <span class="text-muted">
               to
             </span>
-            <span v-if="data.item.pointsTo">{{data.item.pointsTo | number}}</span>
+            <span v-if="data.item.pointsTo">{{ $filters.formatNum(data.item.pointsTo) }}</span>
             <span v-else><i class="fas fa-infinity"/></span>
           </span>
           <span v-else aria-label="Points cannot be calculated. Please create more skills first.">N/A <span

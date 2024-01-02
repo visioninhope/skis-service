@@ -21,7 +21,7 @@ limitations under the License.
           <div class="row">
             <div class="col text-left">
               <div class="h5 card-title text-uppercase text-muted mb-0 small">{{card.label}}</div>
-              <span class="h5 font-weight-bold mb-0" :data-cy="`selfReportInfoCardCount_${card.id}`">{{ card.count | number}}</span> skills
+              <span class="h5 font-weight-bold mb-0" :data-cy="`selfReportInfoCardCount_${card.id}`">{{ $filters.formatNum(card.count)}}</span> skills
             </div>
             <div class="col-auto text-secondary">
               <i :class="card.icon" style="font-size: 2.2rem;"></i>

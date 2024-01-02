@@ -23,7 +23,7 @@ limitations under the License.
         </b-col>
         <b-col cols="8" class="mb-4 pt-4 pl-2 small">
           <div v-if="mostRecentAchievedSkill !== null" data-cy="mostRecentAchievedSkill">
-            <span>Last Achieved skill</span> <b-badge variant="success" style="font-size: 1rem;">{{ mostRecentAchievedSkill | timeFromNow }}</b-badge>
+            <span>Last Achieved skill</span> <b-badge variant="success" style="font-size: 1rem;">{{ $filters.timeFromNow(mostRecentAchievedSkill) }}</b-badge>
           </div>
           <div class="my-2" data-cy="numAchievedSkillsLastWeek">
             <b-badge variant="info" style="font-size: 1rem;">{{ numAchievedSkillsLastWeek }} skills</b-badge> in the last week

@@ -34,13 +34,13 @@ limitations under the License.
       </p>
       <p v-if="finalizeInfo.skillsWithOutOfBoundsPoints && finalizeInfo.skillsWithOutOfBoundsPoints.length > 0" class="alert alert-danger" data-cy="outOfRangeWarning">
         <i class="fas fa-exclamation-triangle"></i> Your Project skills point values range from <span
-        class="text-primary font-weight-bold">[{{ finalizeInfo.projectSkillMinPoints | number }}]</span> to <span class="text-primary font-weight-bold">[{{ finalizeInfo.projectSkillMaxPoints | number }}]</span>.
-        <b-badge variant="info">{{ finalizeInfo.skillsWithOutOfBoundsPoints.length | number }}</b-badge>
+        class="text-primary font-weight-bold">[{{ $filters.formatNum(finalizeInfo.projectSkillMinPoints) }}]</span> to <span class="text-primary font-weight-bold">[{{ $filters.formatNum(finalizeInfo.projectSkillMaxPoints) }}]</span>.
+        <b-badge variant="info">{{ $filters.formatNum(finalizeInfo.skillsWithOutOfBoundsPoints.length) }}</b-badge>
         skills you are importing fall outside of that point value. This could cause the imported
         skills to have an outsized impact on the achievements within your Project. Please consider changing the <b>Point
         Increment</b> of the imported skills. <b-button size="sm" variant="info"
                                                         @click="showFinalizeWarningSkillsPointsTable = !showFinalizeWarningSkillsPointsTable"
-                                                        data-cy="viewSkillsWithPtsOutOfRange">View {{ finalizeInfo.skillsWithOutOfBoundsPoints.length | number }} skills</b-button> outside of the point value.
+                                                        data-cy="viewSkillsWithPtsOutOfRange">View {{ $filters.formatNum(finalizeInfo.skillsWithOutOfBoundsPoints.length) }} skills</b-button> outside of the point value.
 
         <finalize-warning-skills-points-table v-if="showFinalizeWarningSkillsPointsTable" class="mt-2"
                                               :project-skill-min-points="finalizeInfo.projectSkillMinPoints"

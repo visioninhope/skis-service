@@ -240,9 +240,9 @@ limitations under the License.
         </template>
         <template v-slot:cell(totalPoints)="data">
           <div :data-cy="`totalPointsCell_${data.item.skillId}`">
-            <div>{{ data.item.totalPoints | number }}</div>
-            <div v-if="data.item.isSkillType" class="small text-secondary">{{ data.item.pointIncrement | number }} pts x {{ data.item.numPerformToCompletion | number }} repetitions</div>
-            <div v-if="data.item.isGroupType" class="small text-secondary">from <b>{{ data.item.numSkillsInGroup | number }}</b> skill{{ data.item.numSkillsInGroup !== 1 ? 's' : ''}}</div>
+            <div>{{ $filters.formatNum(data.item.totalPoints) }}</div>
+            <div v-if="data.item.isSkillType" class="small text-secondary">{{ $filters.formatNum(data.item.pointIncrement) }} pts x {{ $filters.formatNum(data.item.numPerformToCompletion) }} repetitions</div>
+            <div v-if="data.item.isGroupType" class="small text-secondary">from <b>{{ $filters.formatNum(data.item.numSkillsInGroup) }}</b> skill{{ data.item.numSkillsInGroup !== 1 ? 's' : ''}}</div>
           </div>
         </template>
 
@@ -316,11 +316,11 @@ limitations under the License.
         </template>
         <template v-slot:cell(created)="data">
           <div>
-            <span>{{ data.value | date }}</span>
+            <span>{{ $filters.formatDate(data.value) }}</span>
             <b-badge v-if="isToday(data.value)" variant="info" class="ml-2">Today</b-badge>
           </div>
           <div class="text-muted small">
-            {{ data.value | timeFromNow }}
+            {{ $filters.timeFromNow(data.value) }}
           </div>
         </template>
         <template v-slot:cell(selfReportingType)="data">

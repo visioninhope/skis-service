@@ -21,8 +21,8 @@ limitations under the License.
           <div class="h5 text-uppercase text-muted card-title small mb-1">{{ title }}</div>
           <slot name="card-value">
             <span class="h4 font-weight-bold mb-0" data-cy="statCardValue">
-              <span v-if="calculateTimeFromNow"><span v-if="statNum">{{ statNum | timeFromNow }}</span><span v-else>Never</span></span>
-              <span v-else>{{ statNum | number }}</span>
+              <span v-if="calculateTimeFromNow"><span v-if="statNum">{{ $filters.timeFromNow(statNum) }}</span><span v-else>Never</span></span>
+              <span v-else>{{ $filters.formatNum(statNum) }}</span>
             </span>
           </slot>
         </div>

@@ -17,7 +17,7 @@ limitations under the License.
   <b-card data-cy="quizSplashScreen">
     <div class="h5">
       <div v-if="quizInfo.userQuizPassed" class="alert alert-success">
-        <i class="fas fa-gift" aria-hidden="true"></i> Good News! You already <span v-if="!isSurveyType">passed this quiz</span><span v-else>completed this survey</span> <span class="font-weight-bold">{{ quizInfo.userLastQuizAttemptDate | timeFromNow }}</span>!
+        <i class="fas fa-gift" aria-hidden="true"></i> Good News! You already <span v-if="!isSurveyType">passed this quiz</span><span v-else>completed this survey</span> <span class="font-weight-bold">{{ $filters.timeFromNow(quizInfo.userLastQuizAttemptDate) }}</span>!
         <b-button variant="outline-primary" @click="cancel" class="text-uppercase" size="sm" data-cy="closeQuizAttemptInAlert"><i class="fas fas fa-times-circle" aria-hidden="true"> Close {{ quizInfo.quizType }}</i></b-button>
       </div>
       <slot v-if="!quizInfo.userQuizPassed" name="aboveTitle" />
@@ -43,7 +43,7 @@ limitations under the License.
         <b-card class="skills-card-theme-border" body-class="pt-2 pb-1" data-cy="quizTimeLimitCard">
           <i class="fas fa-business-time text-info" style="font-size: 1.3rem;"></i>
           <span class="text-secondary font-italic ml-1">Time Limit:</span>
-          <span v-if="quizInfo.quizTimeLimit > 0" class="text-uppercase ml-1 font-weight-bold">{{quizTimeLimit | formatDuration}}</span>
+          <span v-if="quizInfo.quizTimeLimit > 0" class="text-uppercase ml-1 font-weight-bold">{{ $filters.timeDuration(quizTimeLimit) }}</span>
           <span v-else class="text-uppercase ml-1 font-weight-bold">NONE</span>
         </b-card>
       </div>

@@ -13,23 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const formatUserRole = (value) => {
-  if (value === 'ROLE_PROJECT_APPROVER') {
-    return 'Approver';
-  }
-  if (value === 'ROLE_PROJECT_ADMIN' || value === 'ROLE_QUIZ_ADMIN') {
-    return 'Admin';
-  }
-  if (value === 'ROLE_SUPER_DUPER_USER') {
-    return 'Root';
-  }
-  if (value === 'ROLE_QUIZ_READ_ONLY') {
-    return 'Read Only';
-  }
-  return value;
-};
+import dayjs from '../DayJsCustomizer';
 
-// this allows to call this function from an js code; to learn more about that read about javascript modules
-// import UserRoleFilter from 'src/UserRoleFilter.js'
-//    UserRoleFilter(myNumber)
-export default formatUserRole;
+const timeFromNow = (value) => dayjs(value).startOf('seconds').fromNow();
+
+export default timeFromNow;

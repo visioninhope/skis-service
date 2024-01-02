@@ -68,10 +68,10 @@ limitations under the License.
             </b-row>
           </template>
           <template v-slot:cell(numSkills)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
           <template v-slot:cell(totalPoints)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
         </b-table>
       </div>

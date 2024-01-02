@@ -73,7 +73,7 @@ limitations under the License.
     </b-table>
     <div v-if="!options.busy && !options.pagination.remove && !hidePaging" class="row m-1 p-0 align-items-center">
       <div class="col-md text-center text-md-left">
-        <span class="text-muted">Total Rows:</span> <strong data-cy="skillsBTableTotalRows">{{ totalRows | number }}</strong>
+        <span class="text-muted">Total Rows:</span> <strong data-cy="skillsBTableTotalRows">{{ $filters.formatNum(totalRows) }}</strong>
       </div>
       <div class="col-md my-3 my-md-0">
         <span v-if="!options.pagination.remove">
@@ -98,6 +98,7 @@ limitations under the License.
 
 <script>
   import PersistedSortMixin from './PersistedSortMixin';
+  import formatNum from '@/common-components/filter/NumberFormatter';
 
   let uid = 0;
 
@@ -142,6 +143,7 @@ limitations under the License.
       },
     },
     methods: {
+      formatNum,
       isDisabled() {
         return !this.items || this.items.length === 0;
       },

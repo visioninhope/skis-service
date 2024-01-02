@@ -64,7 +64,7 @@ limitations under the License.
         </div>
         <div class="col-auto text-right text-muted">
           <b-badge variant="success" data-cy="numQuestions">{{quizInfo.quizLength}}</b-badge> <span class="text-uppercase">questions</span>
-          <span v-if="quizInfo.quizTimeLimit > 0 && dateTimer !== null"> | {{currentDate | duration(quizInfo.deadline, false, true)}}</span>
+          <span v-if="quizInfo.quizTimeLimit > 0 && dateTimer !== null"> | {{ $filters.formatDatesDuration(currentDate, quizInfo.deadline, false, true)}}</span>
         </div>
       </div>
 
@@ -114,7 +114,7 @@ limitations under the License.
     </b-card>
 
     <div v-if="scrollDistance > 300" id="floating-timer">
-      <div v-if="quizInfo.quizTimeLimit > 0 && dateTimer !== null">{{currentDate | duration(quizInfo.deadline, false, true)}}</div>
+      <div v-if="quizInfo.quizTimeLimit > 0 && dateTimer !== null">{{ $filters.formatDatesDuration(currentDate, quizInfo.deadline, false, true)}}</div>
     </div>
   </div>
 </div>

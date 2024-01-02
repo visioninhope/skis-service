@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const formatUserRole = (value) => {
-  if (value === 'ROLE_PROJECT_APPROVER') {
-    return 'Approver';
-  }
-  if (value === 'ROLE_PROJECT_ADMIN' || value === 'ROLE_QUIZ_ADMIN') {
-    return 'Admin';
-  }
-  if (value === 'ROLE_SUPER_DUPER_USER') {
-    return 'Root';
-  }
-  if (value === 'ROLE_QUIZ_READ_ONLY') {
-    return 'Read Only';
-  }
-  return value;
-};
+import format from 'number-format.js';
 
-// this allows to call this function from an js code; to learn more about that read about javascript modules
-// import UserRoleFilter from 'src/UserRoleFilter.js'
-//    UserRoleFilter(myNumber)
-export default formatUserRole;
+const formatNum = (value, fractionSize) => {
+    let formatString = '#,##0.';
+    if (fractionSize || fractionSize === 0) {
+        formatString = `${formatString}${'0'.repeat(fractionSize)}`;
+    }
+    const fv = parseFloat(value);
+    return format(formatString, fv);
+};
+export default formatNum;

@@ -22,9 +22,9 @@ limitations under the License.
             class="fas fa-exclamation-circle"/> {{ data.label }}</span>
       </template>
       <template v-slot:cell(totalPoints)="data">
-        <span class="text-danger font-weight-bold">{{ data.value | number }}</span>
-        <span v-if="data.value > projectSkillMaxPoints" class="text-info"> ( <span class="font-italic">more than</span> {{ projectSkillMaxPoints | number }} )</span>
-        <span v-if="data.value < projectSkillMinPoints" class="text-info"> ( <span class="font-italic">less than</span> {{ projectSkillMinPoints | number }} )</span>
+        <span class="text-danger font-weight-bold">{{ $filters.formatNum(data.value) }}</span>
+        <span v-if="data.value > projectSkillMaxPoints" class="text-info"> ( <span class="font-italic">more than</span> {{ $filters.formatNum(projectSkillMaxPoints) }} )</span>
+        <span v-if="data.value < projectSkillMinPoints" class="text-info"> ( <span class="font-italic">less than</span> {{ $filters.formatNum(projectSkillMinPoints) }} )</span>
       </template>
     </skills-b-table>
   </b-card>

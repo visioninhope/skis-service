@@ -55,7 +55,7 @@ limitations under the License.
         <div class="col-md-6 col-xl mb-2">
           <b-card class="h-100">
             <div class="text-uppercase text-secondary">Runtime</div>
-            <div class="text-primary font-weight-bold">{{ runInfo.started | duration(runInfo.completed) }}</div>
+            <div class="text-primary font-weight-bold">{{ $filters.formatDatesDuration(runInfo.started, runInfo.completed) }}</div>
           </b-card>
         </div>
       </div>

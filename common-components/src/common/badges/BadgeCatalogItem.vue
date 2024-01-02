@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
     <badge-details-overview :badge="badge" :icon-color="iconColor" :display-project-name="displayProjectName">
-        <template slot="body-footer" slot-scope="{ props }">
+        <template v-slot:body-footer="props">
             <router-link :to="badgeRouterLinkGenerator(badge)"
                          class="btn btn-sm btn-outline-info skills-theme-btn mr-1 text-uppercase"
                          :data-cy="`badgeDetailsLink_${props.badgeId}`">

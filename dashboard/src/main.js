@@ -62,28 +62,29 @@ import en from 'vee-validate';
 import Vuex from 'vuex';
 import VueApexCharts from 'vue-apexcharts';
 import VueAnnouncer from '@vue-a11y/announcer';
-import FiltersPlugin from '@/common-components/filter/FiltersPlugin';
-import TimeDurationFilter from '@/common-components/filter/TimeDurationFilter';
 import dayjs from '@/common-components/DayJsCustomizer';
-import '@/common-components/filter/ByteFilter';
-import '@/common-components/filter/FormatDurationFilter';
 import PageVisitService from '@/components/PageVisitService';
 import InceptionConfigurer from './InceptionConfigurer';
 import SkillsReporterDirective from './directives/SkillsReporterDirective';
 import 'babel-polyfill';
 import 'matchmedia-polyfill';
 import 'matchmedia-polyfill/matchMedia.addListener';
-// import './filters/NumberFilter';
-import './filters/TruncateFilter';
-import './filters/DateFilter';
-import './filters/UserRoleFilter';
-// import './filters/TimeFromNowFilter';
+import '@/common-components/filter/ByteFilter';
+import timeDuration from '@/common-components/filter/FormatDurationFilter';
+import formatNum from '@/common-components/filter/NumberFormatter';
+import timeFromNow from '@/common-components/filter/TimeFromNowFilter';
+import formatDatesDuration from '@/common-components/filter/DatesDurationFilter';
+import formatRelativeTime from '@/common-components/filter/RelativeTimeFilter';
+import formatUserRole from '@/filters/UserRoleFilter';
+import truncate from '@/filters/TruncateFilter';
+import formatDate from '@/filters/DateFilter';
 import './directives/SkillsOnMountDirective';
 import RegisterValidators from './validators/RegisterValidators';
 import './directives/FocusDirective';
 import App from './App';
 import router from './router';
 import store from './store/store';
+import { setupNavGuards } from '@/router/RouterNavGuards'
 
 Vue.component('apexchart', VueApexCharts);
 // Vue.component('ValidationProvider', ValidationProvider);
@@ -121,7 +122,6 @@ Vue.use(FormDatepickerPlugin);
 Vue.use(ProgressPlugin);
 Vue.use(ListGroupPlugin);
 Vue.use(FormRatingPlugin);
-Vue.use(TimeDurationFilter);
 Vue.use(FormFilePlugin);
 Vue.component('BIcon', BIcon);
 Vue.component('BIconQuestion', BIconQuestion);
@@ -134,9 +134,6 @@ const install = (vue) => {
 window.SkillsReporterDirective = SkillsReporterDirective;
 Vue.use(install);
 SkillsReporterDirective.install = install;
-
-Vue.use(FiltersPlugin);
-Vue.use(VueAnnouncer, {}, router);
 
 // localize({
 //   en,
@@ -156,122 +153,13 @@ require('./interceptors/userAgreementInterceptor');
 require('./interceptors/upgradeInProgressInterceptor');
 require('./interceptors/globalCancelInterceptor');
 
-const isActiveProjectIdChange = (to, from) => to.params.projectId !== from.params.projectId;
-const isAdminPage = (route) => route.path.startsWith('/administrator');
-const isLoggedIn = () => store.getters.isAuthenticated;
-const isPki = () => store.getters.isPkiAuthenticated;
-const config = () => store.getters.config;
-const getLandingPage = () => {
-  let landingPage = 'MyProgressPage';
-  if (store.getters.userInfo) {
-    if (store.getters.userInfo.landingPage === 'admin') {
-      landingPage = 'AdminHomePage';
-    }
-  }
-  return landingPage;
-};
+// const router = createDashboardRouter(store);
 
-router.beforeEach((to, from, next) => {
-  const { skillsClientDisplayPath } = to.query;
-  store.commit('skillsClientDisplayPath', { path: skillsClientDisplayPath, fromDashboard: true });
-
-  const requestAccountPath = '/request-root-account';
-  const needToBootstrap = false
-  if (!isPki() && !isLoggedIn() && to.path !== requestAccountPath && needToBootstrap) {
-    next({ path: requestAccountPath });
-  } else if (!isPki() && to.path === requestAccountPath && !needToBootstrap) {
-    next({ name: getLandingPage() });
-  } else {
-    /* eslint-disable no-lonely-if */
-    if (store.state.showUa && (to.path !== '/user-agreement' && to.path !== '/skills-login')) {
-      let p = '';
-      if (to.query?.redirect) {
-        p = to.query.redirect;
-      } else {
-        p = to.fullPath;
-      }
-      const ua = p !== '/' ? { name: 'UserAgreement', query: { redirect: p } } : { name: 'UserAgreement' };
-      next(ua);
-    } else {
-      if (to.path === '/') {
-        const landingPageRoute = { name: getLandingPage() };
-        next(landingPageRoute);
-      }
-      if (from.path !== '/error') {
-        store.commit('previousUrl', from.fullPath);
-      }
-      if (isActiveProjectIdChange(to, from)) {
-        store.commit('currentProjectId', to.params.projectId);
-        if (isAdminPage(to) && to.params.projectId) {
-          store.dispatch('loadProjConfigState', { projectId: to.params.projectId });
-        }
-      }
-      if (to.path.startsWith('/administrator/quizzes/') && to.params.quizId && to.params.quizId !== from.params.quizId) {
-        store.dispatch('loadQuizConfigState', { quizId: to.params.quizId });
-      }
-      if (to.matched.some((record) => record.meta.requiresAuth)) {
-        // this route requires auth, check if logged in if not, redirect to login page.
-        if (!isLoggedIn()) {
-          const newRoute = { query: { redirect: to.fullPath } };
-          if (isPki()) {
-            newRoute.name = getLandingPage();
-          } else {
-            newRoute.name = 'Login';
-          }
-          next(newRoute);
-        } else {
-          next();
-        }
-      } else {
-        next();
-      }
-    }
-  }
-});
-
-const DEFAULT_TITLE = 'SkillTree Dashboard';
-router.afterEach((to, from) => {
-  if (to.meta.reportSkillId) {
-    SkillsConfiguration.afterConfigure()
-      .then(() => {
-        SkillsReporter.reportSkill(to.meta.reportSkillId);
-      });
-  }
-  if (isPki() || isLoggedIn()) {
-    PageVisitService.reportPageVisit(to.path, to.fullPath);
-  }
-  // Use next tick to handle router history correctly
-  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
-  Vue.nextTick(() => {
-    let newTitle = DEFAULT_TITLE;
-    if (to && to.meta && to.meta.announcer && to.meta.announcer.message) {
-      newTitle = `${DEFAULT_TITLE} - ${to.meta.announcer.message}`;
-    }
-    document.title = newTitle;
-  });
-
-  // this hack is needed because otherwise when navigating between
-  // pages the focus is placed onto the next visible element which in case of
-  // drilling-down (for example projects page into a single project page)
-  // the focus is placed on the next tabbable element which happens to in the footer
-  // (when skills.config.ui.supportLinkN properties are utilized)
-  if (from.name !== to.name) {
-    setTimeout(() => {
-      Vue.nextTick(() => {
-        const preSkipButtonPlaceholder = document.querySelector('#preSkipToContentPlaceholder');
-        if (preSkipButtonPlaceholder) {
-          preSkipButtonPlaceholder.setAttribute('tabindex', 0);
-          preSkipButtonPlaceholder.focus();
-          preSkipButtonPlaceholder.setAttribute('tabindex', -1);
-        }
-      });
-    }, 150);
-  }
-});
-
-store.dispatch('loadConfigState').finally(() => {
+store.dispatch('loadConfigState').then(() => {
+  Vue.use(VueAnnouncer, {}, router);
+  setupNavGuards();
   RegisterValidators.init();
-  store.dispatch('restoreSessionIfAvailable').finally(() => {
+  store.dispatch('restoreSessionIfAvailable').then(() => {
     InceptionConfigurer.configure();
     /* eslint-disable no-new */
     // const vm = new Vue({
@@ -286,5 +174,15 @@ store.dispatch('loadConfigState').finally(() => {
     vm.use(router);
     vm.mount('#app');
     // window.vm = vm;
+    vm.config.globalProperties.$filters = {
+      formatNum,
+      formatUserRole,
+      formatDate,
+      timeFromNow,
+      timeDuration,
+      formatDatesDuration,
+      truncate,
+      formatRelativeTime
+    }
   });
 });

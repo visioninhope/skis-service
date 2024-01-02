@@ -38,7 +38,7 @@ limitations under the License.
               <span class="font-weight-bold" data-cy="skillsSelector-projectId">{{ option.numSkills}}</span>
               <span class="mx-2">|</span>
               <span class="text-uppercase mr-1 font-italic" data-cy="skillsSelectionItem-subjectId">Points:</span>
-              <span class="font-weight-bold skills-option-subject-name" data-cy="skillsSelector-subjectName">{{ option.totalPoints | number }}</span>
+              <span class="font-weight-bold skills-option-subject-name" data-cy="skillsSelector-subjectName">{{ $filters.formatNum(option.totalPoints) }}</span>
             </div>
           </div>
         </slot>

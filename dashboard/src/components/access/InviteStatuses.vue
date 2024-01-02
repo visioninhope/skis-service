@@ -40,14 +40,14 @@ limitations under the License.
                     tableStoredStateId="projectInviteStatusTable"
                     data-cy="projectInviteStatusTable">
       <template v-slot:cell(created)="data">
-          {{ data.value | relativeTime }}
+          {{ $filters.formatRelativeTime(data.value) }}
       </template>
       <template v-slot:cell(expires)="data">
         <span v-if="isExpired(data.value)" class="text-danger">
             expired
         </span>
         <span v-else>
-        {{ data.value | timeFromNow }}
+        {{ $filters.timeFromNow(data.value) }}
         </span>
       </template>
       <template v-slot:cell(controls)="data">

@@ -33,7 +33,7 @@ limitations under the License.
         </template>
         <template v-slot:cell(answerTxt)="data">
           <div :data-cy="`row${data.index}-colAnswerTxt`">
-            <pre v-if="data.item.truncated" data-cy="textTruncated">{{ data.value | truncate(answerTxtTruncate.truncateTo) }}</pre>
+            <pre v-if="data.item.truncated" data-cy="textTruncated">{{ $filters.truncate(data.value, answerTxtTruncate.truncateTo) }}</pre>
             <pre v-else data-cy="text">{{ data.value }}</pre>
             <div class="text-right">
               <b-button v-if="data.item.truncationEnabled"

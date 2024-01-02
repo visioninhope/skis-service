@@ -94,7 +94,7 @@ limitations under the License.
                   </b-row>
                 </template>
                 <template #cell(numSkills)="data">
-                  {{ data.value | number }}
+                  {{ $filters.formatNum(data.value) }}
                 </template>
                 <template #cell(created)="data">
                   <date-cell :value="data.value" />
@@ -118,7 +118,7 @@ limitations under the License.
                 </b-col>
                 <b-col>
                   <div class="small text-right" data-cy="pinProjectsSearchResultsNumRows">
-                    <span class="text-muted">Rows:</span> {{ result.values.length | number}}
+                    <span class="text-muted">Rows:</span> {{ $filters.formatNum(result.values.length) }}
                   </div>
                 </b-col>
               </b-row>

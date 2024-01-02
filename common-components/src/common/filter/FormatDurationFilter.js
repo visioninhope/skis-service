@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from 'vue';
 
 const second = 1000;
 const minute = second * 60;
@@ -21,7 +20,7 @@ const hour = minute * 60;
 const day = hour * 24;
 const year = day * 365;
 
-const timeDurationFormatter = (valueInMs, alwaysIncludeSecondsWithMinutes = false, detailedDays = false) => {
+const timeDuration = (valueInMs, alwaysIncludeSecondsWithMinutes = false, detailedDays = false) => {
   if (valueInMs === null || valueInMs === undefined) {
     return 'N/A';
   }
@@ -69,6 +68,5 @@ const timeDurationFormatter = (valueInMs, alwaysIncludeSecondsWithMinutes = fals
   const years = Math.trunc(totalDays / 365);
   return `${years} year${years > 1 ? 's' : ''}`;
 };
-Vue.filter('formatDuration', timeDurationFormatter);
 
-export default timeDurationFormatter;
+export default timeDuration;

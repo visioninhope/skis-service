@@ -121,10 +121,10 @@ limitations under the License.
             <span v-else>{{ data.value }}</span>
           </template>
           <template v-slot:cell(achievedOn)="data">
-            <span class="">{{ data.value | date }}</span>
+            <span class="">{{ $filters.formatDate(data.value) }}</span>
             <b-badge v-if="isToday(data.value)" variant="info" class="ml-2">Today</b-badge>
             <div class="small text-muted">
-              {{ data.value | timeFromNow }}
+              {{ $filters.timeFromNow(data.value) }}
             </div>
           </template>
         </skills-b-table>

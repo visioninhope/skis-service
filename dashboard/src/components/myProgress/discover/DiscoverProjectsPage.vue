@@ -145,16 +145,16 @@ aria-label="search for projects to pin"></b-input>
             </div>
           </template>
           <template #cell(numSkills)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
           <template #cell(numSubjects)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
           <template #cell(numBadges)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
           <template #cell(totalPoints)="data">
-            {{ data.value | number }}
+            {{ $filters.formatNum(data.value) }}
           </template>
 
           <template #empty="scope">
@@ -184,7 +184,7 @@ aria-label="search for projects to pin"></b-input>
           </b-col>
           <b-col>
             <div class="small text-right px-3" data-cy="projectsTableTotalRows">
-              <span class="text-muted">Rows:</span> {{ paging.totalRows | number}}
+              <span class="text-muted">Rows:</span> {{ $filters.formatNum(paging.totalRows) }}
             </div>
           </b-col>
         </b-row>

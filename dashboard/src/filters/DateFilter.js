@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from 'vue';
 
-const dateFormatter = (value) => window.dayjs(value).format('YYYY-MM-DD HH:mm');
-Vue.filter('date', dateFormatter);
+const formatDate = (value) => window.dayjs(value).format('YYYY-MM-DD HH:mm');
 
 // this allows to call this function from an js code; to learn more about that read about javascript modules
 // import DateFilter from 'src/DateFilter.js'
 //    DateFilter(dateStrVAlue)
-export default dateFormatter;
+export default formatDate;

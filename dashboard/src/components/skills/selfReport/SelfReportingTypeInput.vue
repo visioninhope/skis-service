@@ -83,7 +83,7 @@ limitations under the License.
         <i class="fas fa-exclamation-triangle mr-2"></i> Switching this skill to the <i>Honor System</i> will automatically:
         <ul>
           <li v-if="selfReport.approvals.numPending > 0">
-            Approve <b>{{ selfReport.approvals.numPending | number }} pending</b> request<span v-if="selfReport.approvals.numPending>1">s</span>
+            Approve <b>{{ $filters.formatNum(selfReport.approvals.numPending) }} pending</b> request<span v-if="selfReport.approvals.numPending>1">s</span>
           </li>
           <li v-if="selfReport.approvals.numRejected > 0">
             Remove <b>{{ selfReport.approvals.numRejected}} rejected</b> request<span v-if="selfReport.approvals.numRejected>1">s</span>
@@ -94,7 +94,7 @@ limitations under the License.
         <i class="fas fa-exclamation-triangle mr-2"></i> Disabling <i>Self Reporting</i> will automatically:
         <ul>
           <li v-if="selfReport.approvals.numPending > 0">
-            Remove <b>{{ selfReport.approvals.numPending | number }} pending</b> request<span v-if="selfReport.approvals.numPending>1">s</span>
+            Remove <b>{{ $filters.formatNum(selfReport.approvals.numPending) }} pending</b> request<span v-if="selfReport.approvals.numPending>1">s</span>
           </li>
           <li v-if="selfReport.approvals.numRejected > 0">
             Remove <b>{{ selfReport.approvals.numRejected}} rejected</b> request<span v-if="selfReport.approvals.numRejected>1">s</span>

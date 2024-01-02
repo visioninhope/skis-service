@@ -32,7 +32,7 @@ limitations under the License.
                       </span>
                     </span>
                     <div v-if="badge.gem" class="text-muted">
-                        <small>Expires {{ badge.endDate | relativeTime() }}</small>
+                        <small>Expires {{ $filters.formatRelativeTime(badge.endDate) }}</small>
                     </div>
                     <div v-if="badge.global" class="text-muted">
                         <small><b>Global Badge</b></small>
@@ -81,7 +81,7 @@ limitations under the License.
               <div v-if="bonusAwardTimerActive">
                 <i class="fas fa-clock award-info-icon"></i>Achieve this badge in
                 <span class="time-style">
-                  {{ currentTime | duration(badge.expirationDate, true) }}
+                  {{ $filters.formatDatesDuration(currentTime, badge.expirationDate, true) }}
                 </span>
                 for the <i :class="badge.awardAttrs.iconClass"></i> <span class="time-style">{{ badge.awardAttrs.name }}</span> bonus!
               </div>
@@ -106,6 +106,7 @@ limitations under the License.
   import ProgressBar from 'vue-simple-progress';
   import dayjs from 'dayjs';
   import MarkdownText from '../utilities/MarkdownText';
+  import timeDuration from '@/common-components/filter/FormatDurationFilter';
 
   export default {
     name: 'BadgeDetailsOverview',
@@ -150,6 +151,7 @@ limitations under the License.
       },
     },
     methods: {
+      timeDuration,
       setCurrentTime() {
         this.currentTime = dayjs().utc().valueOf();
       },

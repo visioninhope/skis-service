@@ -59,7 +59,7 @@ limitations under the License.
                  class="border rounded stat-card h-100">
               <i :class="stat.icon"></i>
               <div class="text-uppercase text-muted count-label">{{ stat.label }}</div>
-              <strong class="h4" data-cy="statNum">{{ stat.count | number }}</strong>
+              <strong class="h4" data-cy="statNum">{{ $filters.formatNum(stat.count) }}</strong>
               <i v-if="stat.warn" class="fas fa-exclamation-circle text-warning ml-1"
                  style="font-size: 1.5rem;"
                  v-b-tooltip.hover="stat.warnMsg"

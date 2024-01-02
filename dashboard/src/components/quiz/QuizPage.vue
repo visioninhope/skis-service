@@ -40,7 +40,7 @@ limitations under the License.
           </b-button>
         </b-button-group>
         <div class="mt-2" v-if="!isLoadingQuizConfig">
-          <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ userQuizRole | userRole }}</span>
+          <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ $filters.formatUserRole(userQuizRole) }}</span>
         </div>
       </div>
     </page-header>

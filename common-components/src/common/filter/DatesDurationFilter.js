@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from 'vue';
 import dayjs from '@/common-components/DayJsCustomizer';
-import formatDurationFilter from '@/common-components/filter/FormatDurationFilter';
+import timeDuration from '@/common-components/filter/FormatDurationFilter';
 import simpleClockFilter from '@/common-components/filter/SimpleClockFilter';
 
-const timeDurationFormatter = (startDate, completedDate, detailedDays, asClock = false) => {
+const formatDatesDuration = (startDate, completedDate, detailedDays, asClock = false) => {
   const start = dayjs(startDate);
   const end = completedDate ? dayjs(completedDate) : dayjs();
   const valueInMs = end.diff(start);
-  return asClock ? simpleClockFilter(valueInMs) : formatDurationFilter(valueInMs, false, detailedDays);
+  return asClock ? simpleClockFilter(valueInMs) : timeDuration(valueInMs, false, detailedDays);
 };
-Vue.filter('duration', timeDurationFormatter);
 
-export default timeDurationFormatter;
+export default formatDatesDuration;

@@ -56,7 +56,7 @@ limitations under the License.
                         icon="fas fa-user-clock skills-color-badges"
                         data-cy="metricsCardRuntime">
               <template #card-value>
-                <span class="h4 font-weight-bold">{{ metrics.avgAttemptRuntimeInMs | formatDuration }}</span>
+                <span class="h4 font-weight-bold">{{  $filters.timeDuration(metrics.avgAttemptRuntimeInMs) }}</span>
               </template>
               Average {{ metrics.quizType }} runtime for
               <b-badge variant="success">{{ metrics.numTaken }}</b-badge>

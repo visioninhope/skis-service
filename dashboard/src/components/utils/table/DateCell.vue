@@ -16,11 +16,11 @@ limitations under the License.
 <template>
   <div>
     <div>
-      <span>{{ value | date }}</span>
+      <span>{{ $filters.formatDate(value) }}</span>
       <b-badge v-if="isToday(value)" variant="info" class="ml-2">Today</b-badge>
     </div>
     <div class="text-muted small">
-      {{ value | timeFromNow }}
+      {{ $filters.timeFromNow(value) }}
     </div>
   </div>
 </template>

@@ -41,9 +41,9 @@ limitations under the License.
           Optionally set <i>Self Reporting</i> type to <b-badge>Video</b-badge> in order to award the skill for watching this video. Click the <i>Edit</i> button above to update the <i>Self Reporting</i> type.
         </div>
       </div>
-      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+<!--      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
       <b-form-group label-for="videoUrlInput">
-        <div slot="label">
+        <template v-slot:label>
           <div class="row">
             <div class="col my-auto">* Video:</div>
             <div class="col-auto">
@@ -55,7 +55,7 @@ limitations under the License.
                         @click="switchToExternalUrlOption" data-cy="showExternalUrlBtn"><i class="fas fa-globe"></i> Switch to External Link</b-button>
             </div>
           </div>
-        </div>
+        </template>
 
         <b-form-file id="videoUrlInput"
                      v-if="showFileUpload && !videoConf.isInternallyHosted"
@@ -98,7 +98,7 @@ limitations under the License.
       </b-form-group>
 
       <b-form-group label-for="videoCaptionsInput">
-        <div slot="label">
+        <template v-slot:label>
           <div class="row">
             <div class="col my-auto">Captions:</div>
             <div v-if="!videoConf.captions && !isReadOnly" class="col-auto">
@@ -107,7 +107,7 @@ limitations under the License.
                         @click="fillInCaptionsExample" data-cy="fillCaptionsExamples"><i class="fas fa-plus"></i> Add Example</b-button>
             </div>
           </div>
-        </div>
+        </template>
 <!--        <ValidationProvider rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Captions">-->
           <b-form-textarea
             id="videoCaptionsInput"
@@ -164,7 +164,7 @@ limitations under the License.
                       @click="confirmClearSettings">Clear <i class="fas fa-trash-alt" aria-hidden="true"/></b-button>
           </div>
         </div>
-      </ValidationObserver>
+<!--      </ValidationObserver>-->
 
       <b-card v-if="preview" class="mt-3" header="Video Preview" body-class="p-0" data-cy="videoPreviewCard">
         <video-player v-if="!refreshingPreview"
@@ -181,12 +181,12 @@ limitations under the License.
             <div class="col-6 col-lg-3 col-xl-2">Total Duration:</div>
             <div class="col">
               <span v-if="watchedProgress.videoDuration === Infinity" class="text-danger" data-cy="videoTotalDuration">N/A</span>
-              <span v-else class="text-primary" data-cy="videoTotalDuration">{{ Math.trunc(watchedProgress.videoDuration * 1000) | formatDuration(true) }}</span>
+              <span v-else class="text-primary" data-cy="videoTotalDuration">{{ $filters.timeDurationFormatter(Math.trunc(watchedProgress.videoDuration * 1000), true) }}</span>
             </div>
           </div>
           <div class="row">
             <div class="col-6 col-lg-3 col-xl-2">Time Watched:</div>
-            <div class="col"><span class="text-primary" data-cy="videoTimeWatched">{{ Math.trunc(watchedProgress.totalWatchTime * 1000) | formatDuration(true) }}</span></div>
+            <div class="col"><span class="text-primary" data-cy="videoTimeWatched">{{ $filters.timeDurationFormatter(Math.trunc(watchedProgress.totalWatchTime * 1000), true) }}</span></div>
           </div>
           <div class="row">
             <div class="col-6 col-lg-3 col-xl-2">% Watched:</div>
@@ -231,6 +231,7 @@ limitations under the License.
   import NavigationErrorMixin from '@/components/utils/NavigationErrorMixin';
   import CommunityLabelsMixin from '@/components/utils/CommunityLabelsMixin';
   import LengthyOperationProgressBar from '@/components/utils/LengthyOperationProgressBar';
+  import timeDurationFormatter from '@/common-components/filter/FormatDurationFilter';
 
   const skills = createNamespacedHelpers('skills');
 
@@ -330,6 +331,7 @@ limitations under the License.
       },
     },
     methods: {
+      timeDurationFormatter,
       ...skills.mapActions([
         'loadSkill',
       ]),
