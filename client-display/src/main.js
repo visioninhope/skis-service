@@ -15,7 +15,7 @@
  */
 import VueApexCharts from 'vue-apexcharts';
 
-import Vue from 'vue';
+import Vue, { createApp } from 'vue';
 import VueAnnouncer from '@vue-a11y/announcer';
 import {
     ModalPlugin,
@@ -86,11 +86,15 @@ require('@/common/interceptors/softwareVersionInterceptor');
 require('@/common/interceptors/upgradeInProgressInterceptor');
 
 const initializeVueApp = () => {
-  new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-  }).$mount('#app');
+  // new Vue({
+  //   router,
+  //   store,
+  //   render: (h) => h(App),
+  // }).$mount('#app');
+  const app = createApp(App);
+  app.use(router);
+  app.use(store);
+  app.mount('#app');
 };
 
 if (DevModeUtil.isDevelopmentMode()) {

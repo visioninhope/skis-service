@@ -21,7 +21,7 @@ const getters = {
     return state.config;
   },
   isPkiAuthenticated(state) {
-    return state.config.authMode === 'PKI';
+    return state?.config?.authMode === 'PKI';
   },
   isEmailEnabled(state) {
     return state.emailEnabled;

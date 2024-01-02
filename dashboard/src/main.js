@@ -15,7 +15,7 @@
  */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
+import Vue, { createApp } from 'vue';
 import {
   ButtonPlugin,
   ToastPlugin,
@@ -138,11 +138,11 @@ SkillsReporterDirective.install = install;
 Vue.use(FiltersPlugin);
 Vue.use(VueAnnouncer, {}, router);
 
-localize({
-  en,
-});
+// localize({
+//   en,
+// });
 
-setInteractionMode('custom', () => ({ on: ['input', 'change'] }));
+// setInteractionMode('custom', () => ({ on: ['input', 'change'] }));
 Vue.config.productionTip = false;
 window.dayjs = dayjs;
 
@@ -160,6 +160,7 @@ const isActiveProjectIdChange = (to, from) => to.params.projectId !== from.param
 const isAdminPage = (route) => route.path.startsWith('/administrator');
 const isLoggedIn = () => store.getters.isAuthenticated;
 const isPki = () => store.getters.isPkiAuthenticated;
+const config = () => store.getters.config;
 const getLandingPage = () => {
   let landingPage = 'MyProgressPage';
   if (store.getters.userInfo) {
@@ -175,9 +176,10 @@ router.beforeEach((to, from, next) => {
   store.commit('skillsClientDisplayPath', { path: skillsClientDisplayPath, fromDashboard: true });
 
   const requestAccountPath = '/request-root-account';
-  if (!isPki() && !isLoggedIn() && to.path !== requestAccountPath && store.getters.config.needToBootstrap) {
+  const needToBootstrap = false
+  if (!isPki() && !isLoggedIn() && to.path !== requestAccountPath && needToBootstrap) {
     next({ path: requestAccountPath });
-  } else if (!isPki() && to.path === requestAccountPath && !store.getters.config.needToBootstrap) {
+  } else if (!isPki() && to.path === requestAccountPath && !needToBootstrap) {
     next({ name: getLandingPage() });
   } else {
     /* eslint-disable no-lonely-if */
@@ -272,13 +274,17 @@ store.dispatch('loadConfigState').finally(() => {
   store.dispatch('restoreSessionIfAvailable').finally(() => {
     InceptionConfigurer.configure();
     /* eslint-disable no-new */
-    const vm = new Vue({
-      el: '#app',
-      router,
-      components: { App },
-      template: '<App/>',
-      store,
-    });
-    window.vm = vm;
+    // const vm = new Vue({
+    //   el: '#app',
+    //   router,
+    //   components: { App },
+    //   template: '<App/>',
+    //   store,
+    // });
+    const vm = createApp(App);
+    vm.use(store);
+    vm.use(router);
+    vm.mount('#app');
+    // window.vm = vm;
   });
 });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import AdminHomePage from '@/components/AdminHomePage';
 import MyProjects from '@/components/projects/MyProjects';
 import QuizDefinitionsPage from '@/components/quiz/QuizDefinitionsPage';
@@ -100,10 +100,8 @@ import ExpirationConfigPage from '@/components/expiration/ExpirationConfigPage';
 import ExpirationHistory from '@/components/expiration/ExpirationHistory';
 import UserActionsPage from '@/components/userActions/UserActionsPage';
 
-Vue.use(Router);
-
-const router = new Router({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes: [
     {
       path: '/administrator',
@@ -1168,7 +1166,7 @@ const router = new Router({
       }],
     },
     {
-      path: '*',
+      path: '/:pathMatch(.*)*',
       name: '404',
       redirect: {
         name: 'NotFoundPage',
@@ -1182,5 +1180,7 @@ const router = new Router({
     },
   ],
 });
+
+Vue.use(router);
 
 export default router;

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import axios from 'axios';
 import UniqueIdGenerator from '@/common/utilities/UniqueIdGenerator';
 import config from './config';
-
-Vue.use(Vuex);
 
 const themeModule = {
   state: {
@@ -35,7 +32,7 @@ const themeModule = {
   },
 };
 
-export default new Vuex.Store({
+export default createStore({
   state: {
     authToken: null,
     isAuthenticating: false,

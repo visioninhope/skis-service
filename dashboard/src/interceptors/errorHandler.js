@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 import axios from 'axios';
-import VueRouter from 'vue-router';
+import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import router from '../router';
 import store from '../store/store';
-
-const { NavigationFailureType, isNavigationFailure } = VueRouter;
 
 const handlePush = (page) => {
   router.push(page).catch((error) => {

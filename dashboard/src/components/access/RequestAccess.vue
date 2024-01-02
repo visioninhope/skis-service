@@ -23,8 +23,8 @@ limitations under the License.
             New <span v-if="isRootAccount">Root </span>Account
           </div>
         </div>
-        <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
-          <form @submit.prevent="handleSubmit(login)">
+<!--        <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
+          <form @submit.prevent="login">
             <div v-if="!oAuthOnly" class="card">
               <div class="card-body p-4">
                 <div class="form-group">
@@ -41,7 +41,7 @@ limitations under the License.
                              aria-errormessage="firstnameError"
                              aria-describedby="firstnameError"/>
                     </div>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0] }}</small>
+<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0] }}</small>-->
 <!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
@@ -58,7 +58,7 @@ limitations under the License.
                              aria-errormessage="lastnameError"
                              aria-describedby="lastnameError"/>
                     </div>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0] }}</small>
+<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0] }}</small>-->
 <!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
@@ -75,7 +75,7 @@ limitations under the License.
                              aria-errormessage="emailErrors"
                              aria-describedby="emailErrors"/>
                     </div>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="emailErrors">{{ errors[0] }}</small>
+<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="emailErrors">{{ errors[0] }}</small>-->
 <!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
@@ -92,7 +92,7 @@ limitations under the License.
                              aria-errormessage="passwordError"
                              aria-describedby="passwordError"/>
                     </div>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordError">{{ errors[0] }}</small>
+<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordError">{{ errors[0] }}</small>-->
 <!--                  </ValidationProvider>-->
                 </div>
                 <div class="form-group">
@@ -109,7 +109,7 @@ limitations under the License.
                              aria-errormessage="passwordConfirmationError"
                              aria-describedby="passwordConfirmationError"/>
                     </div>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordConfirmationError">{{ errors[0] }}</small>
+<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordConfirmationError">{{ errors[0] }}</small>-->
 <!--                  </ValidationProvider>-->
                 </div>
                 <div class="field is-grouped">
@@ -151,7 +151,7 @@ limitations under the License.
             </div>
 
           </form>
-        </ValidationObserver>
+<!--        </ValidationObserver>-->
       </div>
     </div>
   </div>

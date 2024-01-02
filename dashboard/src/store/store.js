@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import auth from './modules/auth';
 import users from './modules/users';
 import subjects from './modules/subjects';
@@ -31,9 +30,7 @@ import finalizeInfo from './modules/finalizeInfo';
 import quiz from './modules/quiz';
 import quizConfig from './modules/quizConfig';
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default new createStore({
   state: {
     projectId: '',
     previousUrl: '',

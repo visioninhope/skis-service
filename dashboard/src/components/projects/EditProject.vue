@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+<!--  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
     <b-modal :id="internalProject.projectId"
               :title="title"
               @hide="publishHidden"
@@ -46,18 +46,18 @@ limitations under the License.
                       :aria-invalid="errors && errors.length > 0"
                       aria-errormessage="projectNameError"
                       aria-describedby="projectNameError"/>
-                <small role="alert" class="form-text text-danger" data-cy="projectNameError" id="projectNameError">{{ errors[0] }}</small>
+<!--                <small role="alert" class="form-text text-danger" data-cy="projectNameError" id="projectNameError">{{ errors[0] }}</small>-->
 <!--              </ValidationProvider>-->
             </div>
           </div>
 
           <div class="col-12">
-            <id-input type="text" :label="idLabelTxt" v-model="internalProject.projectId"
-                      additional-validation-rules="uniqueId" @can-edit="canEditProjectId=$event"
-                      v-on:keydown.enter.native="handleSubmit(updateProject)"
-                      :next-focus-el="previousFocus"
-                      @shown="tooltipShowing=true"
-                      @hidden="tooltipShowing=false"/>
+<!--            <id-input type="text" :label="idLabelTxt" v-model="internalProject.projectId"-->
+<!--                      additional-validation-rules="uniqueId" @can-edit="canEditProjectId=$event"-->
+<!--                      v-on:keydown.enter.native="handleSubmit(updateProject)"-->
+<!--                      :next-focus-el="previousFocus"-->
+<!--                      @shown="tooltipShowing=true"-->
+<!--                      @hidden="tooltipShowing=false"/>-->
           </div>
         </div>
         <div v-if="showManageUserCommunity" class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
@@ -68,23 +68,23 @@ limitations under the License.
             <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access is restricted to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only and <b>cannot</b> be lifted/disabled
           </div>
           <div v-if="!isEditAndCommunityProtected && !isCopyAndCommunityProtected">
-            <ValidationObserver v-slot="{ pending, invalid }">
+<!--            <ValidationObserver v-slot="{ pending, invalid }">-->
               <div class="row">
                 <div class="col-lg">
 <!--                  <ValidationProvider rules="projectCommunityRequirements"-->
 <!--                                      name="Failed Minimum Requirement" v-slot="{ errors }">-->
-                    <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity"
-                                     @change="userCommunityChanged"
-                                     name="check-button" inline switch data-cy="restrictCommunity">
-                      Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only
-                    </b-form-checkbox>
+<!--                    <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity"-->
+<!--                                     @change="userCommunityChanged"-->
+<!--                                     name="check-button" inline switch data-cy="restrictCommunity">-->
+<!--                      Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only-->
+<!--                    </b-form-checkbox>-->
 
                     <div v-if="invalid" class="alert alert-danger mb-3 mt-1" data-cy="communityValidationErrors" role="alert">
                       <div>
                         <i class="fas fa-exclamation-triangle text-danger mr-1" aria-hidden="true" />
                         <span>Unable to restrict access to {{ userCommunityRestrictedDescriptor }} users only:</span>
                       </div>
-                      <span v-html="errors[0]"/>
+<!--                      <span v-html="errors[0]"/>-->
                     </div>
 <!--                  </ValidationProvider>-->
                 </div>
@@ -98,19 +98,19 @@ limitations under the License.
                   <i class="fas fa-exclamation-triangle text-danger" aria-hidden="true" /> Please note that once the restriction is enabled it <b>cannot</b> be lifted/disabled.
                 </div>
               </div>
-            </ValidationObserver>
+<!--            </ValidationObserver>-->
           </div>
         </div>
         <div class="row">
           <div class="mt-2 col-12">
 <!--              <ValidationProvider rules="maxDescriptionLength|customProjectDescriptionValidator" :debounce="250" v-slot="{errors}"-->
 <!--                                  name="Project Description">-->
-                <markdown-editor v-if="!isEdit || descriptionLoaded"
-                                 v-model="internalProject.description"
-                                 :project-id="internalProject.projectId"
-                                 :allow-attachments="isEdit || !showManageUserCommunity"
-                                 @input="updateDescription" />
-                <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">{{ errors[0] }}</small>
+<!--                <markdown-editor v-if="!isEdit || descriptionLoaded"-->
+<!--                                 v-model="internalProject.description"-->
+<!--                                 :project-id="internalProject.projectId"-->
+<!--                                 :allow-attachments="isEdit || !showManageUserCommunity"-->
+<!--                                 @input="updateDescription" />-->
+<!--                <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">{{ errors[0] }}</small>-->
 <!--              </ValidationProvider>-->
           </div>
         </div>
@@ -118,18 +118,18 @@ limitations under the License.
         <p v-if="invalid && overallErrMsg" class="text-center text-danger mt-2" aria-live="polite"><small>***{{ overallErrMsg }}***</small></p>
       </b-container>
 
-      <div slot="modal-footer" class="w-100">
-        <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateProject)"
-                  :disabled="invalid"
-                  data-cy="saveProjectButton">
-          <span>{{ saveBtnTxt }}</span>
-        </b-button>
-        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="closeProjectButton">
-          Cancel
-        </b-button>
-      </div>
+<!--      <div slot="modal-footer" class="w-100">-->
+<!--        <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateProject)"-->
+<!--                  :disabled="invalid"-->
+<!--                  data-cy="saveProjectButton">-->
+<!--          <span>{{ saveBtnTxt }}</span>-->
+<!--        </b-button>-->
+<!--        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="closeProjectButton">-->
+<!--          Cancel-->
+<!--        </b-button>-->
+<!--      </div>-->
     </b-modal>
-  </ValidationObserver>
+<!--  </ValidationObserver>-->
 </template>
 
 <script>
