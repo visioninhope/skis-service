@@ -20,8 +20,7 @@ limitations under the License.
       <div class="mt-5">
         <logo1 />
       </div>
-      <ValidationObserver ref="form" slim v-slot="{invalid, handleSubmit}">
-        <form @submit.prevent="handleSubmit(login)">
+        <Form @submit="login" v-slot="{ errors }">
           <transition name="fade" mode="out-in">
             <b-alert :aria-live="loginFailed ? 'assertive' : 'off'" v-if="loginFailed"
                      variant="danger" @dismissed="loginFailed=false" show dismissible>Invalid Username
@@ -31,24 +30,23 @@ limitations under the License.
 
           <div v-if="!oAuthOnly" class="card text-left">
             <div class="card-body p-4">
-
               <div class="form-group">
                 <label for="username" class="text-primary">Email Address</label>
-<!--                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=500 v-slot="{errors}">-->
+                <Field name="Email Address" rules="required|email" v-slot="{ field }" :validateOnChange=false>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-envelope"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="username" tabindex="0" placeholder="Enter email"
-                           :aria-invalid="errors && errors.length > 0"
+                    <input type="text" class="form-control" id="username" tabindex="0" v-model="loginFields.username" placeholder="Enter email" v-bind="field"
+                           :aria-invalid="errors && errors.length > 0 ? null : true"
                            aria-errormessage="emailHelp"
-                           aria-describedby="emailHelp"
-                           v-model="loginFields.username">
+                           aria-describedby="emailHelp" >
+
                   </div>
-                  <small role="alert" id="emailHelp" class="form-text text-danger" v-show="errors[0]">{{
-                    errors[0]}}
+                  <small role="alert" id="emailHelp" class="form-text text-danger">
+                    <ErrorMessage name="Email Address" />
                   </small>
-<!--                </ValidationProvider>-->
+                </Field>
               </div>
               <div class="form-group">
                 <div class="row">
@@ -59,26 +57,27 @@ limitations under the License.
                     <small class="text-muted"><b-link tabindex="0" @click="forgotPassword" data-cy="forgotPassword">Forgot Password?</b-link></small>
                   </div>
                 </div>
-<!--                <ValidationProvider name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">-->
+                <Field name="Password" rules="required" v-slot="{ field }">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
                     <input type="password" class="form-control" id="inputPassword" tabindex="0" placeholder="Password"
-                           v-model="loginFields.password" name="password"
-                           :aria-invalid="errors && errors.length > 0"
+                           v-bind="field"
+                           v-model="loginFields.password"
                            aria-errormessage="passwordHelp"
                            aria-describedby="passwordHelp"
-                           @animationstart="onAnimationStart">
+                           @animationstart="onAnimationStart"
+                           :aria-invalid="errors && errors.length > 0 ? null : true">
                   </div>
-                  <small role="alert" id="passwordHelp" class="form-text text-danger" v-show="errors[0]">{{
-                    errors[0]}}
+                  <small role="alert" id="passwordHelp" class="form-text text-danger" >
+                    <ErrorMessage name="Password" />
                   </small>
-<!--                </ValidationProvider>-->
+                </Field>
               </div>
               <div class="row">
                 <div class="col text-right">
-                  <button type="submit" class="btn btn-outline-primary float-right" tabindex="0" :disabled="invalid||disabled" data-cy="login">
+                  <button type="submit" class="btn btn-outline-primary float-right" tabindex="0" data-cy="login" :disabled="disabled">
                     Login <i class="fas fa-arrow-circle-right"/>
                   </button>
                 </div>
@@ -106,8 +105,7 @@ limitations under the License.
             </div>
           </div>
 
-        </form>
-      </ValidationObserver>
+        </Form>
     </div>
   </div>
   </div>
@@ -115,10 +113,14 @@ limitations under the License.
 
 <script>
   // import { extend } from 'vee-validate';
-  // import { required, email } from 'vee-validate';
+  import { defineRule, Form, Field, ErrorMessage, useIsFormDirty, useIsFormValid } from 'vee-validate';
+  import { required, email } from '@vee-validate/rules';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
+
+  defineRule('required', required);
+  defineRule('email', email);
 
   // extend('required', {
   //   ...required,
@@ -128,7 +130,7 @@ limitations under the License.
 
   export default {
     name: 'LoginForm',
-    components: { Logo1 },
+    components: { Logo1, Field, Form, ErrorMessage },
     mixins: [NavigationErrorMixin],
     data() {
       return {
@@ -183,7 +185,7 @@ limitations under the License.
       resetAfterFailedLogin() {
         this.loginFailed = true;
         delete this.loginFields.password;
-        this.errors?.clear();
+        // this.errors?.clear();
       },
       requestAccountPage() {
         this.handlePush({ name: 'RequestAccount', query: this.$route.query });
