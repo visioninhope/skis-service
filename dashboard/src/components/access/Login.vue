@@ -32,7 +32,7 @@ limitations under the License.
             <div class="card-body p-4">
               <div class="form-group">
                 <label for="username" class="text-primary">Email Address</label>
-                <Field name="Email Address" rules="required|email" v-slot="{ field }" :validateOnChange=false>
+                <Field name="Email Address" rules="required|email|minUsernameLength" v-slot="{ field }" :validateOnChange=false>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-envelope"></i></span>
@@ -57,7 +57,7 @@ limitations under the License.
                     <small class="text-muted"><b-link tabindex="0" @click="forgotPassword" data-cy="forgotPassword">Forgot Password?</b-link></small>
                   </div>
                 </div>
-                <Field name="Password" rules="required" v-slot="{ field }">
+                <Field name="Password" rules="required|minPasswordLength|maxPasswordLength" v-slot="{ field }">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -112,15 +112,10 @@ limitations under the License.
 </template>
 
 <script>
-  // import { extend } from 'vee-validate';
-  import { defineRule, Form, Field, ErrorMessage, useIsFormDirty, useIsFormValid } from 'vee-validate';
-  import { required, email } from '@vee-validate/rules';
+  import { Form, Field, ErrorMessage } from 'vee-validate';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
-
-  defineRule('required', required);
-  defineRule('email', email);
 
   // extend('required', {
   //   ...required,

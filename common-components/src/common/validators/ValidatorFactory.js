@@ -17,36 +17,27 @@ import NumConvertUtil from './NumConvertUtil';
 
 export default {
   newCharLengthValidator(maxLength) {
-    return {
-      message: (field) => `${field} cannot exceed ${maxLength} characters.`,
-      validate(value) {
-        if (value.length > NumConvertUtil.toInt(maxLength)) {
-          return false;
-        }
-        return true;
-      },
+    return (value, params, field) => {
+      if (value.length > NumConvertUtil.toInt(maxLength)) {
+        return `${field.name} cannot exceed ${maxLength} characters.`;
+      }
+      return true;
     };
   },
-  newCharMinLengthValidator(maxLength) {
-    return {
-      message: (field) => `${field} cannot be less than ${maxLength} characters.`,
-      validate(value) {
-        if (value.length < NumConvertUtil.toInt(maxLength)) {
-          return false;
-        }
-        return true;
-      },
+  newCharMinLengthValidator(minLength) {
+    return (value, params, field) => {
+      if (value.length < NumConvertUtil.toInt(minLength)) {
+        return `${field.name} cannot be less than ${minLength} characters.`;
+      }
+      return true;
     };
   },
   newMaxNumValidator(maxNum) {
-    return {
-      message: (field) => `${field} cannot exceed ${maxNum}.`,
-      validate(value) {
-        if (NumConvertUtil.toInt(value) > NumConvertUtil.toInt(maxNum)) {
-          return false;
-        }
-        return true;
-      },
+    return (value, params, field) => {
+      if (NumConvertUtil.toInt(value) > NumConvertUtil.toInt(maxNum)) {
+        return `${field.name} cannot exceed ${maxNum}.`;
+      }
+      return true;
     };
   },
   newUserObjNoSpacesValidatorInNonPkiMode(isPkiMode) {

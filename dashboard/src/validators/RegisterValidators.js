@@ -13,90 +13,94 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend, localize } from 'vee-validate';
-import { required } from 'vee-validate';
+import { defineRule, configure } from 'vee-validate';
+import { required, email } from '@vee-validate/rules';
+import { localize } from '@vee-validate/i18n';
 import ValidatorFactory from '@/common-components/validators/ValidatorFactory';
-import '@/common-components/validators/CustomDescriptionValidator';
-import './OptionalNumericValidator';
-import './CustomNameValidator';
-import './IdValidator';
-import './SkillIdValidator';
-import './NotNullValidator';
-import './UrlValidator';
+// import '@/common-components/validators/CustomDescriptionValidator';
+// import './OptionalNumericValidator';
+// import './CustomNameValidator';
+// import './IdValidator';
+// import './SkillIdValidator';
+// import './NotNullValidator';
+// import './UrlValidator';
 import store from '../store/store';
 
 export default {
   init() {
-    extend('maxDescriptionLength', ValidatorFactory.newCharLengthValidator(store.getters.config.descriptionMaxLength));
-    extend('maxFirstNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxFirstNameLength));
-    extend('maxLastNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxLastNameLength));
-    extend('maxNicknameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxNicknameLength));
+    defineRule('maxDescriptionLength', ValidatorFactory.newCharLengthValidator(store.getters.config.descriptionMaxLength) );
+    defineRule('maxFirstNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxFirstNameLength));
+    defineRule('maxLastNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxLastNameLength));
+    defineRule('maxNicknameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxNicknameLength));
 
-    extend('minUsernameLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minUsernameLength));
+    defineRule('minUsernameLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minUsernameLength));
 
-    extend('minPasswordLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minPasswordLength));
-    extend('maxPasswordLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxPasswordLength));
+    defineRule('minPasswordLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minPasswordLength));
+    defineRule('maxPasswordLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxPasswordLength));
 
-    extend('minIdLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minIdLength));
-    extend('maxIdLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxIdLength));
+    defineRule('minIdLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minIdLength));
+    defineRule('maxIdLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxIdLength));
 
-    extend('minNameLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minNameLength));
+    defineRule('minNameLength', ValidatorFactory.newCharMinLengthValidator(store.getters.config.minNameLength));
 
-    extend('maxBadgeNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxBadgeNameLength));
-    extend('maxProjectNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxProjectNameLength));
-    extend('maxQuizNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxQuizNameLength));
-    extend('maxSkillNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSkillNameLength));
-    extend('maxSubjectNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSubjectNameLength));
-    extend('maxLevelNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxLevelNameLength));
+    defineRule('maxBadgeNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxBadgeNameLength));
+    defineRule('maxProjectNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxProjectNameLength));
+    defineRule('maxQuizNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxQuizNameLength));
+    defineRule('maxSkillNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSkillNameLength));
+    defineRule('maxSubjectNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSubjectNameLength));
+    defineRule('maxLevelNameLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxLevelNameLength));
 
-    extend('maxSkillVersion', ValidatorFactory.newMaxNumValidator(store.getters.config.maxSkillVersion));
-    extend('maxPointIncrement', ValidatorFactory.newMaxNumValidator(store.getters.config.maxPointIncrement));
-    extend('maxNumPerformToCompletion', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPerformToCompletion));
-    extend('maxNumPointIncrementMaxOccurrences', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPointIncrementMaxOccurrences));
+    defineRule('maxSkillVersion', ValidatorFactory.newMaxNumValidator(store.getters.config.maxSkillVersion));
+    defineRule('maxPointIncrement', ValidatorFactory.newMaxNumValidator(store.getters.config.maxPointIncrement));
+    defineRule('maxNumPerformToCompletion', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPerformToCompletion));
+    defineRule('maxNumPointIncrementMaxOccurrences', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPointIncrementMaxOccurrences));
 
-    extend('userNoSpaceInUserIdInNonPkiMode', ValidatorFactory.newUserObjNoSpacesValidatorInNonPkiMode(store.getters.isPkiAuthenticated));
+    // defineRule('userNoSpaceInUserIdInNonPkiMode', ValidatorFactory.newUserObjNoSpacesValidatorInNonPkiMode(store.getters.isPkiAuthenticated));
 
-    extend('required', required);
-    extend('maxSelfReportRejectionMessageLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSelfReportRejectionMessageLength));
+    defineRule('required', required);
+    defineRule('email', email);
+    defineRule('maxSelfReportRejectionMessageLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSelfReportRejectionMessageLength));
 
-    extend('maxTagValueLengthInApprovalWorkloadConfig', ValidatorFactory.newCharLengthValidator(store.getters.config.maxTagValueLengthInApprovalWorkloadConfig));
+    defineRule('maxTagValueLengthInApprovalWorkloadConfig', ValidatorFactory.newCharLengthValidator(store.getters.config.maxTagValueLengthInApprovalWorkloadConfig));
 
-    extend('maxCustomLabelLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxCustomLabelLength));
-    extend('maxSkillTagLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSkillTagLength));
+    defineRule('maxCustomLabelLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxCustomLabelLength));
+    defineRule('maxSkillTagLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxSkillTagLength));
 
-    extend('maxVideoCaptionsLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxVideoCaptionsLength));
-    extend('maxVideoTranscriptLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxVideoTranscriptLength));
+    defineRule('maxVideoCaptionsLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxVideoCaptionsLength));
+    defineRule('maxVideoTranscriptLength', ValidatorFactory.newCharLengthValidator(store.getters.config.maxVideoTranscriptLength));
 
-    localize({
-      en: {
-        messages: {
-          alpha: '{_field_} may only contain alphabetic characters',
-          alpha_num: '{_field_} may only contain alpha-numeric characters',
-          alpha_dash: '{_field_} may contain alpha-numeric characters as well as dashes and underscores',
-          alpha_spaces: '{_field_} may only contain alphabetic characters as well as spaces',
-          between: '{_field_} must be between {min} and {max}',
-          confirmed: '{_field_} confirmation does not match',
-          digits: '{_field_} must be numeric and exactly contain {length} digits',
-          dimensions: '{_field_} must be {width} pixels by {height} pixels',
-          email: '{_field_} must be a valid email',
-          excluded: '{_field_} is not a valid value',
-          ext: '{_field_} is not a valid file',
-          image: '{_field_} must be an image',
-          integer: '{_field_} must be an integer',
-          length: '{_field_} must be {length} long',
-          max_value: '{_field_} must be {max} or less',
-          max: '{_field_} may not be greater than {length} characters',
-          mimes: '{_field_} must have a valid file type',
-          min_value: '{_field_} must be {min} or more',
-          min: '{_field_} must be at least {length} characters',
-          numeric: '{_field_} may only contain numeric characters',
-          oneOf: '{_field_} is not a valid value',
-          regex: '{_field_} format is invalid',
-          required_if: '{_field_} is required',
-          required: '{_field_} is required',
-          size: '{_field_} size must be less than {size}KB',
+    configure({
+      generateMessage: localize({
+        en: {
+          messages: {
+            alpha: '{field} may only contain alphabetic characters',
+            alpha_num: '{field} may only contain alpha-numeric characters',
+            alpha_dash: '{field} may contain alpha-numeric characters as well as dashes and underscores',
+            alpha_spaces: '{field} may only contain alphabetic characters as well as spaces',
+            between: '{field} must be between {min} and {max}',
+            confirmed: '{field} confirmation does not match',
+            digits: '{field} must be numeric and exactly contain {length} digits',
+            dimensions: '{field} must be {width} pixels by {height} pixels',
+            email: '{field} must be a valid email',
+            excluded: '{field} is not a valid value',
+            ext: '{field} is not a valid file',
+            image: '{field} must be an image',
+            integer: '{field} must be an integer',
+            length: '{field} must be {length} long',
+            max_value: '{field} must be {max} or less',
+            max: '{field} may not be greater than {length} characters',
+            mimes: '{field} must have a valid file type',
+            min_value: '{field} must be {min} or more',
+            min: '{field} must be at least {length} characters',
+            numeric: '{field} may only contain numeric characters',
+            oneOf: '{field} is not a valid value',
+            regex: '{field} format is invalid',
+            required_if: '{field} is required',
+            required: '{field} is required',
+            size: '{field} size must be less than {size}KB',
+          },
         },
-      },
+      })
     });
   },
 };

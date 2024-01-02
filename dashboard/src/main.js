@@ -79,7 +79,7 @@ import './filters/DateFilter';
 import './filters/UserRoleFilter';
 // import './filters/TimeFromNowFilter';
 import './directives/SkillsOnMountDirective';
-// import RegisterValidators from './validators/RegisterValidators';
+import RegisterValidators from './validators/RegisterValidators';
 import './directives/FocusDirective';
 import App from './App';
 import router from './router';
@@ -270,7 +270,7 @@ router.afterEach((to, from) => {
 });
 
 store.dispatch('loadConfigState').finally(() => {
-  // RegisterValidators.init();
+  RegisterValidators.init();
   store.dispatch('restoreSessionIfAvailable').finally(() => {
     InceptionConfigurer.configure();
     /* eslint-disable no-new */
