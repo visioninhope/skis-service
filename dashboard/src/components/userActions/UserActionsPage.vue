@@ -16,7 +16,7 @@ limitations under the License.
 <template>
   <div>
     <sub-page-header title="Admin Activity History">
-      <template slot="underTitle" v-if="!isAllEvents">
+      <template v-slot:underTitle v-if="!isAllEvents">
         <start-recording-user-actions-date-warning />
       </template>
     </sub-page-header>

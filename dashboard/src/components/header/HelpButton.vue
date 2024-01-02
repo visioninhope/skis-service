@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
   <b-dropdown right variant="link" id="helpMenu">
-    <template slot="button-content">
+    <template v-slot:button-content>
       <i class="far fa-question-circle" style="font-size: 1.55rem" aria-hidden="true" data-cy="helpButton"></i>
       <span class="sr-only">help menu</span>
     </template>

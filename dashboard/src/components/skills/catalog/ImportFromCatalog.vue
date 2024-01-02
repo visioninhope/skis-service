@@ -179,7 +179,8 @@ limitations under the License.
       </skills-b-table>
     </div>
 
-    <div slot="modal-footer" class="w-100">
+    <template v-slot:modal-footer>
+      <div class="w-100">
       <b-button v-if="!emptyCatalog" variant="success" size="sm" class="float-right ml-2"
                 @click="importSkills" data-cy="importBtn" :disabled="importDisabled || validatingImport || maxBulkImportExceeded || maxSkillsInSubjectExceeded"><i
         class="far fa-arrow-alt-circle-down"></i> Import <b-badge variant="primary" data-cy="numSelectedSkills">{{ numSelectedSkills }}</b-badge>
@@ -199,6 +200,7 @@ limitations under the License.
         <i class="fas fa-exclamation-circle text-warning"/> {{this.maxExceededMsg}}
       </span>
     </div>
+    </template>
   </b-modal>
 </template>
 

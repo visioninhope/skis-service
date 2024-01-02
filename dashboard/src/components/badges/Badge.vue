@@ -19,15 +19,13 @@ limitations under the License.
                                       :disable-sort-control="disableSortControl"
                                       ref="navCardWithStatsAndControls" @sort-changed-requested="sortRequested"
                                       :data-cy="`badgeCard-${badgeInternal.badgeId}`">
-      <div slot="header-top-right">
-      </div>
-      <div slot="underTitle">
+      <template v-slot:underTitle>
         <card-navigate-and-edit-controls ref="cardNavControls" class="mt-2"
                                          :options="cardOptions.controls"
                                          @edit="showEditBadge=true"
                                          @delete="deleteBadge"/>
-      </div>
-      <div slot="footer">
+      </template>
+      <template v-slot:footer>
         <i v-if="badgeInternal.endDate" class="fas fa-gem position-absolute" style="font-size: 1rem; top: 1rem; left: 1rem; color: purple" aria-hidden="true"/>
         <div class="mt-1 row align-items-center" style="height: 2rem;">
           <div class="col text-right small">
@@ -44,7 +42,7 @@ limitations under the License.
 
         <edit-badge v-if="showEditBadge" v-model="showEditBadge" :id="badge.badgeId" :badge="badge" :is-edit="true"
                     :global="global" @badge-updated="badgeEdited" @hidden="handleHidden"></edit-badge>
-      </div>
+      </template>
     </nav-card-with-stats-and-controls>
     <removal-validation v-if="showDeleteDialog" v-model="showDeleteDialog" @do-remove="doDeleteBadge" @hidden="handleDeleteCancelled">
       <p>

@@ -16,12 +16,12 @@ limitations under the License.
 <template>
     <div class="skills-theme-filter-menu d-inline-block" data-cy="filterMenu">
       <b-dropdown variant="outline-info" toggle-class="skills-theme-btn" class="ml-1" dropup>
-        <template slot="button-content">
+        <template v-slot:button-content>
           <i class="fas fa-filter" style="font-size: 1.1rem" aria-hidden="true" data-cy="filterBtn"/>
           <span class="sr-only">Skills Filter</span>
         </template>
         <b-dropdown-group v-for="filterGroup in filters" :key="filterGroup.groupId" :id="filterGroup.groupId">
-          <template slot="header">
+          <template v-slot:header>
             <span class="skills-theme-menu-secondary-color" style="font-size: 0.9rem">{{ filterGroup.groupLabel }}</span>
             <span class="sr-only">{{ filterGroup.groupLabel }}</span>
           </template>

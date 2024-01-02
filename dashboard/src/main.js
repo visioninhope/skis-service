@@ -85,6 +85,11 @@ import App from './App';
 import router from './router';
 import store from './store/store';
 import { setupNavGuards } from '@/router/RouterNavGuards'
+import { configureCompat } from 'vue'
+
+configureCompat({
+  MODE: 2,
+});
 
 Vue.component('apexchart', VueApexCharts);
 // Vue.component('ValidationProvider', ValidationProvider);

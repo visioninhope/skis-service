@@ -43,9 +43,9 @@ limitations under the License.
       Please feel free to paste and share it with new users.
     </div>
 
-    <div slot="modal-footer" class="text-right">
+    <template v-slot:modal-footer class="text-right">
       <b-button @click="publishHidden" variant="success" data-cy="shareProjOkBtn">OK</b-button>
-    </div>
+    </template>
 
   </b-modal>
 </template>

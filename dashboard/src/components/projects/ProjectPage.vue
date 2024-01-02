@@ -16,7 +16,8 @@ limitations under the License.
 <template>
   <div ref="mainFocus">
     <page-header :loading="isLoading" :options="headerOptions">
-      <div slot="banner" v-if="project && project.expiring && !isReadOnlyProj" data-cy="projectExpiration"
+      <template v-slot:banner v-if="project && project.expiring && !isReadOnlyProj">
+        <div data-cy="projectExpiration"
            class="w-100 text-center alert-danger p-2 mb-3">
           <span class="mr-2"
                 aria-label="This Project has not been used recently, it will  be deleted unless you explicitly retain it"
@@ -32,7 +33,8 @@ limitations under the License.
           <i v-if="!cancellingExpiration" :class="'fas fa-shield-alt'" style="font-size: 1rem;" aria-hidden="true"/>
         </b-button>
       </div>
-      <div slot="subTitle" v-if="project">
+      </template>
+      <template v-slot:subTitle v-if="project">
         <div v-if="project.userCommunity" class="mb-3" data-cy="userCommunity">
           <span class="border p-1 border-danger rounded"><i
             class="fas fa-shield-alt text-danger" aria-hidden="true"/></span> <span
@@ -42,8 +44,8 @@ limitations under the License.
         </div>
         <div class="h6"><span class="border p-1 border-info rounded mr-1 mb-2">
           <i class="fas fa-fingerprint text-info" aria-hidden="true"/></span> <span class="font-italic text-muted">Project ID</span>: {{ project.projectId }}</div>
-      </div>
-      <div slot="subSubTitle" v-if="project">
+      </template>
+      <template v-slot:subSubTitle v-if="project">
         <b-button-group v-if="!isReadOnlyProj" class="mb-3" size="sm">
           <b-button @click="displayEditProject"
                     ref="editProjectButton"
@@ -75,10 +77,10 @@ limitations under the License.
         <div v-if="userProjRole">
           <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ $filters.formatUserRole(userProjRole) }}</span>
         </div>
-      </div>
-      <div slot="footer">
+      </template>
+      <template v-slot:footer>
         <import-finalize-alert />
-      </div>
+      </template>
     </page-header>
 
     <navigation v-if="!isLoading" :nav-items="navItems">

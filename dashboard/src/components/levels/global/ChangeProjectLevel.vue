@@ -38,7 +38,8 @@ limitations under the License.
             <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="newLevelError" id="newLevelError">{{ errors[0] }}</small>
 <!--          </ValidationProvider>-->
       </b-container>
-      <div slot="modal-footer" class="w-100">
+      <template v-slot:modal-footer>
+        <div class="w-100">
         <b-button variant="success"
                   size="sm"
                   class="float-right"
@@ -51,6 +52,7 @@ limitations under the License.
           Cancel
         </b-button>
       </div>
+      </template>
     </b-modal>
   </ValidationObserver>
 </template>

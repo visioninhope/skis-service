@@ -39,7 +39,8 @@ limitations under the License.
       </div>
     </div>
 
-    <div slot="modal-footer" class="w-100">
+    <template v-slot:modal-footer>
+      <div class="w-100">
       <b-button v-if="!removalNotAvailable" variant="danger" size="sm" class="float-right ml-2"
                 @click="removeAction" data-cy="removeButton" :disabled="removeDisabled"><i
         class="fas fa-trash"></i> Yes, Do Remove!
@@ -48,6 +49,7 @@ limitations under the License.
         <i class="fas fa-times"></i> Cancel
       </b-button>
     </div>
+    </template>
   </b-modal>
 </template>
 

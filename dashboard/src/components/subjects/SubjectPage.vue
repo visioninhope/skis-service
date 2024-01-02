@@ -16,7 +16,7 @@ limitations under the License.
 <template>
   <div>
     <page-header :loading="isLoadingData" :options="headerOptions">
-      <div slot="subSubTitle" v-if="subject && !isReadOnlyProj">
+      <template v-slot:subSubTitle v-if="subject && !isReadOnlyProj">
         <b-button @click="displayEditSubject"
                   ref="editSubjectButton"
                   class="btn btn-outline-primary mr-1"
@@ -26,10 +26,10 @@ limitations under the License.
                   :aria-label="'edit Subject '+subject.subjectId">
           <span class="">Edit </span> <i class="fas fa-edit" aria-hidden="true"/>
         </b-button>
-      </div>
-      <div slot="footer">
+      </template>
+      <template v-slot:footer>
         <import-finalize-alert />
-      </div>
+      </template>
     </page-header>
 
     <navigation v-if="!isLoadingData" :nav-items="navItems">

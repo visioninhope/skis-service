@@ -177,7 +177,8 @@ limitations under the License.
       </div>
     </div>
 
-    <div slot="modal-footer" class="w-100">
+    <template v-slot:modal-footer>
+      <div class="w-100">
       <b-button v-if="!state.reUseComplete" variant="success" size="sm" class="float-right"
                 @click="initiateReuse"
                 :disabled="!selectedDestination || state.reUseInProgress || (skillsForReuse.available && skillsForReuse.available.length === 0) || state.reUseInProgress"
@@ -197,6 +198,7 @@ limitations under the License.
         OK
       </b-button>
     </div>
+    </template>
   </b-modal>
 </template>
 

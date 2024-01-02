@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
   <b-dropdown variant="outline-secondary" size="sm" right no-caret>
-    <template slot="button-content"><i class="fas fa-bars" aria-hidden="true"/><span class="sr-only">edit menu button</span></template>
+    <template v-slot:button-content><i class="fas fa-bars" aria-hidden="true"/><span class="sr-only">edit menu button</span></template>
 
     <b-dropdown-item v-on:click="emit('edited')" class="mb-1" data-cy="editMenuEditBtn">
       <span class="text-primary"> <i class="fas fa-edit pr-1" aria-hidden="true"/>Edit</span>

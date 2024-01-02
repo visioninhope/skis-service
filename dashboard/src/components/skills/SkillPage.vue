@@ -16,7 +16,7 @@ limitations under the License.
 <template>
   <div>
     <page-header :loading="isLoading" :options="headerOptions">
-      <div slot="subTitle" v-if="skill">
+      <template v-slot:subTitle v-if="skill">
         <div v-for="(tag) in skill.tags" :key="tag.tagId" class="h6 mr-2 d-inline-block" :data-cy="`skillTag-${skill.skillId}-${tag.tagId}`">
           <b-badge variant="info">
             <span><i class="fas fa-tag"></i> {{ tag.tagValue }}</span>
@@ -28,8 +28,8 @@ limitations under the License.
         <div class="h5 text-muted" v-if="skill && skill.groupId">
           <span style="font-size: 1rem">Group ID:</span> <span v-b-tooltip.hover="`Name: ${ skill.groupName }`">{{ skill.groupId }}</span>
         </div>
-      </div>
-      <div slot="subSubTitle" v-if="!isImported">
+      </template>
+      <template v-slot:subSubTitle v-if="!isImported">
         <b-button-group>
           <b-button v-if="skill && projConfig && !isReadOnlyProj" @click="displayEdit"
                     size="sm"
@@ -38,8 +38,8 @@ limitations under the License.
             <span class="d-none d-sm-inline">Edit </span> <i class="fas fa-edit" aria-hidden="true"/>
           </b-button>
         </b-button-group>
-      </div>
-      <div slot="right-of-header" v-if="!isLoading && (skill.sharedToCatalog || isImported)"
+      </template>
+      <template v-slot:right-of-header v-if="!isLoading && (skill.sharedToCatalog || isImported)"
            class="d-inline h5">
         <b-badge v-if="skill.sharedToCatalog" class="ml-2" data-cy="exportedBadge"><i
           class="fas fa-book"></i> EXPORTED
@@ -49,7 +49,7 @@ limitations under the License.
           <span v-else><i class="fas fa-book"></i> IMPORTED</span>
         </b-badge>
         <b-badge v-if="!skill.enabled" class="ml-2" data-cy="disabledSkillBadge"> DISABLED</b-badge>
-      </div>
+      </template>
     </page-header>
     <navigation :nav-items="navItems">
     </navigation>

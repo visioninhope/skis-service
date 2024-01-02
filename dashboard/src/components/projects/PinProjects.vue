@@ -145,11 +145,13 @@ limitations under the License.
         </div>
       </b-container>
 
-      <div slot="modal-footer" class="w-100">
-        <b-button variant="success" size="sm" class="float-right" @click="done" data-cy="modalDoneButton">
-          Done
-        </b-button>
-      </div>
+      <template v-slot:modal-footer>
+        <div class="w-100">
+          <b-button variant="success" size="sm" class="float-right" @click="done" data-cy="modalDoneButton">
+            Done
+          </b-button>
+        </div>
+      </template>
     </b-modal>
 </template>
 

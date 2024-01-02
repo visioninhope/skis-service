@@ -78,7 +78,8 @@ limitations under the License.
         <p v-if="invalid && overallErrMsg" class="text-center text-danger mt-2" aria-live="polite"><small>***{{ overallErrMsg }}***</small></p>
       </b-container>
 
-      <div slot="modal-footer" class="w-100">
+      <template v-slot:modal-footer>
+        <div class="w-100">
         <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateGroup)"
                   :disabled="invalid"
                   data-cy="saveGroupButton">
@@ -88,6 +89,7 @@ limitations under the License.
           Cancel
         </b-button>
       </div>
+      </template>
     </b-modal>
   </ValidationObserver>
 </template>

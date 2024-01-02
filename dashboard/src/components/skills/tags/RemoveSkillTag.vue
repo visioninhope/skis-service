@@ -38,7 +38,8 @@ limitations under the License.
           </div>
         </div>
       </b-container>
-      <div slot="modal-footer" class="w-100">
+      <template v-slot:modal-footer>
+        <div class="w-100">
         <div v-if="hasExistingTags">
           <b-button variant="success"
                     size="sm"
@@ -59,6 +60,7 @@ limitations under the License.
           </b-button>
         </div>
       </div>
+      </template>
     </b-modal>
   </ValidationObserver>
 </template>

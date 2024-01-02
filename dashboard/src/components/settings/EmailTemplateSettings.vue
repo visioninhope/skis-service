@@ -19,7 +19,7 @@ limitations under the License.
       <div class="form-group">
         <b-tabs class="h-100">
           <b-tab active>
-            <template slot="title">
+            <template v-slot:title>
               <div data-cy="htmlHeaderTitle">
                 <span class="label" v-show="htmlHeaderRequired" :class="hHeaderTitleClass">* </span>
                 <label class="label" for="htmlEmailHeader">
@@ -41,7 +41,7 @@ limitations under the License.
             </div>
           </b-tab>
           <b-tab>
-            <template slot="title">
+            <template v-slot:title>
               <div data-cy="ptHeaderTitle">
                 <span class="label" v-show="plaintextHeaderRequired" :class="pHeaderTitleClass">* </span>
                 <label class="label" for="plaintextEmailHeader">
@@ -68,7 +68,7 @@ limitations under the License.
       <div class="form-group">
         <b-tabs class="h-100">
           <b-tab active>
-            <template slot="title">
+            <template v-slot:title>
               <div data-cy="htmlFooterTitle">
                 <span class="label" v-if="htmlFooterRequired" :class="hFooterTitleClass">* </span>
                 <label class="label" for="htmlEmailFooter">
@@ -90,7 +90,7 @@ limitations under the License.
             </div>
           </b-tab>
           <b-tab>
-            <template slot="title">
+            <template v-slot:title>
               <div data-cy="ptFooterTitle">
                 <span class="label" v-if="plaintextFooterRequired" :class="pFooterTitleClass">* </span>
                 <label class="label" for="plaintextEmailFooter">

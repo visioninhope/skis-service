@@ -18,7 +18,7 @@ limitations under the License.
   <skills-spinner :is-loading="isLoading" class="mt-3"/>
   <div v-if="!isLoading">
     <quiz-run-splash-screen v-if="splashScreen.show" :quiz-info="quizInfo" @cancel="cancelQuizAttempt" @start="startQuizAttempt">
-      <template slot="aboveTitle">
+      <template v-slot:aboveTitle>
         <slot name="splashPageTitle">
           <span v-if="isSurveyType">Thank you for taking time to take this survey! </span>
           <span v-else>You are about to begin the quiz!</span>
@@ -33,7 +33,7 @@ limitations under the License.
         :quiz-info="quizInfo"
         :quiz-result="quizResult"
         @close="doneWithThisRun">
-      <template slot="completeAboveTitle">
+      <template v-slot:completeAboveTitle>
         <slot name="completeAboveTitle">
           <i class="fas fa-handshake text-info" aria-hidden="true"></i> Thank you for taking the time to complete the survey!
         </slot>
@@ -49,7 +49,7 @@ limitations under the License.
         :quiz-result="quizResult"
         @close="doneWithThisRun"
         @run-again="tryAgain">
-      <template slot="completeAboveTitle">
+      <template v-slot:completeAboveTitle>
         <slot name="completeAboveTitle">
           <span v-if="isSurveyType">Thank you for taking time to take this survey! </span>
           <span v-else>Thank you for completing the Quiz!</span>
@@ -68,7 +68,7 @@ limitations under the License.
         </div>
       </div>
 
-      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit }" slim>
+<!--      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit }" slim>-->
       <b-overlay :show="isCompleting" opacity="0.2">
         <div v-for="(q, index) in quizInfo.questions" :key="q.id">
           <quiz-run-question
@@ -101,7 +101,7 @@ limitations under the License.
           </b-button>
         </b-overlay>
       </div>
-      </ValidationObserver>
+<!--      </ValidationObserver>-->
 
       <div v-if="quizResult && quizResult.gradedRes && quizResult.gradedRes.passed" class="text-left mt-5">
         <b-button variant="outline-success" @click="doneWithThisRun" class="text-uppercase font-weight-bold skills-theme-btn"><i class="fas fa-times-circle" aria-hidden="true"></i> Close</b-button>

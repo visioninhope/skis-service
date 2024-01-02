@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
   <b-dropdown right variant="link">
-    <template slot="button-content">
+    <template v-slot:button-content>
       <i class="fas fa-user-circle" style="font-size: 1.55rem" aria-hidden="true"/>
       <span class="sr-only">settings menu</span>
     </template>

@@ -23,9 +23,11 @@ limitations under the License.
 
     <metrics-card v-if="privateProject" title="Project User: Invite" data-cy="inviteUser" :no-padding="true" class="my-4">
       <b-overlay :show="!isEmailEnabled">
-        <div slot="overlay" class="alert alert-warning mt-2" data-cy="inviteUsers_emailServiceWarning">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
-        </div>
+        <template v-slot:overlay>
+          <div class="alert alert-warning mt-2" data-cy="inviteUsers_emailServiceWarning">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
+          </div>
+        </template>
         <div class="card h-100">
           <h5 class="card-title mt-4 ml-4">Invite Users</h5>
           <div class="card-body">

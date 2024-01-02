@@ -18,9 +18,11 @@ limitations under the License.
     <sub-page-header title="Contact Project Administrators" />
 
     <b-overlay :show="!emailFeatureConfigured">
-      <div slot="overlay" class="alert alert-warning mt-2" data-cy="contactUsers_emailServiceWarning">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
-      </div>
+      <template v-slot:overlay>
+        <div class="alert alert-warning mt-2" data-cy="contactUsers_emailServiceWarning">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
+        </div>
+      </template>
       <b-card body-class="p-0">
           <div class="m-4 h5 text-uppercase">Email Content</div>
           <div class="m-4"><b-badge variant="info" data-cy="projectAdminCount">{{ $filters.formatNum(currentCount) }}</b-badge> Project Administrators</div>

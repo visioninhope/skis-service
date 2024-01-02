@@ -20,7 +20,7 @@ limitations under the License.
       <b-card no-body>
       <b-tabs content-class="mt-3" @input="onChange($event)" card>
         <b-tab>
-          <template slot="title">
+          <template v-slot:title>
             <i class="fab fa-font-awesome-flag"></i> {{ fontAwesomeIcons.iconPack }}
           </template>
             <span v-if="fontAwesomeIcons.icons.length === 0 && this.activePack === fontAwesomeIcons.iconPack">No icons matched your search</span>
@@ -36,7 +36,7 @@ limitations under the License.
             </virtual-list>
         </b-tab>
         <b-tab>
-          <template slot="title">
+          <template v-slot:title>
             <i class="fas fa-file-alt"></i> {{ materialIcons.iconPack }}
           </template>
           <span v-if="materialIcons.icons.length === 0 && this.activePack === materialIcons.iconPack">No icons matched your search</span>
@@ -52,7 +52,7 @@ limitations under the License.
             </virtual-list>
         </b-tab>
         <b-tab>
-          <template slot="title">
+          <template v-slot:title>
             <i class="fas fa-wrench"></i> Custom
           </template>
           <div data-cy="customIconUpload">

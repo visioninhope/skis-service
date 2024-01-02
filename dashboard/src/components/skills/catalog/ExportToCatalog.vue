@@ -89,24 +89,28 @@ limitations under the License.
       </div>
     </div>
 
-    <div v-if="!isExportable" slot="modal-footer" class="w-100">
-      <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="okButton"
-                :disabled="loadingData">
-        OK
-      </b-button>
-    </div>
+    <template v-if="!isExportable" v-slot:modal-footer>
+      <div class="w-100">
+        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="okButton"
+                  :disabled="loadingData">
+          OK
+        </b-button>
+      </div>
+    </template>
 
-    <div v-if="isExportable" slot="modal-footer" class="w-100">
-      <b-button variant="success" size="sm" class="float-right"
-                @click="handleExport"
-                :disabled="loadingData"
-                data-cy="exportToCatalogButton">
-        Export
-      </b-button>
-      <b-button variant="secondary" size="sm" class="float-right mr-2" @click="cancel" data-cy="closeButton">
-        Cancel
-      </b-button>
-    </div>
+    <template v-if="isExportable" v-slot:modal-footer>
+      <div class="w-100">
+        <b-button variant="success" size="sm" class="float-right"
+                  @click="handleExport"
+                  :disabled="loadingData"
+                  data-cy="exportToCatalogButton">
+          Export
+        </b-button>
+        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="cancel" data-cy="closeButton">
+          Cancel
+        </b-button>
+      </div>
+    </template>
   </b-modal>
 </template>
 

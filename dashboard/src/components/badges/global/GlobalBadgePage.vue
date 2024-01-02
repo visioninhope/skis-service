@@ -16,10 +16,10 @@ limitations under the License.
 <template>
   <div>
     <page-header :loading="isLoading" :options="headerOptions">
-      <span slot="right-of-header">
+      <template v-slot:right-of-header>
         <i v-if="badge && badge.endDate" class="fas fa-gem ml-2" style="font-size: 1.6rem; color: purple;"></i>
-      </span>
-      <div slot="subSubTitle" v-if="badge">
+      </template>
+      <template v-slot:subSubTitle v-if="badge">
         <b-button-group class="mb-3" size="sm">
           <b-button @click="displayEditBadge"
                     ref="editBadgeButton"
@@ -39,7 +39,7 @@ limitations under the License.
                     data-cy="goLive">Go Live
           </b-button>
         </b-button-group>
-      </div>
+      </template>
     </page-header>
 
     <navigation :nav-items="[

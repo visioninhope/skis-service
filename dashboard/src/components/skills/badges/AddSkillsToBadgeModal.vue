@@ -146,7 +146,8 @@ limitations under the License.
       </div>
     </div>
 
-    <div slot="modal-footer" class="w-100">
+    <template v-slot:modal-footer>
+      <div class="w-100">
       <b-button v-if="!state.addSkillsToBadgeComplete && !state.errorOnSave" variant="success" size="sm" class="float-right"
                 @click="addSkillsToBadge"
                 :disabled="!selectedDestination || state.addSkillsToBadgeInProgress || (skillsForBadge.available && skillsForBadge.available.length === 0) || skillsForBadge.skillsWithLearningPathViolations.length > 0"
@@ -166,6 +167,7 @@ limitations under the License.
         OK
       </b-button>
     </div>
+    </template>
   </b-modal>
 </template>
 

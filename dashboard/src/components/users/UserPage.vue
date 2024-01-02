@@ -16,7 +16,7 @@ limitations under the License.
 <template>
   <div>
     <page-header :loading="isLoading" :options="headerOptions">
-      <div slot="subSubTitle" v-if="tags">
+      <template v-slot:subSubTitle v-if="tags">
         <span v-for="(tag, index) in tags" :key="index">
           <span class="text-muted">{{tag.label}}: </span>
           <span v-for="(value, vIndex) in tag.value" :key="vIndex">
@@ -28,7 +28,7 @@ limitations under the License.
           </span>
           <span v-if="index < tags.length - 1">; </span>
         </span>
-      </div>
+      </template>
     </page-header>
 
     <navigation v-if="userIdForDisplay" :nav-items="getNavItems()">

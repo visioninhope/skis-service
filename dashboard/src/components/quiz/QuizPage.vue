@@ -16,7 +16,7 @@ limitations under the License.
 <template>
   <div>
     <page-header :loading="loadingQuizSummary || isLoadingQuizConfig" :options="headerOptions">
-      <div slot="subSubTitle">
+      <template v-slot:subSubTitle>
         <b-button-group v-if="!isReadOnlyQuiz" class="mt-1" size="sm">
           <b-button ref="editQuizButton"
                     class="btn btn-outline-primary"
@@ -42,7 +42,7 @@ limitations under the License.
         <div class="mt-2" v-if="!isLoadingQuizConfig">
           <i class="fas fa-user-shield text-success header-status-icon" aria-hidden="true" /> <span class="text-secondary font-italic small">Role:</span> <span class="small text-primary" data-cy="userRole">{{ $filters.formatUserRole(userQuizRole) }}</span>
         </div>
-      </div>
+      </template>
     </page-header>
 
     <edit-quiz v-if="editQuizInfo.showDialog" v-model="editQuizInfo.showDialog"

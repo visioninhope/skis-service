@@ -18,9 +18,11 @@ limitations under the License.
     <sub-page-header title="Contact Users" />
 
     <b-overlay :show="!emailFeatureConfigured">
-      <div slot="overlay" class="alert alert-warning mt-2" data-cy="contactUsers_emailServiceWarning">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
-      </div>
+      <template v-slot:overlay>
+        <div class="alert alert-warning mt-2" data-cy="contactUsers_emailServiceWarning">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Please note that email notifications are currently disabled. Email configuration has not been performed on this instance of SkillTree. Please contact the root administrator.
+        </div>
+      </template>
       <b-card body-class="p-0">
           <div class="h5 pt-2 mt-2 pr-2 pl-2 mr-2 ml-2 text-uppercase">Filters</div>
           <div class="row p-2 m-2">
