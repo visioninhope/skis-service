@@ -44,31 +44,34 @@ limitations under the License.
                    @hidden="tooltipHidden"/>
       </div>
     </div>
-<!--    <ValidationProvider :rules="rules" v-slot="{ errors }" :debounce="500" :name="label" ref="idVp">-->
+    <Field :rules="rules" v-slot="{ field }" :debounce="500" :name="label" ref="idVp">
       <input type="text" class="form-control" id="idInput" v-model="internalValue" :disabled="!canEdit"
               @input="dataChanged" aria-required="true"
               aria-errormessage="idError"
               aria-describedby="idError"
              data-cy="idInputValue">
     <!--              :aria-invalid="errors && errors.length > 0"-->
-<!--      <small role="alert" class="form-text text-danger" data-cy="idError" id="idError">{{ errors[0]}}</small>-->
-<!--    </ValidationProvider>-->
+      <small role="alert" class="form-text text-danger" data-cy="idError" id="idError">
+        <ErrorMessage :name="label" />
+      </small>
+    </Field>
   </div>
 </template>
 
 <script>
-  // import { extend, ValidationProvider } from 'vee-validate';
+  import { Field, ErrorMessage, defineRule } from 'vee-validate';
   // eslint-disable-next-line camelcase
-  import { alpha_num } from 'vee-validate';
+  import { alpha_num } from '@vee-validate/rules';
   import debounce from 'lodash.debounce';
 
-  // extend('alpha_num', alpha_num);
+  defineRule('alpha_num', alpha_num);
 
   export default {
     name: 'IdInput',
-    // components: {
-    //   ValidationProvider,
-    // },
+    components: {
+      Field,
+      ErrorMessage,
+    },
     props: {
       label: String,
       value: String,
@@ -108,23 +111,23 @@ limitations under the License.
         document.activeElement.blur();
         this.nextFocusEl?.focus();
       },
-      validateOnChange: debounce(function validate(val) {
-        if (this.$refs.idVp) {
-          this.$refs.idVp.syncValue(val);
-          this.$refs.idVp.validate().then((validationResult) => {
-            if (this.$refs.idVp) {
-              this.$refs.idVp.applyResult(validationResult);
-            }
-          });
-        }
-      }, 200),
+      // validateOnChange: debounce(function validate(val) {
+      //   if (this.$refs.idVp) {
+      //     this.$refs.idVp.syncValue(val);
+      //     this.$refs.idVp.validate().then((validationResult) => {
+      //       if (this.$refs.idVp) {
+      //         this.$refs.idVp.applyResult(validationResult);
+      //       }
+      //     });
+      //   }
+      // }, 200),
     },
     watch: {
       value(newVal) {
         this.internalValue = newVal;
       },
       internalValue(newVal) {
-        this.validateOnChange(newVal);
+        // this.validateOnChange(newVal);
       },
     },
   };

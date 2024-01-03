@@ -15,7 +15,7 @@ limitations under the License.
 */
 <template>
 <!--  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
-  <Form @submit="updateProject">
+  <Form @submit="updateProject" v-slot="{ errors }">
     <b-modal :id="internalProject.projectId"
               :title="title"
               @hide="publishHidden"
@@ -65,7 +65,8 @@ limitations under the License.
                       @hidden="tooltipShowing=false"/>
           </div>
         </div>
-        <div v-if="showManageUserCommunity" class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
+<!--        v-if="showManageUserCommunity"-->
+        <div class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
           <div v-if="isCopyAndCommunityProtected">
             <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Copying project whose access is restricted to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only and <b>cannot</b> be lifted/disabled
           </div>
@@ -77,10 +78,10 @@ limitations under the License.
             <Form>
               <div class="row">
                 <div class="col-lg">
-                  <Field rules="projectCommunityRequirements" name="Failed Minimum Requirement" v-slot="{ field }">
+                  <Field rules="projectCommunityRequirements" name="Failed Minimum Requirement" v-slot="{ field }" type="checkbox" :value="internalProject.enableProtectedUserCommunity">
                     <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity" v-bind="field"
-                                     @change="userCommunityChanged"
                                      name="check-button" inline switch data-cy="restrictCommunity">
+<!--                                                           @change="userCommunityChanged" -->
                       Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only
                     </b-form-checkbox>
 
@@ -111,6 +112,7 @@ limitations under the License.
               <Field rules="maxDescriptionLength|customProjectDescriptionValidator" v-slot="{ field }" name="Project Description">
                 <markdown-editor v-if="!isEdit || descriptionLoaded"
                                  v-model="internalProject.description"
+                                 v-bind="field"
                                  :project-id="internalProject.projectId"
                                  :allow-attachments="isEdit || !showManageUserCommunity"
                                  @input="updateDescription" />
@@ -273,18 +275,18 @@ limitations under the License.
         });
       },
       startLoadingFromState() {
-        // this.loadComponentState(this.componentName).then((result) => {
-        //   if (result) {
-        //     if (!this.isEdit || (this.isEdit && result.originalProjectId === this.originalProject.projectId)) {
-        //       this.internalProject = result;
-        //       this.restoredFromStorage = true;
-        //     } else {
-        //       Object.assign(this.internalProject, this.originalProject);
-        //     }
-        //   } else {
-        //     Object.assign(this.internalProject, this.originalProject);
-        //   }
-        // }).finally(() => {
+        this.loadComponentState(this.componentName).then((result) => {
+          if (result) {
+            if (!this.isEdit || (this.isEdit && result.originalProjectId === this.originalProject.projectId)) {
+              this.internalProject = result;
+              this.restoredFromStorage = true;
+            } else {
+              Object.assign(this.internalProject, this.originalProject);
+            }
+          } else {
+            Object.assign(this.internalProject, this.originalProject);
+          }
+        }).finally(() => {
           this.loadingComponent = false;
           this.descriptionLoaded = true;
           if (this.isEdit) {
@@ -297,7 +299,7 @@ limitations under the License.
               });
             }, 600);
           }
-        // });
+        });
       },
       trackFocus() {
         this.previousFocus = this.currentFocus;
