@@ -17,13 +17,13 @@ import { defineRule, configure } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
 import { localize } from '@vee-validate/i18n';
 import ValidatorFactory from '@/common-components/validators/ValidatorFactory';
-// import '@/common-components/validators/CustomDescriptionValidator';
-// import './OptionalNumericValidator';
-// import './CustomNameValidator';
-// import './IdValidator';
-// import './SkillIdValidator';
-// import './NotNullValidator';
-// import './UrlValidator';
+import '@/common-components/validators/CustomDescriptionValidator';
+import './OptionalNumericValidator';
+import './CustomNameValidator';
+import './IdValidator';
+import './SkillIdValidator';
+import './NotNullValidator';
+import './UrlValidator';
 import store from '../store/store';
 
 export default {
@@ -55,7 +55,7 @@ export default {
     defineRule('maxNumPerformToCompletion', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPerformToCompletion));
     defineRule('maxNumPointIncrementMaxOccurrences', ValidatorFactory.newMaxNumValidator(store.getters.config.maxNumPointIncrementMaxOccurrences));
 
-    // defineRule('userNoSpaceInUserIdInNonPkiMode', ValidatorFactory.newUserObjNoSpacesValidatorInNonPkiMode(store.getters.isPkiAuthenticated));
+    defineRule('userNoSpaceInUserIdInNonPkiMode', ValidatorFactory.newUserObjNoSpacesValidatorInNonPkiMode(store.getters.isPkiAuthenticated));
 
     defineRule('required', required);
     defineRule('email', email);

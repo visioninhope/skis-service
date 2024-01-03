@@ -117,12 +117,6 @@ limitations under the License.
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
 
-  // extend('required', {
-  //   ...required,
-  //   message: '{_field_} is required',
-  // });
-  // extend('email', email);
-
   export default {
     name: 'LoginForm',
     components: { Logo1, Field, Form, ErrorMessage },

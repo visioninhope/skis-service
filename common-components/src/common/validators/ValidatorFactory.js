@@ -41,15 +41,17 @@ export default {
     };
   },
   newUserObjNoSpacesValidatorInNonPkiMode(isPkiMode) {
-    return {
-      message: (field) => `${field} may not contain spaces`,
-      validate(value) {
+    return (value, params, field) => {
         if (isPkiMode || !value.userId) {
           return true;
         }
         const hasSpaces = value.userId.indexOf(' ') >= 0;
         return !hasSpaces;
-      },
+        if (!hasSpaces) {
+          return true;
+        } else {
+          return `${field.name} may not contain spaces`;
+        }
     };
   },
 };

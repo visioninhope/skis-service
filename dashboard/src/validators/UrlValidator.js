@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend } from 'vee-validate';
+import { defineRule } from 'vee-validate';
 import CustomValidatorService from './CustomValidatorsService';
 
-const validator = {
-  getMessage: (field, params, data) => `${field} - ${data.msg}.`,
-  validate(value) {
-    return CustomValidatorService.validateUrl(value).then((result) => result.valid);
-  },
+const validator = (value, params, field) => {
+  return CustomValidatorService.validateUrl(value).then((result) => {
+    if(result.valid) {
+      return result.valid;
+    }
+    else {
+      return `${field} ${result.msg}`
+    }
+  });
 };
 
-extend('customUrlValidator', validator);
+defineRule('customUrlValidator', validator);
 
 export default validator;

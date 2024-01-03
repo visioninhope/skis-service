@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend } from 'vee-validate';
+import { defineRule } from 'vee-validate';
 import store from '../../store/store';
 import DescriptionValidatorService from './DescriptionValidatorService';
 
-const validator = {
-  validate(value, args) {
+const validator = (value, params, field) => {
     if (!store.getters.config.paragraphValidationRegex) {
       return true;
     }
@@ -28,13 +27,12 @@ const validator = {
         return true;
       }
       if (result.msg) {
-        return `{_field_} - ${result.msg}.`;
+        return `${field.name} - ${result.msg}.`;
       }
-      return '{_field_} is invalid.';
+      return `${field.name} is invalid.`;
     });
-  },
 };
 
-extend('customDescriptionValidator', validator);
+defineRule('customDescriptionValidator', validator);
 
 export default validator;

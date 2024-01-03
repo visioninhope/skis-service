@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend } from 'vee-validate';
+import { defineRule } from 'vee-validate';
 
-const validator = {
-  message: (field) => `Null is not allowed for ${field}`,
-  validate(value) {
-    return !value || value.trim().toLowerCase() !== 'null';
-  },
+const validator = (value, params, field) => {
+  if(!value || value.trim().toLowerCase() !== 'null') {
+   return true;
+  } else {
+    return `Null is not allowed for ${field.name}`;
+  }
 };
 
-extend('nullValueNotAllowed', validator);
+defineRule('nullValueNotAllowed', validator);
 
 export default validator;

@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend } from 'vee-validate';
+import { defineRule } from 'vee-validate';
 import store from '../store/store';
 import CustomValidatorService from './CustomValidatorsService';
 
-const validator = {
-  message: (field) => `${field} - ${store.getters.config.nameValidationMessage}.`,
-  validate(value) {
+const validator = (value, params, field) => {
     if (!store.getters.config.nameValidationRegex) {
       return true;
     }
-
-    return CustomValidatorService.validateName(value).then((result) => result.valid);
-  },
+    return CustomValidatorService.validateName(value).then((result) => {
+      if(result.valid) {
+        return true;
+      } else {
+        return `${field.name} - ${store.getters.config.nameValidationMessage}.`;
+      }
+    });
 };
 
-extend('customNameValidator', validator);
+defineRule('customNameValidator', validator);
 
 export default validator;

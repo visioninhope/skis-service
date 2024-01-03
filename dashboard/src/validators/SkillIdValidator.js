@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { extend } from 'vee-validate';
+import { defineRule } from 'vee-validate';
 
 const wordCharOrPercentRegex = /^[\w%]+$/;
 
-const validator = {
-  message: (field) => `${field} may only contain alpha-numeric, underscore or percent characters`,
-  validate(value) {
+const validator = (value, params, field) => {
     const testValue = (val) => {
       const strValue = String(val);
 
@@ -29,14 +27,20 @@ const validator = {
       return true;
     };
 
+    let isValid = false;
     if (Array.isArray(value)) {
-      return value.every(testValue);
+      isValid = value.every(testValue);
+    } else {
+      isValid = testValue(value);
     }
 
-    return testValue(value);
-  },
+    if (isValid) {
+      return isValid;
+    } else {
+      return `${field.name} may only contain alpha-numeric, underscore or percent characters`;
+    }
 };
 
-extend('skill_id_validator', validator);
+defineRule('skill_id_validator', validator);
 
 export default validator;
