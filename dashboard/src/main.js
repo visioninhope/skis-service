@@ -88,9 +88,7 @@ import { setupNavGuards } from '@/router/RouterNavGuards'
 import { configureCompat } from 'vue'
 
 configureCompat({
-  MODE: 2,
-  ATTR_FALSE_VALUE: false,
-  CUSTOM_DIR: false,
+  MODE: 2
 });
 
 Vue.component('apexchart', VueApexCharts);
