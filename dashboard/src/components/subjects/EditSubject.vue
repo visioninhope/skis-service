@@ -73,12 +73,12 @@ limitations under the License.
                 </Field>
               </div>
 
-<!--              <help-url-input class="mt-3"-->
-<!--                              :next-focus-el="previousFocus"-->
-<!--                              @shown="tooltipShowing=true"-->
-<!--                              @hidden="tooltipShowing=false"-->
-<!--                              v-model="subjectInternal.helpUrl"-->
-<!--                              v-on:keydown.enter.native="handleSubmit(updateSubject)" />-->
+              <help-url-input class="mt-3"
+                              :next-focus-el="previousFocus"
+                              @shown="tooltipShowing=true"
+                              @hidden="tooltipShowing=false"
+                              v-model="subjectInternal.helpUrl"
+                              v-on:keydown.enter.native="updateSubject" />
 
               <p v-if="invalid && overallErrMsg" class="text-center text-danger" role="alert">***{{ overallErrMsg }}***</p>
           </div>

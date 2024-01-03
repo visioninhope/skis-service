@@ -22,7 +22,7 @@ const validator = (value, params, field) => {
       return result.valid;
     }
     else {
-      return `${field} ${result.msg}`
+      return `${field.name} ${result.msg}`
     }
   });
 };

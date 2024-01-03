@@ -23,8 +23,7 @@ limitations under the License.
                    @hidden="tooltipHidden"
                    msg="If project level 'Root Help Url' is specified then this path will be relative to 'Root Help Url'"/>
     </label>
-<!--      <ValidationProvider rules="help_url|customUrlValidator" v-slot="{errors}"-->
-<!--                          name="Help URL/Path">-->
+      <Field rules="help_url|customUrlValidator" v-slot="{field}" name="Help URL/Path">
           <b-input-group>
             <template #prepend v-if="projConfigRootHelpUrl">
               <b-input-group-text><i class="fas fa-cogs mr-1"></i>
@@ -41,39 +40,47 @@ limitations under the License.
 
               </b-input-group-text>
             </template>
-            <b-form-input
+            <input
+              class="form-control"
               id="skillHelpUrl"
               v-model="internalValue" data-cy="skillHelpUrl"
+              v-bind="field"
               aria-describedby="skillHelpUrlError"
-              aria-errormessage="skillHelpUrlError"
-              :aria-invalid="(errors && errors.length > 0)"></b-form-input>
+              aria-errormessage="skillHelpUrlError">
+<!--            :aria-invalid="(errors && errors.length > 0)"-->
           </b-input-group>
-        <small role="alert" class="form-text text-danger" id="skillHelpUrlError"
-               data-cy="skillHelpUrlError">{{ errors[0] }}</small>
-<!--      </ValidationProvider>-->
+        <small role="alert" class="form-text text-danger" id="skillHelpUrlError" data-cy="skillHelpUrlError">
+          <ErrorMessage name="Help URL/Path" />
+        </small>
+      </Field>
   </div>
 </template>
 
 <script>
-  // import { extend, ValidationProvider } from 'vee-validate';
+  import { Field, ErrorMessage, defineRule } from 'vee-validate';
   import ProjConfigMixin from '@/components/projects/ProjConfigMixin';
   import InlineHelp from './InlineHelp';
 
-  // extend('help_url', {
-  //   message: (field) => `${field} must use http://, https://, or be a relative url.`,
-  //   validate(value) {
-  //     if (!value) {
-  //       return true;
-  //     }
-  //     return value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
-  //   },
-  // });
+  defineRule('help_url', (value, params, field) => {
+    if (!value) {
+      return true;
+    }
+    const isValid = value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
+
+    if (!isValid) {
+      return `${field.name} must use http://, https://, or be a relative url.`;
+    } else {
+      return true;
+    }
+  });
 
   export default {
     name: 'HelpUrlInput',
     mixins: [ProjConfigMixin],
     components: {
       InlineHelp,
+      Field,
+      ErrorMessage,
     },
     props: {
       value: String,
