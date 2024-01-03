@@ -25,7 +25,7 @@ limitations under the License.
                        :options="userRole.options"
                        aria-label="Please select user's Role"
                        data-cy="userRoleSelector">
-          <template #first>
+          <template v-slot:first>
             <b-form-select-option :value="null" disabled>-- Please select user's Role --</b-form-select-option>
           </template>
         </b-form-select>

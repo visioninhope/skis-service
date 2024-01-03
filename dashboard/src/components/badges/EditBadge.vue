@@ -104,7 +104,7 @@ limitations under the License.
 <!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{errors}" name="Days">-->
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationDays"
-                             value="8" :disabled="!badgeInternal.timeLimitEnabled"
+                             :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              ref="timeLimitDays" data-cy="timeLimitDays"
                              v-on:keydown.enter="handleSubmit(updateBadge)"
@@ -122,7 +122,7 @@ limitations under the License.
 <!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{errors}" name="Hours">-->
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationHrs"
-                             value="8" :disabled="!badgeInternal.timeLimitEnabled"
+                             :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              ref="timeLimitHours" data-cy="timeLimitHours"
                              v-on:keydown.enter="handleSubmit(updateBadge)"
@@ -140,7 +140,7 @@ limitations under the License.
 <!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{errors}" name="Minutes">-->
                     <div class="input-group">
                       <input class="form-control d-inline"  type="text" v-model="badgeInternal.expirationMins"
-                             value="0" :disabled="!badgeInternal.timeLimitEnabled" ref="timeLimitMinutes" data-cy="timeLimitMinutes"
+                              :disabled="!badgeInternal.timeLimitEnabled" ref="timeLimitMinutes" data-cy="timeLimitMinutes"
                              v-on:keydown.enter="handleSubmit(updateBadge)"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              :aria-label="`time window minutes ${maxTimeLimitMessage}`"

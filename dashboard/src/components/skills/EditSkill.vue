@@ -142,7 +142,7 @@ limitations under the License.
 <!--                    <ValidationProvider rules="optionalNumeric|required|min_value:0|hoursMaxTimeWindow:@timeWindowMinutes|cantBe0IfMins0" vid="timeWindowHours" v-slot="{errors}" name="Hours">-->
                       <div class="input-group">
                         <input class="form-control d-inline" type="text" v-model="skillInternal.pointIncrementIntervalHrs"
-                               value="8" :disabled="!skillInternal.timeWindowEnabled"
+                               :disabled="!skillInternal.timeWindowEnabled"
                                :aria-required="skillInternal.timeWindowEnabled"
                                ref="timeWindowHours" data-cy="timeWindowHours"
                                v-on:keydown.enter="handleSubmit(saveSkill)"
@@ -160,7 +160,7 @@ limitations under the License.
 <!--                    <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeWindow:@timeWindowHours|cantBe0IfHours0" vid="timeWindowMinutes" v-slot="{errors}" name="Minutes">-->
                       <div class="input-group">
                         <input class="form-control d-inline"  type="text" v-model="skillInternal.pointIncrementIntervalMins"
-                               value="0" :disabled="!skillInternal.timeWindowEnabled" ref="timeWindowMinutes" data-cy="timeWindowMinutes"
+                               :disabled="!skillInternal.timeWindowEnabled" ref="timeWindowMinutes" data-cy="timeWindowMinutes"
                                v-on:keydown.enter="handleSubmit(saveSkill)"
                                :aria-required="skillInternal.timeWindowEnabled"
                                aria-label="time window minutes"
