@@ -89,6 +89,8 @@ import { configureCompat } from 'vue'
 
 configureCompat({
   MODE: 2,
+  ATTR_FALSE_VALUE: false,
+  CUSTOM_DIR: false,
 });
 
 Vue.component('apexchart', VueApexCharts);

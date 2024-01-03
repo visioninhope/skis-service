@@ -98,8 +98,10 @@ limitations under the License.
     },
     watch: {
       '$route.params.projectId': function projectIdParamUpdated() {
-        this.projectId = this.$route.params.projectId;
-        this.doLoadSubjects();
+        if (this.$route.params.projectId) {
+          this.projectId = this.$route.params.projectId;
+          this.doLoadSubjects();
+        }
       },
     },
     methods: {

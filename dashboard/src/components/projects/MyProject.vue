@@ -26,7 +26,9 @@ limitations under the License.
               role="link"
               :data-cy="`projCard_${projectInternal.projectId}_manageLink`">
               <b-avatar variant="info" icon="people-fill" class="text-uppercase avatar-link" aria-hidden="true">
-                {{ projectInternal.name.substring(0, 2) }}
+                <template v-slot:default>
+                  {{ projectInternal.name.substring(0, 2) }}
+                </template>
               </b-avatar>
               {{ projectInternal.name }}
             </router-link>

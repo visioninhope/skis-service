@@ -57,7 +57,7 @@ limitations under the License.
                   <a :href="href"
                      @click="(e) => { conditionalCollapse(); navigate(e); }"
                      :class="[isExactActive && 'text-light', !isExactActive && 'select-cursor', navItem.isDisabled && 'disabled', isActive && 'router-link-active', isExactActive && 'router-link-exact-active']"
-                     :aria-current="isExactActive ? 'page' : false">
+                     :aria-current="isExactActive ? 'page' : null">
                     <div class="text-truncate ml-3" :class="{'mr-4': !collapsed}" :aria-label="`Navigate to ${navItem.name} page`">
                       <i :class="navItem.iconClass" class="fas"
                          style="min-width: 1.7rem;" aria-hidden="true"/> <span v-if="!collapsed || smallScreenMode">{{ navItem.name }}</span>
