@@ -77,7 +77,7 @@ limitations under the License.
               </div>
               <div class="row">
                 <div class="col text-right">
-                  <button type="submit" class="btn btn-outline-primary float-right" tabindex="0" data-cy="login" :disabled="disabled">
+                  <button type="submit" class="btn btn-outline-primary float-right" tabindex="0" data-cy="login" :disabled="disabled || (errors && Object.keys(errors).length > 0)">
                     Login <i class="fas fa-arrow-circle-right"/>
                   </button>
                 </div>

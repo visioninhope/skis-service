@@ -47,11 +47,11 @@ limitations under the License.
 <!--    <ValidationProvider :rules="rules" v-slot="{ errors }" :debounce="500" :name="label" ref="idVp">-->
       <input type="text" class="form-control" id="idInput" v-model="internalValue" :disabled="!canEdit"
               @input="dataChanged" aria-required="true"
-              :aria-invalid="errors && errors.length > 0"
               aria-errormessage="idError"
               aria-describedby="idError"
              data-cy="idInputValue">
-      <small role="alert" class="form-text text-danger" data-cy="idError" id="idError">{{ errors[0]}}</small>
+    <!--              :aria-invalid="errors && errors.length > 0"-->
+<!--      <small role="alert" class="form-text text-danger" data-cy="idError" id="idError">{{ errors[0]}}</small>-->
 <!--    </ValidationProvider>-->
   </div>
 </template>

@@ -15,6 +15,7 @@ limitations under the License.
 */
 <template>
 <!--  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
+  <Form @submit="updateProject">
     <b-modal :id="internalProject.projectId"
               :title="title"
               @hide="publishHidden"
@@ -25,39 +26,43 @@ limitations under the License.
               header-text-variant="light" no-fade
               size="xl">
 
-      <skills-spinner :is-loading="loadingComponent"/>
+<!--      <skills-spinner :is-loading="loadingComponent"/>-->
 
       <b-container fluid v-if="!loadingComponent">
-        <ReloadMessage v-if="restoredFromStorage" @discard-changes="discardChanges" />
+<!--        <ReloadMessage v-if="restoredFromStorage" @discard-changes="discardChanges" />-->
         <div class="row">
           <div class="col-12">
             <div class="form-group">
               <label for="projectIdInput">* {{ nameLabelTxt }}</label>
-<!--              <ValidationProvider rules="required|minNameLength|maxProjectNameLength|uniqueName|customNameValidator|nullValueNotAllowed"-->
+<!--             uniqueName -->
+              <Field rules="required|minNameLength|maxProjectNameLength|customNameValidator|nullValueNotAllowed" name="Project Name" v-slot="{ field }">
 <!--                                  v-slot="{errors}"-->
 <!--                                  :debounce="250"-->
-<!--                                  name="Project Name">-->
                 <input class="form-control" type="text" v-model="internalProject.name"
                        v-on:input="updateProjectId"
-                       v-on:keydown.enter="handleSubmit(updateProject)"
+                       v-on:keydown.enter="updateProject"
+                       v-bind="field"
                        v-focus
                        data-cy="projectName"
                         id="projectIdInput"
-                      :aria-invalid="errors && errors.length > 0"
-                      aria-errormessage="projectNameError"
-                      aria-describedby="projectNameError"/>
-<!--                <small role="alert" class="form-text text-danger" data-cy="projectNameError" id="projectNameError">{{ errors[0] }}</small>-->
-<!--              </ValidationProvider>-->
+                       aria-errormessage="projectNameError"
+                       aria-describedby="projectNameError"/>
+<!--                      :aria-invalid="errors && errors.length > 0"-->
+
+                <small role="alert" class="form-text text-danger" data-cy="projectNameError" id="projectNameError">
+                  <ErrorMessage name="Project Name" />
+                </small>
+              </Field>
             </div>
           </div>
 
           <div class="col-12">
-<!--            <id-input type="text" :label="idLabelTxt" v-model="internalProject.projectId"-->
-<!--                      additional-validation-rules="uniqueId" @can-edit="canEditProjectId=$event"-->
-<!--                      v-on:keydown.enter.native="handleSubmit(updateProject)"-->
-<!--                      :next-focus-el="previousFocus"-->
-<!--                      @shown="tooltipShowing=true"-->
-<!--                      @hidden="tooltipShowing=false"/>-->
+            <id-input type="text" :label="idLabelTxt" v-model="internalProject.projectId"
+                      additional-validation-rules="uniqueId" @can-edit="canEditProjectId=$event"
+                      v-on:keydown.enter.native="updateProject"
+                      :next-focus-el="previousFocus"
+                      @shown="tooltipShowing=true"
+                      @hidden="tooltipShowing=false"/>
           </div>
         </div>
         <div v-if="showManageUserCommunity" class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
@@ -69,24 +74,24 @@ limitations under the License.
           </div>
           <div v-if="!isEditAndCommunityProtected && !isCopyAndCommunityProtected">
 <!--            <ValidationObserver v-slot="{ pending, invalid }">-->
+            <Form>
               <div class="row">
                 <div class="col-lg">
-<!--                  <ValidationProvider rules="projectCommunityRequirements"-->
-<!--                                      name="Failed Minimum Requirement" v-slot="{ errors }">-->
-<!--                    <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity"-->
-<!--                                     @change="userCommunityChanged"-->
-<!--                                     name="check-button" inline switch data-cy="restrictCommunity">-->
-<!--                      Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only-->
-<!--                    </b-form-checkbox>-->
+                  <Field rules="projectCommunityRequirements" name="Failed Minimum Requirement" v-slot="{ field }">
+                    <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity" v-bind="field"
+                                     @change="userCommunityChanged"
+                                     name="check-button" inline switch data-cy="restrictCommunity">
+                      Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only
+                    </b-form-checkbox>
 
                     <div v-if="invalid" class="alert alert-danger mb-3 mt-1" data-cy="communityValidationErrors" role="alert">
                       <div>
                         <i class="fas fa-exclamation-triangle text-danger mr-1" aria-hidden="true" />
                         <span>Unable to restrict access to {{ userCommunityRestrictedDescriptor }} users only:</span>
                       </div>
-<!--                      <span v-html="errors[0]"/>-->
+                      <ErrorMessage name="Failed Minimum Requirement" />
                     </div>
-<!--                  </ValidationProvider>-->
+                  </Field>
                 </div>
                 <div v-if="userCommunityDocsLink" class="col-lg-auto" data-cy="userCommunityDocsLink">
                   <a :href="userCommunityDocsLink" target="_blank" style="text-decoration: underline">{{ userCommunityDocsLabel }}</a>
@@ -98,42 +103,41 @@ limitations under the License.
                   <i class="fas fa-exclamation-triangle text-danger" aria-hidden="true" /> Please note that once the restriction is enabled it <b>cannot</b> be lifted/disabled.
                 </div>
               </div>
-<!--            </ValidationObserver>-->
+            </Form>
           </div>
         </div>
         <div class="row">
           <div class="mt-2 col-12">
-<!--              <ValidationProvider rules="maxDescriptionLength|customProjectDescriptionValidator" :debounce="250" v-slot="{errors}"-->
-<!--                                  name="Project Description">-->
-<!--                <markdown-editor v-if="!isEdit || descriptionLoaded"-->
-<!--                                 v-model="internalProject.description"-->
-<!--                                 :project-id="internalProject.projectId"-->
-<!--                                 :allow-attachments="isEdit || !showManageUserCommunity"-->
-<!--                                 @input="updateDescription" />-->
-<!--                <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">{{ errors[0] }}</small>-->
-<!--              </ValidationProvider>-->
+              <Field rules="maxDescriptionLength|customProjectDescriptionValidator" v-slot="{ field }" name="Project Description">
+                <markdown-editor v-if="!isEdit || descriptionLoaded"
+                                 v-model="internalProject.description"
+                                 :project-id="internalProject.projectId"
+                                 :allow-attachments="isEdit || !showManageUserCommunity"
+                                 @input="updateDescription" />
+                <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">
+                  <ErrorMessage name="Project Description" />
+                </small>
+              </Field>
           </div>
         </div>
 
         <p v-if="invalid && overallErrMsg" class="text-center text-danger mt-2" aria-live="polite"><small>***{{ overallErrMsg }}***</small></p>
       </b-container>
 
-<!--      <div slot="modal-footer" class="w-100">-->
-<!--        <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateProject)"-->
-<!--                  :disabled="invalid"-->
-<!--                  data-cy="saveProjectButton">-->
-<!--          <span>{{ saveBtnTxt }}</span>-->
-<!--        </b-button>-->
-<!--        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="closeProjectButton">-->
-<!--          Cancel-->
-<!--        </b-button>-->
-<!--      </div>-->
+      <div slot="modal-footer" class="w-100">
+        <b-button variant="success" size="sm" class="float-right" @click="updateProject" data-cy="saveProjectButton" :disabled="invalid">
+          <span>{{ saveBtnTxt }}</span>
+        </b-button>
+        <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="closeProjectButton">
+          Cancel
+        </b-button>
+      </div>
     </b-modal>
-<!--  </ValidationObserver>-->
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
   import DescriptionValidatorService from '@/common-components/validators/DescriptionValidatorService';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import CommunityLabelsMixin from '@/components/utils/CommunityLabelsMixin';
@@ -152,6 +156,9 @@ limitations under the License.
       MarkdownEditor,
       SkillsSpinner,
       ReloadMessage,
+      Form,
+      Field,
+      ErrorMessage,
     },
     mixins: [SaveComponentStateLocallyMixin, MsgBoxMixin, CommunityLabelsMixin],
     props: ['project', 'isEdit', 'value', 'isCopy'],
@@ -183,9 +190,9 @@ limitations under the License.
         restoredFromStorage: false,
       };
     },
-    // created() {
-    //   this.registerValidation();
-    // },
+    created() {
+      this.registerValidation();
+    },
     mounted() {
       this.internalProject.enableProtectedUserCommunity = this.isRestrictedUserCommunity(this.project.userCommunity);
       this.initialValueForEnableProtectedUserCommunity = this.internalProject.enableProtectedUserCommunity;
@@ -221,6 +228,9 @@ limitations under the License.
       componentName() {
         return `${this.$options.name}${this.isEdit ? 'Edit' : ''}`;
       },
+      invalid() {
+        return false;
+      }
     },
     watch: {
       show(newValue) {
@@ -228,14 +238,14 @@ limitations under the License.
       },
       internalProject: {
         handler(newValue) {
-          this.saveComponentState(this.componentName, newValue);
+          // this.saveComponentState(this.componentName, newValue);
         },
         deep: true,
       },
     },
     methods: {
       discardChanges(reload = false) {
-        this.clearComponentState(this.componentName);
+        // this.clearComponentState(this.componentName);
         if (reload) {
           this.restoredFromStorage = false;
           this.loadComponent();
@@ -263,18 +273,18 @@ limitations under the License.
         });
       },
       startLoadingFromState() {
-        this.loadComponentState(this.componentName).then((result) => {
-          if (result) {
-            if (!this.isEdit || (this.isEdit && result.originalProjectId === this.originalProject.projectId)) {
-              this.internalProject = result;
-              this.restoredFromStorage = true;
-            } else {
-              Object.assign(this.internalProject, this.originalProject);
-            }
-          } else {
-            Object.assign(this.internalProject, this.originalProject);
-          }
-        }).finally(() => {
+        // this.loadComponentState(this.componentName).then((result) => {
+        //   if (result) {
+        //     if (!this.isEdit || (this.isEdit && result.originalProjectId === this.originalProject.projectId)) {
+        //       this.internalProject = result;
+        //       this.restoredFromStorage = true;
+        //     } else {
+        //       Object.assign(this.internalProject, this.originalProject);
+        //     }
+        //   } else {
+        //     Object.assign(this.internalProject, this.originalProject);
+        //   }
+        // }).finally(() => {
           this.loadingComponent = false;
           this.descriptionLoaded = true;
           if (this.isEdit) {
@@ -287,7 +297,7 @@ limitations under the License.
               });
             }, 600);
           }
-        });
+        // });
       },
       trackFocus() {
         this.previousFocus = this.currentFocus;
@@ -297,7 +307,7 @@ limitations under the License.
         this.canEditProjectId = canEdit;
       },
       close(e) {
-        this.clearComponentState(this.componentName);
+        // this.clearComponentState(this.componentName);
         this.hideModal(e);
       },
       publishHidden(e) {
@@ -307,7 +317,7 @@ limitations under the License.
           this.msgConfirm('You have unsaved changes.  Discard?', 'Discard Changes?', 'Discard Changes', 'Continue Editing')
             .then((res) => {
               if (res) {
-                this.clearComponentState(this.componentName);
+                // this.clearComponentState(this.componentName);
                 this.hideModal(e);
                 this.$nextTick(() => this.$announcer.polite('Changes discarded'));
               } else {
@@ -317,7 +327,7 @@ limitations under the License.
         } else if (this.tooltipShowing && typeof e.preventDefault === 'function') {
           e.preventDefault();
         } else {
-          this.clearComponentState(this.componentName);
+          // this.clearComponentState(this.componentName);
           this.hideModal(e);
         }
       },
@@ -326,15 +336,15 @@ limitations under the License.
         this.$emit('hidden', e);
       },
       updateProject() {
-        this.$refs.observer.validate()
-          .then((res) => {
-            if (res) {
+        // this.$refs.observer.validate()
+        //   .then((res) => {
+        //     if (res) {
               this.publishHidden({ updated: true });
               this.internalProject.name = InputSanitizer.sanitize(this.internalProject.name);
               this.internalProject.projectId = InputSanitizer.sanitize(this.internalProject.projectId);
               this.$emit('project-saved', this.internalProject);
-            }
-          });
+          //   }
+          // });
       },
       updateProjectId() {
         if (!this.isEdit && !this.canEditProjectId) {
@@ -356,30 +366,34 @@ limitations under the License.
       },
       registerValidation() {
         const self = this;
-        extend('uniqueName', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueName', (value, params, field) => {
             if (self.isEdit && (self.originalProject.name === value || self.originalProject.name.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
               return true;
+            } else {
+              ProjectService.checkIfProjectNameExist(value).then((remoteRes) => {
+                if (remoteRes) {
+                  return `The value for the ${field.name} is already taken.`
+                } else {
+                  return true;
+                }
+              });
             }
-            return ProjectService.checkIfProjectNameExist(value)
-              .then((remoteRes) => !remoteRes);
-          },
         });
 
-        extend('uniqueId', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueId', (value, params, field) => {
             if (self.isEdit && self.originalProject.projectId === value) {
               return true;
             }
-            return ProjectService.checkIfProjectIdExist(value)
-              .then((remoteRes) => !remoteRes);
-          },
+            return ProjectService.checkIfProjectIdExist(value).then((remoteRes) => {
+              if (remoteRes) {
+                return `The value for the ${field.name} is already taken.`;
+              } else {
+                return true;
+              }
+            });
         });
 
-        extend('customProjectDescriptionValidator', {
-          validate(value) {
+        defineRule('customProjectDescriptionValidator', (value, params, field) => {
             if (!self.$store.getters.config.paragraphValidationRegex) {
               return true;
             }
@@ -389,15 +403,13 @@ limitations under the License.
                 return true;
               }
               if (result.msg) {
-                return `{_field_} - ${result.msg}.`;
+                return `${field.name} - ${result.msg}.`;
               }
-              return '{_field_} is invalid.';
+              return `${field.name} is invalid.`;
             });
-          },
         });
 
-        extend('projectCommunityRequirements', {
-          validate(value) {
+        defineRule('projectCommunityRequirements', (value, params, field) => {
             if (!value || !self.isEdit) {
               return true;
             }
@@ -409,9 +421,8 @@ limitations under the License.
               if (result.unmetRequirements) {
                 return `<ul><li>${result.unmetRequirements.join('</li><li>')}</li></ul>`;
               }
-              return '{_field_} is invalid.';
+              return `${field.name} is invalid.`;
             });
-          },
         });
       },
     },

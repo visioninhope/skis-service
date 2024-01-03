@@ -18,7 +18,7 @@ import NumConvertUtil from './NumConvertUtil';
 export default {
   newCharLengthValidator(maxLength) {
     return (value, params, field) => {
-      if (value.length > NumConvertUtil.toInt(maxLength)) {
+      if (value && value.length > NumConvertUtil.toInt(maxLength)) {
         return `${field.name} cannot exceed ${maxLength} characters.`;
       }
       return true;
@@ -26,7 +26,7 @@ export default {
   },
   newCharMinLengthValidator(minLength) {
     return (value, params, field) => {
-      if (value.length < NumConvertUtil.toInt(minLength)) {
+      if (value && value.length < NumConvertUtil.toInt(minLength)) {
         return `${field.name} cannot be less than ${minLength} characters.`;
       }
       return true;
@@ -34,7 +34,7 @@ export default {
   },
   newMaxNumValidator(maxNum) {
     return (value, params, field) => {
-      if (NumConvertUtil.toInt(value) > NumConvertUtil.toInt(maxNum)) {
+      if (value && NumConvertUtil.toInt(value) > NumConvertUtil.toInt(maxNum)) {
         return `${field.name} cannot exceed ${maxNum}.`;
       }
       return true;
