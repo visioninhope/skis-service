@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+  <Form ref="observer" @submit="updateSubject" v-slot="{ errors }" slim>
     <b-modal :id="subjectInternal.subjectId" size="xl" :title="title" v-model="show"
              :no-close-on-backdrop="true"
              :centered="true"
@@ -26,7 +26,7 @@ limitations under the License.
         <skills-spinner :is-loading="loadingComponent"/>
 
         <b-container fluid v-if="!loadingComponent">
-          <ReloadMessage v-if="restoredFromStorage" @discard-changes="discardChanges" />
+<!--          <ReloadMessage v-if="restoredFromStorage" @discard-changes="discardChanges" />-->
           <div v-if="displayIconManager === false">
               <div class="media mb-3">
                 <icon-picker :startIcon="subjectInternal.iconClass" @select-icon="toggleIconDisplay(true)"
@@ -34,47 +34,51 @@ limitations under the License.
                 <div class="media-body">
                   <div class="form-group">
                     <label for="subjName">Subject Name</label>
-<!--                    <ValidationProvider-->
-<!--                      rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250"-->
-<!--                      v-slot="{ errors }" name="Subject Name">-->
+                    <Field rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" name="Subject Name" v-slot="{ field }">
                       <input type="text" class="form-control" id="subjName" @input="updateSubjectId"
                              v-model="subjectInternal.name" v-on:input="updateSubjectId"
-                             v-on:keydown.enter="handleSubmit(updateSubject)"
+                             v-on:keydown.enter="updateSubject"
                              v-focus aria-required="true"
-                             :aria-invalid="errors && errors.length > 0"
+                             v-bind="field"
                              aria-errormessage="subjectNameError"
                              aria-describedby="subjectNameError"
+                             :aria-invalid="errors && Object.keys(errors).length > 0"
                              data-cy="subjectNameInput">
-                      <small role="alert" class="form-text text-danger" data-cy="subjectNameError" id="subjectNameError">{{errors[0]}}</small>
-<!--                    </ValidationProvider>-->
+                      <small role="alert" class="form-text text-danger" data-cy="subjectNameError" id="subjectNameError">
+                        <ErrorMessage name="Subject Name" />
+                      </small>
+                    </Field>
                   </div>
                 </div>
               </div>
 
               <id-input type="text" label="Subject ID" v-model="subjectInternal.subjectId" @can-edit="canAutoGenerateId=!$event"
-                        v-on:keydown.enter.native="handleSubmit(updateSubject)" additional-validation-rules="uniqueId"
+                        v-on:keydown.enter.native="updateSubject" additional-validation-rules="uniqueId"
                         :next-focus-el="previousFocus"
                         @shown="tooltipShowing=true"
                         @hidden="tooltipShowing=false"/>
 
               <div class="mt-3">
-<!--                <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ errors }" name="Subject Description">-->
+                <Field rules="maxDescriptionLength|customDescriptionValidator" name="Subject Description">
                   <markdown-editor v-model="subjectInternal.description"
                                    :project-id="subjectInternal.projectId"
                                    :skill-id="isEdit ? subjectInternal.subjectId : null"
                                    aria-errormessage="subjectDescError"
-                                   aria-describedby="subjectDescError"
-                                   :aria-invalid="errors && errors.length > 0"/>
-                  <small role="alert" id="subjectDescError" class="form-text text-danger" data-cy="subjectDescError">{{ errors[0] }}</small>
-<!--                </ValidationProvider>-->
+                                   :aria-invalid="errors && Object.keys(errors).length > 0"
+                                   aria-describedby="subjectDescError" />
+
+                  <small role="alert" id="subjectDescError" class="form-text text-danger" data-cy="subjectDescError">
+                    <ErrorMessage name="Subject Description" />
+                  </small>
+                </Field>
               </div>
 
-              <help-url-input class="mt-3"
-                              :next-focus-el="previousFocus"
-                              @shown="tooltipShowing=true"
-                              @hidden="tooltipShowing=false"
-                              v-model="subjectInternal.helpUrl"
-                              v-on:keydown.enter.native="handleSubmit(updateSubject)" />
+<!--              <help-url-input class="mt-3"-->
+<!--                              :next-focus-el="previousFocus"-->
+<!--                              @shown="tooltipShowing=true"-->
+<!--                              @hidden="tooltipShowing=false"-->
+<!--                              v-model="subjectInternal.helpUrl"-->
+<!--                              v-on:keydown.enter.native="handleSubmit(updateSubject)" />-->
 
               <p v-if="invalid && overallErrMsg" class="text-center text-danger" role="alert">***{{ overallErrMsg }}***</p>
           </div>
@@ -92,7 +96,7 @@ limitations under the License.
           <b-button variant="success"
                     size="sm"
                     class="float-right"
-                    @click="handleSubmit(updateSubject)"
+                    @click="updateSubject"
                     :disabled="invalid"
                     data-cy="saveSubjectButton">
             Save
@@ -104,11 +108,11 @@ limitations under the License.
       </div>
       </template>
     </b-modal>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { Form, Field, ErrorMessage, defineRule } from 'vee-validate';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import MsgBoxMixin from '@/components/utils/modal/MsgBoxMixin';
   import SkillsSpinner from '@/components/utils/SkillsSpinner';
@@ -124,6 +128,9 @@ limitations under the License.
     name: 'EditSubject',
     mixins: [SaveComponentStateLocallyMixin, MsgBoxMixin],
     components: {
+      Form,
+      Field,
+      ErrorMessage,
       HelpUrlInput,
       IdInput,
       IconPicker,
@@ -164,9 +171,9 @@ limitations under the License.
         restoredFromStorage: false,
       };
     },
-    // created() {
-    //   this.assignCustomValidation();
-    // },
+    created() {
+      this.assignCustomValidation();
+    },
     mounted() {
       document.addEventListener('focusin', this.trackFocus);
       this.loadComponent();
@@ -188,6 +195,9 @@ limitations under the License.
       },
       componentName() {
         return `${this.subjectInternal.projectId}-${this.$options.name}${this.isEdit ? 'Edit' : ''}`;
+      },
+      invalid() {
+        return false;
       },
     },
     methods: {
@@ -295,34 +305,40 @@ limitations under the License.
         // only want to validate for a new subject, existing subjects will override
         // name and subject id
         const self = this;
-        extend('uniqueName', {
-          message: (field) => `${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueName', (value, params, field) => {
             if (value === self.subject.name || (value && value.localeCompare(self.subject.name, 'en', { sensitivity: 'base' }) === 0)) {
               return true;
             }
-            return SubjectsService.subjectWithNameExists(self.subjectInternal.projectId, value);
-          },
+            const isValid = SubjectsService.subjectWithNameExists(self.subjectInternal.projectId, value);
+            if (!isValid) {
+              return `${field.name} is already taken.`;
+            } else {
+              return true;
+            }
         });
 
-        extend('uniqueId', {
-          message: (field) => `${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueId', (value, params, field) => {
             if (value === self.subject.subjectId) {
               return true;
             }
-            return SubjectsService.subjectWithIdExists(self.subjectInternal.projectId, value);
-          },
+            const isValid = SubjectsService.subjectWithIdExists(self.subjectInternal.projectId, value);
+            if (!isValid) {
+              return `${field.name} is already taken.`;
+            } else {
+              return true;
+            }
         });
 
-        extend('help_url', {
-          message: (field) => `${field} must start with "/" or "http(s)"`,
-          validate(value) {
+        defineRule('help_url', (value, params, field) => {
             if (!value) {
               return true;
             }
-            return value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
-          },
+            const isValid = value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
+            if (!isValid) {
+              return `${field.name} must start with "/" or "http(s)"`;
+            } else {
+              return true;
+            }
         });
       },
     },
