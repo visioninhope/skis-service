@@ -65,8 +65,7 @@ limitations under the License.
                       @hidden="tooltipShowing=false"/>
           </div>
         </div>
-<!--        v-if="showManageUserCommunity"-->
-        <div class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
+        <div v-if="showManageUserCommunity" class="border rounded p-2 mt-3 mb-2" data-cy="restrictCommunityControls">
           <div v-if="isCopyAndCommunityProtected">
             <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Copying project whose access is restricted to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only and <b>cannot</b> be lifted/disabled
           </div>
