@@ -226,5 +226,9 @@ $mark-padding: 0px;
   box-shadow: $info 0px 5px 5px;
 }
 
-
+// some browser plugins break overlay modals
+// when running in dev server - this is a workaround
+iframe#webpack-dev-server-client-overlay {
+  display: none !important
+}
 
