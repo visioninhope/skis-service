@@ -40,8 +40,8 @@ import {
   localize, ValidationProvider, ValidationObserver, setInteractionMode,
 } from 'vee-validate';
 import en from 'vee-validate/dist/locale/en.json';
-import FiltersPlugin from '@/common-components/filter/FiltersPlugin';
-import TimeDurationFilter from '@/common-components/filter/TimeDurationFilter';
+// import FiltersPlugin from '@/common-components/filter/FiltersPlugin';
+// import TimeDurationFilter from '@/common-components/filter/TimeDurationFilter';
 import '@/common-components/filter/ByteFilter';
 import App from '@/App';
 import router from '@/router';
@@ -69,11 +69,11 @@ Vue.use(TooltipPlugin);
 Vue.use(FormTextareaPlugin);
 Vue.use(CardPlugin);
 Vue.use(OverlayPlugin);
-Vue.use(FiltersPlugin);
+// Vue.use(FiltersPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(LinkPlugin);
 Vue.use(FormCheckboxPlugin);
-Vue.use(TimeDurationFilter);
+// Vue.use(TimeDurationFilter);
 Vue.use(VueAnnouncer);
 Vue.use(FormRatingPlugin);
 

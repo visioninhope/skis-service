@@ -46,12 +46,10 @@ export default {
           return true;
         }
         const hasSpaces = value.userId.indexOf(' ') >= 0;
-        return !hasSpaces;
         if (!hasSpaces) {
           return true;
-        } else {
-          return `${field.name} may not contain spaces`;
         }
+        return `${field.name} may not contain spaces`;
     };
   },
 };

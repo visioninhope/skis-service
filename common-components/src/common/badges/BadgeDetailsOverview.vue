@@ -105,8 +105,8 @@ limitations under the License.
 <script>
   import ProgressBar from 'vue-simple-progress';
   import dayjs from 'dayjs';
-  import MarkdownText from '../utilities/MarkdownText';
   import timeDuration from '@/common-components/filter/FormatDurationFilter';
+  import MarkdownText from '../utilities/MarkdownText';
 
   export default {
     name: 'BadgeDetailsOverview',
