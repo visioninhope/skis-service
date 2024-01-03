@@ -17,6 +17,7 @@ limitations under the License.
   import {
     get, set, del,
   } from 'idb-keyval';
+  import { isProxy, toRaw } from 'vue';
 
   export default {
     name: 'SaveComponentStateLocallyMixin',
@@ -28,7 +29,11 @@ limitations under the License.
     },
     methods: {
       saveComponentState(key, data) {
-        set(key, data);
+        let dataToSave = data;
+        if (isProxy(dataToSave)) {
+          dataToSave = toRaw(dataToSave);
+        }
+        set(key, dataToSave);
       },
       loadComponentState(key) {
         return get(key);

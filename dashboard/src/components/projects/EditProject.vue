@@ -239,14 +239,14 @@ limitations under the License.
       },
       internalProject: {
         handler(newValue) {
-          // this.saveComponentState(this.componentName, newValue);
+          this.saveComponentState(this.componentName, newValue);
         },
         deep: true,
       },
     },
     methods: {
       discardChanges(reload = false) {
-        // this.clearComponentState(this.componentName);
+        this.clearComponentState(this.componentName);
         if (reload) {
           this.restoredFromStorage = false;
           this.loadComponent();
@@ -308,7 +308,7 @@ limitations under the License.
         this.canEditProjectId = canEdit;
       },
       close(e) {
-        // this.clearComponentState(this.componentName);
+        this.clearComponentState(this.componentName);
         this.hideModal(e);
       },
       publishHidden(e) {
@@ -318,7 +318,7 @@ limitations under the License.
           this.msgConfirm('You have unsaved changes.  Discard?', 'Discard Changes?', 'Discard Changes', 'Continue Editing')
             .then((res) => {
               if (res) {
-                // this.clearComponentState(this.componentName);
+                this.clearComponentState(this.componentName);
                 this.hideModal(e);
                 this.$nextTick(() => this.$announcer.polite('Changes discarded'));
               } else {
@@ -328,7 +328,7 @@ limitations under the License.
         } else if (this.tooltipShowing && typeof e.preventDefault === 'function') {
           e.preventDefault();
         } else {
-          // this.clearComponentState(this.componentName);
+          this.clearComponentState(this.componentName);
           this.hideModal(e);
         }
       },
