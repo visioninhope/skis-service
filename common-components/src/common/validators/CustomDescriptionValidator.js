@@ -21,7 +21,7 @@ const validator = (value, params, field) => {
     if (!store.getters.config.paragraphValidationRegex) {
       return true;
     }
-    const enableProjectIdParam = !(args && args.length > 0 && args[0] === 'false');
+    const enableProjectIdParam = !(params && params.length > 0 && params[0] === 'false');
     return DescriptionValidatorService.validateDescription(value, enableProjectIdParam).then((result) => {
       if (result.valid) {
         return true;

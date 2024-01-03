@@ -66,8 +66,13 @@ let optimization = {
         test: /[\\/]node_modules[\\/]/,
         priority: 20,
         name(module) {
-          const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-          return `npm.${packageName.replace('@', '')}`;
+          const packageMatch = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+          let res = module.context;
+          if (packageMatch && packageMatch.length > 0) {
+            const packageName = packageMatch[1];
+            res = `npm.${packageName.replace('@', '')}`;
+          }
+          return res;
         },
       },
       common: {
