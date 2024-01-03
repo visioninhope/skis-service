@@ -156,7 +156,6 @@ limitations under the License.
     if (value) {
       const scriptTags = value.match(scriptRegex);
       if (scriptTags) {
-        console.log("Script tags found");
         return errorMessage;
       } else {
         return true;
