@@ -14,64 +14,78 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, pristine}" slim>
+  <Form ref="observer" v-slot="{errors}" slim>
     <div>
           <div class="form-group">
             <label class="label" for="publicUrl">* Public URL <InlineHelp target-id="publicUrlHelp" msg="Because it is possible for the SkillTree dashboard
             to be deployed behind a load balancer or proxy, it is necessary to configure the public url so that email
             based communications from the system can provide valid links back to the SkillTree dashboard."/></label>
-<!--            <ValidationProvider rules="required" name="Public URL" v-slot="{ errors }" :debounce=500>-->
+            <Field rules="required" name="Public URL" v-slot="{ field }" :debounce=500>
               <input class="form-control" type="text" v-model="emailInfo.publicUrl" name="publicUrl"
                      data-cy="publicUrlInput" aria-required="true"
                     id="publicUrl"
-                    :aria-invalid="errors && errors.length > 0"
+                     v-bind="field"
+                    :aria-invalid="errors && Object.keys(errors).length > 0"
                     aria-errormessage="publicUrlError" aria-describedby="publicUrlError"/>
-              <p role="alert" class="text-danger" v-show="errors[0]" id="publicUrlError" data-cy="publicUrlError">{{errors[0]}}</p>
-<!--            </ValidationProvider>-->
+              <p role="alert" class="text-danger" v-show="errors[0]" id="publicUrlError" data-cy="publicUrlError">
+                <ErrorMessage name="Public URL" />
+              </p>
+            </Field>
           </div>
           <div class="form-group">
             <label class="label" for="fromEmail">* From Email <InlineHelp target-id="fromEmailHelp" msg="The From email address used in all email originating from the SkillTree application"/></label>
-<!--            <ValidationProvider :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ errors }" :debounce=500>-->
+            <Field :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ field }" :debounce=500>
               <input class="form-control" type="text" v-model="emailInfo.fromEmail" name="fromEmail"
                      data-cy="fromEmailInput" id="fromEmail"
-                    :aria-invalid="errors && errors.length  > 0"
+                     v-bind="field"
+                    :aria-invalid="errors && Object.keys(errors).length  > 0"
                     aria-errormessage="fromEmailError" aria-describedby="fromEmailError"/>
-              <p role="alert" class="text-danger" v-show="errors[0]" data-cy="fromEmailError" id="fromEmailError">{{errors[0]}}</p>
-<!--            </ValidationProvider>-->
+              <p role="alert" class="text-danger" v-show="errors[0]" data-cy="fromEmailError" id="fromEmailError">
+                <ErrorMessage name="From Email" />
+              </p>
+            </Field>
           </div>
       <div class="form-group">
         <label class="label" for="emailHost">* Host</label>
-<!--        <ValidationProvider name="Host" :debounce=500 v-slot="{errors}" rules="required">-->
+        <Field name="Host" :debounce=500 v-slot="{field}" rules="required">
           <input class="form-control" type="text" v-model="emailInfo.host" name="host"
                  data-cy="hostInput" aria-required="true"
-                  :aria-invalid="errors && errors.length > 0"
+                 v-bind="field"
+                  :aria-invalid="errors && Object.keys(errors).length > 0"
                   aria-errormessage="hostError" aria-describedby="hostError"
                   id="emailHost"/>
-          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="hostError" id="hostError">{{errors[0]}}</p>
-<!--        </ValidationProvider>-->
+          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="hostError" id="hostError">
+            <ErrorMessage name="Host" />
+          </p>
+        </Field>
       </div>
       <div class="form-group">
         <label class="label" for="emailPort">* Port</label>
-<!--        <ValidationProvider name="Port" :debounce=500 v-slot="{errors}" rules="required|min_value:1|max_value:65535">-->
+        <Field name="Port" :debounce=500 v-slot="{field}" rules="required|min_value:1|max_value:65535">
           <input class="form-control" type="text" v-model="emailInfo.port" name="port"
                  data-cy="portInput" aria-required="true"
-                  :aria-invalid="errors && errors.length > 0"
+                 v-bind="field"
+                  :aria-invalid="errors && Object.keys(errors).length > 0"
                   aria-errormessage="portError" aria-describedby="portError"
                   id="emailPort"/>
-          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="portError" id="portError">{{errors[0] }}</p>
-<!--        </ValidationProvider>-->
+          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="portError" id="portError">
+            <ErrorMessage name="Port" />
+          </p>
+        </Field>
       </div>
       <div class="form-group">
         <label class="label" for="emailProtocol">* Protocol</label>
-<!--        <ValidationProvider name="Protocol" :debounce=500 v-slot="{errors}" rules="required">-->
+        <Field name="Protocol" :debounce=500 v-slot="{field}" rules="required">
           <input class="form-control" type="text" v-model="emailInfo.protocol" name="protocol"
                  data-cy="protocolInput" aria-required="true"
-                  :aria-invalid="errors && errors.length > 0"
+                 v-bind="field"
+                  :aria-invalid="errors && Object.keys(errors).length > 0"
                   aria-errormessage="protocolError" aria-describedby="protocolError"
                   id="emailProtocol"/>
-          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="protocolError" id="protocolError">{{
-            errors[0] }}</p>
-<!--        </ValidationProvider>-->
+          <p role="alert" class="text-danger" v-show="errors[0]" data-cy="protocolError" id="protocolError">
+            <ErrorMessage name="Protocol" />
+          </p>
+        </Field>
       </div>
       <div class="form-group">
         <b-form-checkbox v-model="emailInfo.tlsEnabled" switch data-cy="tlsSwitch">
@@ -86,25 +100,31 @@ limitations under the License.
       <div id="auth-div" v-if="emailInfo.authEnabled">
         <div class="form-group">
           <label class="label" for="emailUsername">* Username</label>
-<!--          <ValidationProvider name="Username" :debounce=500 v-slot="{errors}" rules="required">-->
+          <Field name="Username" :debounce=500 v-slot="{field}" rules="required">
             <input class="form-control" type="text" v-model="emailInfo.username" name="username"
                    data-cy="emailUsername" aria-required="true"
-                   :aria-invalid="errors && errors.length > 0"
+                   v-bind="field"
+                   :aria-invalid="errors && Object.keys(errors).length > 0"
                     aria-errormessage="emailUsernameError" aria-describedby="emailUsernameError"
                     id="emailUsername"/>
-            <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailUsernameError" id="emailUsernameError">{{errors[0]}}</p>
-<!--          </ValidationProvider>-->
+            <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailUsernameError" id="emailUsernameError">
+              <ErrorMessage name="Username" />
+            </p>
+          </Field>
         </div>
         <div class="form-group">
           <label class="label" for="emailPassword">* Password</label>
-<!--          <ValidationProvider name="Password" :debounce=500 v-slot="{errors}" rules="required">-->
+          <Field name="Password" :debounce=500 v-slot="{field}" rules="required">
             <input class="form-control" type="text" v-model="emailInfo.password" name="password"
                    data-cy="emailPassword" aria-required="true"
-                    :aria-invalid="errors && errors.length > 0"
+                   v-bind="field"
+                    :aria-invalid="errors && Object.keys(errors).length > 0"
                     aria-errormessage="emailPasswordError" aria-describedby="emailPasswordError"
                     id="emailPassword"/>
-            <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailPasswordError" id="emailPasswordError">{{errors[0]}}</p>
-<!--          </ValidationProvider>-->
+            <p role="alert" class="text-danger" v-show="errors[0]" data-cy="emailPasswordError" id="emailPasswordError">
+              <ErrorMessage name="Password" />
+            </p>
+          </Field>
         </div>
       </div>
 
@@ -126,23 +146,25 @@ limitations under the License.
         </button>
       </div>
     </div>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  // import { extend } from 'vee-validate';
+  import { defineRule } from 'vee-validate';
   // eslint-disable-next-line camelcase
-  // import { min_value, max_value } from 'vee-validate';
+  import { min_value, max_value } from '@vee-validate/rules';
   import SettingsService from './SettingsService';
   import ToastSupport from '../utils/ToastSupport';
   import InlineHelp from '../utils/InlineHelp';
 
-  // extend('min_value', {
+  defineRule('min_value', min_value);
+  defineRule('max_value', max_value);
+  // defineRule('min_value', {
   //   // eslint-disable-next-line camelcase
   //   ...min_value,
   //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.min} or greater`,
   // });
-  // extend('max_value', {
+  // defineRule('max_value', {
   //   // eslint-disable-next-line camelcase
   //   ...max_value,
   //   message: (fieldname, placeholders) => `${fieldname} must be ${placeholders.max} or less`,
@@ -192,6 +214,9 @@ limitations under the License.
         }
 
         return ['fa fa-question-circle'];
+      },
+      invalid() {
+        return false;
       },
     },
     methods: {

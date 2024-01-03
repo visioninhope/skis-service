@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="templateSettingsObserver" v-slot="{invalid, pristine}" slim>
+  <Field ref="templateSettingsObserver" v-slot="{errors}" slim>
     <div>
       <div class="form-group">
         <b-tabs class="h-100">
@@ -28,16 +28,19 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ errors }">-->
+              <Field :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ field }">
                 <textarea class="form-control" name="htmlEmailHeader" data-cy="htmlEmailHeader" rows="3" v-model="htmlHeader"
                           id="htmlEmailHeader"
-                          :aria-invalid="errors && errors.length > 0"
+                          v-bind="field"
+                          :aria-invalid="errors && Object.keys(errors).length > 0"
                           aria-errormessage="htmlEmailHeaderError" aria-describedby="htmlEmailHeaderError"/>
-                  <p role="alert" class="text-danger" v-show="errors[0]" data-cy="htmlEmailHeaderError" id="htmlEmailHeaderError">{{errors[0]}}</p>
+                  <p role="alert" class="text-danger" data-cy="htmlEmailHeaderError" id="htmlEmailHeaderError">
+                    <ErrorMessage name="HTML Header" />
+                  </p>
                   <p role="alert" class="text-danger"
-                     v-show="!errors[0] && htmlHeaderRequired && !htmlHeader"
+                     v-show="htmlHeaderRequired && !htmlHeader"
                      data-cy="htmlEmailHeaderRequired">HTML Header is required</p>
-<!--              </ValidationProvider>-->
+              </Field>
             </div>
           </b-tab>
           <b-tab>
@@ -50,16 +53,19 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ errors }">-->
+              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ field }">
                 <textarea class="form-control" name="plaintextEmailHeader" data-cy="plaintextEmailHeader" rows="3" v-model="plainTextHeader"
                           id="plaintextEmailHeader"
-                          :aria-invalid="errors && errors.length > 0"
+                          v-bind="field"
+                          :aria-invalid="errors && Object.keys(errors).length > 0"
                           aria-errormessage="plaintextEmailHeaderError" aria-describedby="plaintextEmailHeaderError"/>
-                  <p role="alert" class="text-danger" v-show="errors[0]" data-cy="plaintextEmailHeaderError" id="plaintextEmailHeaderError">{{errors[0]}}</p>
+                  <p role="alert" class="text-danger" data-cy="plaintextEmailHeaderError" id="plaintextEmailHeaderError">
+                    <ErrorMessage name="Plaintext Header" />
+                  </p>
                   <p role="alert" class="text-danger"
-                     v-show="!errors[0] && plaintextHeaderRequired && !plainTextHeader"
+                     v-show="plaintextHeaderRequired && !plainTextHeader"
                      data-cy="plaintextEmailHeaderRequired">Plaintext Header is required</p>
-<!--              </ValidationProvider>-->
+              </Field>
             </div>
           </b-tab>
         </b-tabs>
@@ -77,16 +83,19 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ errors }">-->
+              <Field :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ field }">
               <textarea class="form-control" name="htmlEmailFooter" data-cy="htmlEmailFooter" v-model="htmlFooter" rows="3"
                         id="htmlEmailFooter"
-                        :aria-invalid="errors && errors.length > 0"
+                        :aria-invalid="errors && Object.keys(errors).length > 0"
+                        v-bind="field"
                         aria-errormessage="htmlEmailFooterError" aria-describedby="htmlEmailFooterError"/>
-                <p role="alert" class="text-danger" v-show="errors[0]" data-cy="htmlEmailFooterError" id="htmlEmailFooterError">{{errors[0]}}</p>
+                <p role="alert" class="text-danger" data-cy="htmlEmailFooterError" id="htmlEmailFooterError">
+                  <ErrorMessage name="HTML Footer" />
+                </p>
                 <p role="alert" class="text-danger"
-                   v-show="!errors[0] && htmlFooterRequired && !htmlFooter"
+                   v-show="htmlFooterRequired && !htmlFooter"
                    data-cy="htmlEmailFooterRequired">HTML Footer is required</p>
-<!--              </ValidationProvider>-->
+              </Field>
             </div>
           </b-tab>
           <b-tab>
@@ -99,16 +108,19 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-<!--              <ValidationProvider :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ errors }">-->
+              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ field }">
               <textarea class="form-control" name="plaintextEmailFooter" data-cy="plaintextEmailFooter" v-model="plainTextFooter" rows="3"
                         id="plaintextEmailFooter"
-                        :aria-invalid="errors && errors.length > 0"
+                        v-bind="field"
+                        :aria-invalid="errors && Object.keys(errors).length > 0"
                         aria-errormessage="plaintextEmailFooterError" aria-describedby="plaintextEmailFooterError"/>
-                <p role="alert" class="text-danger" v-show="errors[0]" data-cy="plaintextEmailFooterError" id="plaintextEmailFooterError">{{errors[0]}}</p>
+                <p role="alert" class="text-danger" data-cy="plaintextEmailFooterError" id="plaintextEmailFooterError">
+                  <ErrorMessage name="Plaintext Footer" />
+                </p>
                 <p role="alert" class="text-danger"
-                   v-show="!errors[0] && plaintextFooterRequired && !plainTextFooter"
+                   v-show="plaintextFooterRequired && !plainTextFooter"
                    data-cy="plaintextEmailFooterRequired">Plaintext Footer is required</p>
-<!--              </ValidationProvider>-->
+              </Field>
             </div>
           </b-tab>
         </b-tabs>
@@ -118,36 +130,40 @@ limitations under the License.
         <button class="btn btn-outline-success"
                 type="button"
                 v-on:click="saveTemplateSettings"
-                :disabled="invalid || pristine || isSaving"
+                :disabled="invalid || isSaving"
                 data-cy="emailTemplateSettingsSave">
           Save
           <i :class="[isSaving ? 'fa fa-circle-notch fa-spin fa-3x-fa-fw' : 'fas fa-arrow-circle-right']"></i>
         </button>
       </div>
     </div>
-  </ValidationObserver>
+  </Field>
 </template>
 
 <script>
-  // import { extend } from 'vee-validate';
-  // import { max, required } from 'vee-validate';
+  import { defineRule } from 'vee-validate';
+  import { max, required } from '@vee-validate/rules';
   import SettingsService from './SettingsService';
   import ToastSupport from '../utils/ToastSupport';
   import InlineHelp from '../utils/InlineHelp';
 
-  // extend('max', max);
-  // extend('required', required);
-  //
-  // const scriptRegex = /<[^>]*script/;
-  // extend('noscript', {
-  //   message: '<script> tags are not allowed',
-  //   validate(value) {
-  //     if (value) {
-  //       return value.match(scriptRegex) === null;
-  //     }
-  //     return false;
-  //   },
-  // });
+  defineRule('max', max);
+  defineRule('required', required);
+
+  const scriptRegex = /<[^>]*script/;
+  const errorMessage = '<script> tags are not allowed';
+  defineRule('noscript', (value, params, field) => {
+    if (value) {
+      const scriptTags = value.match(scriptRegex);
+      if (scriptTags) {
+        console.log("Script tags found");
+        return errorMessage;
+      } else {
+        return true;
+      }
+    }
+    return errorMessage;
+  });
 
   const settingGroup = 'GLOBAL.EMAIL';
   export default {
@@ -167,6 +183,9 @@ limitations under the License.
       this.loadEmailSettings();
     },
     computed: {
+      invalid() {
+        return false;
+      },
       htmlHeaderRequired() {
         return !!this.plainTextHeader && !this.htmlHeader;
       },

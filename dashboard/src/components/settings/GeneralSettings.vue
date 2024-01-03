@@ -18,43 +18,50 @@ limitations under the License.
     <sub-page-header title="Profile"/>
 
     <loading-container v-bind:is-loading="isLoading">
-      <ValidationObserver v-slot="{invalid}" slim>
+      <Form v-slot="{errors}" slim>
         <div class="card">
           <div class="card-body">
             <div v-if="!pkiAuthenticated">
               <label for="profileFirstName">* First Name</label>
-<!--              <ValidationProvider name="First Name" :debounce=500 v-slot="{errors}" rules="required|maxFirstNameLength">-->
+              <Field name="First Name" :debounce=500 v-slot="{field}" rules="required|maxFirstNameLength">
                 <div class="input-group">
                   <input class="form-control"
                          type="text" v-model="loginFields.first" name="first" aria-required="true"
-                          id="profileFirstName"
-                          :aria-invalid="errors && errors.length > 0"
-                          aria-errormessage="firstnameError" aria-describedby="firstnameError"/>
+                         id="profileFirstName"
+                         v-bind="field"
+                         :aria-invalid="errors && Object.keys(errors).length > 0"
+                         aria-errormessage="firstnameError" aria-describedby="firstnameError"/>
                 </div>
-                <p role="alert" class="text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0]}}</p>
-<!--              </ValidationProvider>-->
+                <p role="alert" class="text-danger" id="firstnameError">
+                  <ErrorMessage name="First Name" />
+                </p>
+              </Field>
 
               <label class="mt-2" for="profileLastName">* Last Name</label>
-<!--              <ValidationProvider name="Last Name" :debounce=500 v-slot="{errors}" rules="required|maxLastNameLength">-->
+              <Field name="Last Name" :debounce=500 v-slot="{field}" rules="required|maxLastNameLength">
                 <div class="input-group">
                   <input class="form-control" type="text" v-model="loginFields.last" name="last" aria-required="true"
-                      id="profileLastName"
-                      :aria-invalid="errors && errors.length > 0"
+                      id="profileLastName" v-input="field"
+                      :aria-invalid="errors && Object.keys(errors).length > 0"
                       aria-errormessage="lastnameError" aria-describedby="lastnameError"/>
                 </div>
-                <p role="alert" class="text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0]}}</p>
-<!--              </ValidationProvider>-->
+                <p role="alert" class="text-danger" id="lastnameError">
+                  <ErrorMessage name="Last Name" />
+                </p>
+              </Field>
             </div>
             <label class="mt-2" for="profileNickname">Primary Name</label>
-<!--            <ValidationProvider name="Primary Name" :debounce=500 v-slot="{errors}" rules="maxNicknameLength">-->
+            <Field name="Primary Name" :debounce=500 v-slot="{field}" rules="maxNicknameLength">
               <div class="input-group">
                 <input class="form-control" type="text" v-model="loginFields.nickname" name="nickname"
-                    id="profileNickname"
-                    :aria-invalid="errors && errors.length > 0"
+                    id="profileNickname" v-bind="field"
+                    :aria-invalid="errors && Object.keys(errors).length > 0"
                     aria-errormessage="nicknameError" aria-describedby="nicknameError"/>
               </div>
-              <p role="alert" class="text-danger" v-show="errors[0]" id="nicknameError">{{ errors[0]}}</p>
-<!--            </ValidationProvider>-->
+              <p role="alert" class="text-danger" id="nicknameError">
+                <ErrorMessage name="Primary Name" />
+              </p>
+            </Field>
 
             <div class="mt-2">
               <button class="btn btn-outline-success" @click="updateUserInfo" :disabled="invalid || !hasChangedValues()" data-cy="generalSettingsSave">
@@ -64,7 +71,7 @@ limitations under the License.
             </div>
           </div>
         </div>
-      </ValidationObserver>
+      </Form>
     </loading-container>
   </div>
 </template>
@@ -99,6 +106,11 @@ limitations under the License.
     mounted() {
       this.loadData();
       this.pkiAuthenticated = this.$store.getters.isPkiAuthenticated;
+    },
+    computed: {
+      invalid() {
+        return false;
+      },
     },
     methods: {
       loadData() {

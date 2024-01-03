@@ -55,9 +55,9 @@ import {
 } from 'bootstrap-vue';
 
 import { SkillsConfiguration, SkillsReporter } from '@skilltree/skills-client-js';
-// import {
-//   localize, ValidationProvider, ValidationObserver, setInteractionMode,
-// } from 'vee-validate';
+import {
+  Form, Field,
+} from 'vee-validate';
 import en from 'vee-validate';
 import Vuex from 'vuex';
 import VueApexCharts from 'vue-apexcharts';
@@ -92,8 +92,8 @@ configureCompat({
 });
 
 Vue.component('apexchart', VueApexCharts);
-// Vue.component('ValidationProvider', ValidationProvider);
-// Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('Form', Form);
+Vue.component('Field', Field);
 Vue.use(Vuex);
 
 Vue.use(ButtonPlugin);
