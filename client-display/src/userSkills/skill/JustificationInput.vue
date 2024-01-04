@@ -15,17 +15,18 @@ limitations under the License.
 */
 <template>
   <b-card style="min-height: 330px;">
-      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+      <Form ref="observer" @submit="reportSkill" v-slot="{ errors }" slim>
           <div :id="`reportSkillMsg-${skill.skillId}`" class="text-left mb-2 skills-theme-primary-color" data-cy="selfReportSkillMsg">
              ** Submit with {{ isJustitificationRequired ? 'a' : 'an' }}
                 <span v-if="!isJustitificationRequired" class="text-muted">optional</span> justification and it will enter an approval queue.
           </div>
           <div class="row">
             <div class="col-12">
-              <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ errors }" name="Approval Justification">
+              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ field }" name="Approval Justification">
                 <markdown-editor class="form-text"
                                  :id="`approvalRequiredMsg-${skill.skillId}`"
                                  ref="approvalRequiredMsg"
+                                 v-bind="field"
                                  v-model="approvalRequestedMsg"
                                  :project-id="skill.projectId"
                                  :skill-id="skill.skillId"
@@ -39,8 +40,10 @@ limitations under the License.
                                  :resizable="true"
                                  aria-errormessage="approvalMessageError"
                                  :aria-invalid="errors && errors.length > 0"/>
-                <small role="alert" id="approvalMessageError" class="form-text text-danger" data-cy="selfReportMsgInput_errMsg">{{ errors[0] }}</small>
-              </ValidationProvider>
+                <small role="alert" id="approvalMessageError" class="form-text text-danger" data-cy="selfReportMsgInput_errMsg">
+                  <ErrorMessage name="Approval Justification" />
+                </small>
+              </Field>
             </div>
           </div>
 
@@ -53,12 +56,12 @@ limitations under the License.
             </button>
             <button type="button"
                     class="btn btn-outline-success text-uppercase skills-theme-btn"
-                    @click="handleSubmit(reportSkill)"
+                    @click="reportSkill"
                     data-cy="selfReportSubmitBtn" :disabled="invalid || !messageValid">
               <i class="fas fa-arrow-alt-circle-right"></i> Request
             </button>
           </div>
-      </ValidationObserver>
+      </Form>
     </b-card>
 </template>
 

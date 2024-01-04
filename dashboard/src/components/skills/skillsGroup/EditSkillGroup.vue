@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+  <Form ref="observer" v-slot="{errors}" slim>
     <b-modal :id="internalGroup.skillId"
              :title="title"
              @hide="publishHidden"
@@ -31,28 +31,29 @@ limitations under the License.
           <div class="col-12">
             <div class="form-group">
               <label for="groupNameInput">* Group Name</label>
-<!--              <ValidationProvider rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueGroupName|customNameValidator"-->
-<!--                                  v-slot="{errors}"-->
-<!--                                  :debounce="250"-->
-<!--                                  name="Group Name">-->
+              <Field rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueGroupName|customNameValidator"
+                                  v-slot="{field}" :debounce="250" name="Group Name">
                 <input class="form-control" type="text" v-model="internalGroup.name"
                        v-on:input="updateId"
-                       v-on:keydown.enter="handleSubmit(updateGroup)"
+                       v-on:keydown.enter="updateGroup"
                        v-focus
+                       v-bind="field"
                        data-cy="groupName"
                        id="groupNameInput"
                        :aria-invalid="errors && errors.length > 0"
                        aria-errormessage="groupNameError"
                        aria-describedby="groupNameError"/>
-                <small role="alert" class="form-text text-danger" data-cy="groupNameError" id="groupNameError">{{ errors[0] }}</small>
-<!--              </ValidationProvider>-->
+                <small role="alert" class="form-text text-danger" data-cy="groupNameError" id="groupNameError">
+                  <ErrorMessage name="Group Name" />
+                </small>
+              </Field>
             </div>
           </div>
 
           <div class="col-12">
             <id-input type="text" label="Group ID" v-model="internalGroup.skillId"
                       additional-validation-rules="uniqueGroupId" @can-edit="canEditGroupId=$event"
-                      v-on:keydown.enter.native="handleSubmit(updateGroup)"
+                      v-on:keydown.enter.native="updateGroup"
                       :next-focus-el="previousFocus"
                       @shown="tooltipShowing=true"
                       @hidden="tooltipShowing=false"/>
@@ -61,17 +62,20 @@ limitations under the License.
 
         <div class="mt-3">
           <div class="control">
-<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Group Description">-->
+            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Group Description">
               <markdown-editor v-if="internalGroup && (!isEdit || !isLoading)"
                                v-model="internalGroup.description"
                                :project-id="internalGroup.projectId"
+                               v-bind="field"
                                :skill-id="isEdit ? internalGroup.skillId : null"
                                :aria-invalid="errors && errors.length > 0"
                                aria-errormessage="groupDescriptionError"
                                aria-describedby="groupDescriptionError"
                                data-cy="groupDescription"/>
-              <small role="alert" id="groupDescriptionError" class="form-text text-danger" data-cy="groupDescriptionError">{{ errors[0] }}</small>
-<!--            </ValidationProvider>-->
+              <small role="alert" id="groupDescriptionError" class="form-text text-danger" data-cy="groupDescriptionError">
+                <ErrorMessage name="Group Description" />
+              </small>
+            </Field>
           </div>
         </div>
 
@@ -80,7 +84,7 @@ limitations under the License.
 
       <template v-slot:modal-footer>
         <div class="w-100">
-        <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateGroup)"
+        <b-button variant="success" size="sm" class="float-right" @click="updateGroup"
                   :disabled="invalid"
                   data-cy="saveGroupButton">
           Save
@@ -91,11 +95,11 @@ limitations under the License.
       </div>
       </template>
     </b-modal>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { defineRule, ErrorMessage } from 'vee-validate';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import IdInput from '../../utils/inputForm/IdInput';
   import InputSanitizer from '../../utils/InputSanitizer';
@@ -104,7 +108,7 @@ limitations under the License.
 
   export default {
     name: 'EditSkillGroup',
-    components: { SkillsSpinner, MarkdownEditor, IdInput },
+    components: { SkillsSpinner, MarkdownEditor, IdInput, ErrorMessage },
     props: {
       group: Object,
       isEdit: Boolean,
@@ -135,9 +139,9 @@ limitations under the License.
         tooltipShowing: false,
       };
     },
-    // created() {
-    //   this.registerValidation();
-    // },
+    created() {
+      this.registerValidation();
+    },
     mounted() {
       this.original = {
         name: this.group.name,
@@ -156,6 +160,9 @@ limitations under the License.
       document.addEventListener('focusin', this.trackFocus);
     },
     computed: {
+      invalid() {
+        return false;
+      },
       title() {
         return this.isEdit ? 'Editing Existing Skills Group' : 'New Skills Group';
       },
@@ -208,24 +215,20 @@ limitations under the License.
       },
       registerValidation() {
         const self = this;
-        extend('uniqueGroupName', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueGroupName', (value, params, field) => {
             if (self.isEdit && (self.original.name === value || self.original.name.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
               return true;
             }
-            return SkillsService.skillWithNameExists(self.original.projectId, value);
-          },
+            const nameExists = SkillsService.skillWithNameExists(self.original.projectId, value);
+            return nameExists ? nameExists : `The value for the ${field.name} is already taken.`
         });
 
-        extend('uniqueGroupId', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueGroupId', (value, params, field) => {
             if (self.isEdit && self.original.skillId === value) {
               return true;
             }
-            return SkillsService.skillWithIdExists(self.original.projectId, value);
-          },
+            const idExists = SkillsService.skillWithIdExists(self.original.projectId, value);
+            return idExists ? idExists : `The value for the ${field.name} is already taken.`;
         });
       },
     },

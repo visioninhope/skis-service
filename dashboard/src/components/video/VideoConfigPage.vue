@@ -41,7 +41,7 @@ limitations under the License.
           Optionally set <i>Self Reporting</i> type to <b-badge>Video</b-badge> in order to award the skill for watching this video. Click the <i>Edit</i> button above to update the <i>Self Reporting</i> type.
         </div>
       </div>
-<!--      <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
+      <Form ref="observer" v-slot="{errors}" slim>
       <b-form-group label-for="videoUrlInput">
         <template v-slot:label>
           <div class="row">
@@ -65,7 +65,7 @@ limitations under the License.
                      placeholder="Upload file from my computer by clicking Browse or drag-n-dropping it here..."
                      drop-placeholder="Drop file here..." />
 
-<!--        <ValidationProvider v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ errors }" name="Video File" :immediate="true">-->
+        <Field v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ field }" name="Video File" :immediate="true">
         <b-input-group>
           <template #prepend>
             <b-input-group-text><i class="fas fa-server mr-1"></i>
@@ -73,6 +73,7 @@ limitations under the License.
             </b-input-group-text>
           </template>
           <b-form-input id="videoUrlInput"
+                        v-bind="field"
                         v-model="videoConf.hostedFileName"
                         data-cy="videoUrl"
                         :disabled="isReadOnly" />
@@ -80,21 +81,26 @@ limitations under the License.
             <b-button @click="switchToFileUploadOption"><i class="fa fa-broom" aria-hidden="true"/> Reset</b-button>
           </b-input-group-append>
         </b-input-group>
-        <small role="alert" class="form-text text-danger" id="videoFileError" data-cy="videoFileError">{{errors[0]}}</small>
-<!--        </ValidationProvider>-->
+        <small role="alert" class="form-text text-danger" id="videoFileError" data-cy="videoFileError">
+          <ErrorMessage name="Video File" />
+        </small>
+        </Field>
 
         <div v-if="videoConf.file && videoUploadWarningMessage" data-cy="videoUploadWarningMessage"
           class="alert alert-danger mt-1"><i class="fas fa-exclamation-circle" aria-hidden="true"/> {{ videoUploadWarningMessage }}</div>
 
-<!--        <ValidationProvider v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ errors }" name="Video URL">-->
+        <Field v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ field }" name="Video URL">
             <b-form-input id="videoUrlInput"
                           v-model="videoConf.url"
+                          v-bind="field"
                           data-cy="videoUrl"
                           @input="validate"
                           placeholder="Please enter external URL"
                           :disabled="isReadOnly" />
-          <small role="alert" class="form-text text-danger" id="videoUrlError" data-cy="videoUrlErr">{{errors[0]}}</small>
-<!--        </ValidationProvider>-->
+          <small role="alert" class="form-text text-danger" id="videoUrlError" data-cy="videoUrlErr">
+            <ErrorMessage name="Video URL" />
+          </small>
+        </Field>
       </b-form-group>
 
       <b-form-group label-for="videoCaptionsInput">
@@ -108,33 +114,39 @@ limitations under the License.
             </div>
           </div>
         </template>
-<!--        <ValidationProvider rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Captions">-->
+        <Field rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Captions">
           <b-form-textarea
             id="videoCaptionsInput"
             v-model="videoConf.captions"
+            v-bind="field"
             placeholder="Enter captions using The Web Video Text Tracks (WebVTT) format (optional)"
             rows="3"
             max-rows="6"
             data-cy="videoCaptions"
             :disabled="isReadOnly"
           ></b-form-textarea>
-          <small role="alert" class="form-text text-danger" id="videoCaptionsError" data-cy="videoCaptionsError">{{errors[0]}}</small>
-<!--        </ValidationProvider>-->
+          <small role="alert" class="form-text text-danger" id="videoCaptionsError" data-cy="videoCaptionsError">
+            <ErrorMessage name="Captions" />
+          </small>
+        </Field>
       </b-form-group>
 
       <b-form-group label="Transcript:" label-for="videoTranscriptInput">
-<!--        <ValidationProvider rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ errors }" name="Video Transcript">-->
+        <Field rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Video Transcript">
         <b-form-textarea
           id="videoTranscriptInput"
           v-model="videoConf.transcript"
+          v-bind="field"
           placeholder="Please enter video's transcript here. Video transcript will be available for download (optional)"
           rows="3"
           max-rows="6"
           data-cy="videoTranscript"
           :disabled="isReadOnly"
         ></b-form-textarea>
-          <small role="alert" id="videoTranscriptError" class="form-text text-danger" data-cy="videoTranscriptError">{{ errors[0] }}</small>
-<!--        </ValidationProvider>-->
+          <small role="alert" id="videoTranscriptError" class="form-text text-danger" data-cy="videoTranscriptError">
+            <ErrorMessage name="Video Transcript" />
+          </small>
+        </Field>
       </b-form-group>
 
       <div v-if="overallErrMsg" class="alert alert-danger">
@@ -148,7 +160,7 @@ limitations under the License.
                       :disabled="!hasVideoUrl || invalid"
                       data-cy="saveVideoSettingsBtn"
                       aria-label="Save video settings"
-                      @click="handleSubmit(submitSaveSettingsForm)">Save and Preview <i class="fas fa-save" aria-hidden="true"/></b-button>
+                      @click="submitSaveSettingsForm">Save and Preview <i class="fas fa-save" aria-hidden="true"/></b-button>
             <span v-if="showSavedMsg" aria-hidden="true" class="ml-2 text-success" data-cy="savedMsg"><i class="fas fa-check" /> Saved</span>
           </div>
           <div class="col-auto mt-2">
@@ -164,7 +176,7 @@ limitations under the License.
                       @click="confirmClearSettings">Clear <i class="fas fa-trash-alt" aria-hidden="true"/></b-button>
           </div>
         </div>
-<!--      </ValidationObserver>-->
+      </Form>
 
       <b-card v-if="preview" class="mt-3" header="Video Preview" body-class="p-0" data-cy="videoPreviewCard">
         <video-player v-if="!refreshingPreview"
@@ -219,7 +231,7 @@ limitations under the License.
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { defineRule, ErrorMessage } from 'vee-validate';
   import { createNamespacedHelpers } from 'vuex';
   import MsgLogService from '@/common-components/utilities/MsgLogService';
   import VideoPlayer from '@/common-components/video/VideoPlayer';
@@ -237,7 +249,7 @@ limitations under the License.
 
   export default {
     name: 'VideoConfigPage',
-    components: { LengthyOperationProgressBar, VideoPlayer, SubPageHeader },
+    components: { LengthyOperationProgressBar, VideoPlayer, SubPageHeader, ErrorMessage },
     mixins: [MsgBoxMixin, ProjConfigMixin, NavigationErrorMixin, CommunityLabelsMixin],
     data() {
       return {
@@ -263,9 +275,9 @@ limitations under the License.
         savedAtLeastOnce: false,
       };
     },
-    // created() {
-    //   this.assignCustomValidation();
-    // },
+    created() {
+      this.assignCustomValidation();
+    },
     mounted() {
       this.loadSettings();
       this.loadSkillInfo();
@@ -328,6 +340,9 @@ limitations under the License.
           result = result.replace(communityProjDescriptor, projCommunityValue);
         }
         return result;
+      },
+      invalid() {
+        return false;
       },
     },
     methods: {
@@ -485,17 +500,13 @@ limitations under the License.
       },
       assignCustomValidation() {
         const self = this;
-        extend('videoUrlMustBePresent', {
-          message: (field) => `${field} is not valid without Video field`,
-          validate() {
+        defineRule('videoUrlMustBePresent', (value, params, field) => {
             const toValidate = self.videoConf.url ? self.videoConf.url.trim() : null;
             const hasUrl = toValidate !== null && toValidate.length > 0;
             const hasFile = self.videoConf.file;
-            return hasUrl || hasFile;
-          },
+            return (hasUrl || hasFile) ? true : `${field.name} is not valid without Video field`;
         });
-        extend('videoMimeTypesValidation', {
-          validate() {
+        defineRule('videoMimeTypesValidation', (value, params, field) => {
             const supportedFileTypes = self.$store.getters.config.allowedVideoUploadMimeTypes;
             const { file } = self.videoConf;
             if (!file) {
@@ -507,10 +518,8 @@ limitations under the License.
             }
 
             return `Unsupported [${file.type}] file type, supported types: [${supportedFileTypes}]`;
-          },
         });
-        extend('videoMaxSizeValidation', {
-          validate() {
+        defineRule('videoMaxSizeValidation', (value, params, field) => {
             const maxSize = self.$store.getters.config.maxAttachmentSize ? Number(self.$store.getters.config.maxAttachmentSize) : 0;
             const { file } = self.videoConf;
             if (!file) {
@@ -522,7 +531,6 @@ limitations under the License.
             }
 
             return `File exceeds maximum size of ${self.$options.filters.prettyBytes(maxSize)}`;
-          },
         });
       },
       fillInCaptionsExample() {

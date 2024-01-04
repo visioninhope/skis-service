@@ -21,26 +21,27 @@ limitations under the License.
         <logo1 />
         <div class="h3 mt-4 text-primary">Reset Password For SkillTree Dashboard</div>
       </div>
-      <ValidationObserver ref="resetForm" v-slot="{invalid, handleSubmit}" slim>
-        <form @submit.prevent="handleSubmit(reset)">
+      <Form ref="resetForm" v-slot="{errors}" slim>
+        <form @submit.prevent="reset">
           <div class="card text-left">
             <div class="card-body p-4">
 
               <div class="form-group">
                 <label for="username" class="text-secondary font-weight-bold">* Email Address</label>
-<!--                <ValidationProvider name="Email Address" rules="required|minUsernameLength|email" :debounce=300 v-slot="{errors}">-->
+                <Field name="Email Address" rules="required|minUsernameLength|email" :debounce=300 v-slot="{field}">
                   <input type="text" class="form-control" id="username" tabindex="1" placeholder="Enter email"
                          aria-errormessage="emailHelp"
                          aria-describedby="emailHelp"
-                         :aria-invalid="errors && errors.length > 0"
+                         v-bind="field"
+                         :aria-invalid="errors && Object.keys(errors).length > 0"
                          v-model="username"
                          data-cy="forgotPasswordEmail"
                         aria-required="true">
-                    <small id="emailHelp" role="alert" class="form-text text-danger" v-show="errors[0]">{{
-                      errors[0] }}
+                    <small id="emailHelp" role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0">
+                      <ErrorMessage name="Email Address" />
                     </small>
                     <small class="text-danger" v-if="serverError" data-cy="resetFailedError" role="alert">{{ serverError }}</small>
-<!--                </ValidationProvider>-->
+                </Field>
               </div>
               <button type="submit" class="btn btn-outline-hc" tabindex="3" :disabled="invalid || (disabled === true)" data-cy="resetPassword">
                 Reset Password <i class="fas fa-arrow-circle-right" aria-hidden="true"/>
@@ -49,25 +50,25 @@ limitations under the License.
           </div>
 
         </form>
-      </ValidationObserver>
+      </Form>
     </div>
   </div>
   </div>
 </template>
 
 <script>
-  // import { extend } from 'vee-validate';
-  // import { required, email } from 'vee-validate';
+  import { ErrorMessage, defineRule } from 'vee-validate';
+  import { required, email } from '@vee-validate/rules';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
 
-  // extend('required', required);
-  // extend('email', email);
+  defineRule('required', required);
+  defineRule('email', email);
 
   export default {
     name: 'RequestPasswordResetForm',
-    components: { Logo1 },
+    components: { Logo1, ErrorMessage },
     mixins: [NavigationErrorMixin],
     data() {
       return {
@@ -116,6 +117,9 @@ limitations under the License.
       },
     },
     computed: {
+      invalid() {
+        return false;
+      },
       disabled() {
         return (!this.isAutoFilled && (!this.username)) || this.serverError !== '';
       },

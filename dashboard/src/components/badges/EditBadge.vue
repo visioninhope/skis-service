@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+  <Form ref="observer" v-slot="{errors}" slim>
     <b-modal :id="badgeInternal.badgeId" size="xl" :title="title" v-model="show"
              :no-close-on-backdrop="true" :centered="true"
              header-bg-variant="info"
@@ -32,36 +32,41 @@ limitations under the License.
             <div class="media-body">
               <div class="form-group">
                 <label for="badgeName">* Badge Name</label>
-<!--                <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|nullValueNotAllowed|uniqueName|customNameValidator"-->
-<!--                                    v-slot="{errors}" name="Badge Name" :debounce="250">-->
+                <Field rules="required|minNameLength|maxBadgeNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
+                                    v-slot="{field}" name="Badge Name" :debounce="250">
                   <input v-focus class="form-control" id="badgeName" type="text" v-model="badgeInternal.name"
                          @input="updateBadgeId" aria-required="true" data-cy="badgeName"
-                         v-on:keydown.enter="handleSubmit(updateBadge)"
-                         :aria-invalid="errors && errors.length > 0"
+                         v-on:keydown.enter="updateBadge"
+                         :aria-invalid="errors && Object.keys(errors).length > 0"
+                         v-bind="field"
                          aria-errormessage="badgeNameError"
                          aria-describedby="badgeNameError"/>
-                  <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="badgeNameError" id="badgeNameError">{{ errors[0] }}
+                  <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="badgeNameError" id="badgeNameError">
+                    <ErrorMessage name="Badge Name" />
                   </small>
-<!--                </ValidationProvider>-->
+                </Field>
               </div>
             </div>
           </div>
 
           <id-input type="text" label="Badge ID" v-model="badgeInternal.badgeId" @input="canAutoGenerateId=false"
-                    additional-validation-rules="uniqueId" v-on:keydown.enter.native="handleSubmit(updateBadge)"
+                    additional-validation-rules="uniqueId" v-on:keydown.enter.native="updateBadge"
                     :next-focus-el="previousFocus"
                     @shown="tooltipShowing=true"
                     @hidden="tooltipShowing=false"/>
 
           <div class="mt-3">
-<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}"-->
+            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}"
                                 name="Badge Description">
               <markdown-editor v-model="badgeInternal.description"
                                :project-id="badgeInternal.projectId"
+                               v-bind="field"
                                :skill-id="isEdit ? badgeInternal.skillId : null"
                                @input="updateDescription"></markdown-editor>
-              <small role="alert" class="form-text text-danger mb-3" data-cy="badgeDescriptionError">{{ errors[0] }}</small>
-<!--            </ValidationProvider>-->
+              <small role="alert" class="form-text text-danger mb-3" data-cy="badgeDescriptionError">
+                <ErrorMessage name="Badge Description" />
+              </small>
+            </Field>
           </div>
 
           <b-card class="mt-1" v-if="!global" data-cy="bonusAwardCard">
@@ -82,18 +87,19 @@ limitations under the License.
                     <div class="media-body">
                       <div class="form-group">
                         <label for="awardName">Award Name</label>
-<!--                        <ValidationProvider rules="required|minNameLength|maxBadgeNameLength|customNameValidator"-->
-<!--                                            v-slot="{errors}" name="Award Name" :debounce="250">-->
+                        <Field rules="required|minNameLength|maxBadgeNameLength|customNameValidator"
+                                            v-slot="{field}" name="Award Name" :debounce="250">
                           <input v-focus class="form-control" id="awardName" type="text" v-model="badgeInternal.awardAttrs.name"
                                  aria-required="true" data-cy="awardName"
-                                 v-on:keydown.enter="handleSubmit(updateBadge)"
-                                 :aria-invalid="errors && errors.length > 0"
+                                 v-on:keydown.enter="updateBadge"
+                                 :aria-invalid="errors && Object.keys(errors).length > 0"
                                  :disabled="!badgeInternal.timeLimitEnabled"
                                  aria-errormessage="awardNameError"
                                  aria-describedby="awardNameError"/>
-                          <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="awardNameError" id="awardNameError">{{ errors[0] }}
+                          <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="awardNameError" id="awardNameError">
+                            <ErrorMessage name="Award Name" />
                           </small>
-<!--                        </ValidationProvider>-->
+                        </Field>
                       </div>
                     </div>
                   </div>
@@ -101,58 +107,67 @@ limitations under the License.
               </div>
               <div class="row" v-if="badgeInternal.timeLimitEnabled">
                 <div class="col-12 col-sm">
-<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{errors}" name="Days">-->
+                  <Field rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{field}" name="Days">
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationDays"
                              :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
+                             v-bind="field"
                              ref="timeLimitDays" data-cy="timeLimitDays"
-                             v-on:keydown.enter="handleSubmit(updateBadge)"
+                             v-on:keydown.enter="updateBadge"
                              id="timeLimitDays" :aria-label="`time window days ${maxTimeLimitMessage}`"
-                             aria-describedby="badgeDaysError" :aria-invalid="errors && errors.length > 0"
+                             aria-describedby="badgeDaysError" :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="badgeDaysError"/>
                       <div class="input-group-append">
                         <span class="input-group-text" id="days-append">Days</span>
                       </div>
                     </div>
-                    <small role="alert" class="form-text text-danger" data-cy="badgeDaysError" id="badgeDaysError">{{ errors[0] }}</small>
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" data-cy="badgeDaysError" id="badgeDaysError">
+                      <ErrorMessage name="Days" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="col-12 col-sm">
-<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{errors}" name="Hours">-->
+                  <Field rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{field}" name="Hours">
                     <div class="input-group">
                       <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationHrs"
                              :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
+                             v-bind="field"
                              ref="timeLimitHours" data-cy="timeLimitHours"
-                             v-on:keydown.enter="handleSubmit(updateBadge)"
+                             v-on:keydown.enter="updateBadge"
                              id="timeLimitHours" :aria-label="`time window hours ${maxTimeLimitMessage}`"
-                             aria-describedby="badgeHoursError" :aria-invalid="errors && errors.length > 0"
+                             aria-describedby="badgeHoursError" :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="badgeHoursError"/>
                       <div class="input-group-append">
                         <span class="input-group-text" id="hours-append">Hours</span>
                       </div>
                     </div>
-                    <small role="alert" class="form-text text-danger" data-cy="badgeHoursError" id="badgeHoursError">{{ errors[0] }}</small>
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" data-cy="badgeHoursError" id="badgeHoursError">
+                      <ErrorMessage name="Hours" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="col-12 col-sm">
-<!--                  <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{errors}" name="Minutes">-->
+                  <Field rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{field}" name="Minutes">
                     <div class="input-group">
                       <input class="form-control d-inline"  type="text" v-model="badgeInternal.expirationMins"
                               :disabled="!badgeInternal.timeLimitEnabled" ref="timeLimitMinutes" data-cy="timeLimitMinutes"
-                             v-on:keydown.enter="handleSubmit(updateBadge)"
+                             v-on:keydown.enter="updateBadge"
+                             v-bind="field"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              :aria-label="`time window minutes ${maxTimeLimitMessage}`"
                              aria-describedby="badgeMinutesError"
                              aria-errormessage="badgeMinutesError"
-                             :aria-invalid="errors && errors.length > 0"/>
+                             :aria-invalid="errors && Object.keys(errors).length > 0"/>
                       <div class="input-group-append">
                         <span class="input-group-text" id="minutes-append">Minutes</span>
                       </div>
                     </div>
-                    <small role="alert" class="form-text text-danger" data-cy="badgeMinutesError" id="badgeMinutesError">{{ errors[0] }}</small>
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" data-cy="badgeMinutesError" id="badgeMinutesError">
+                      <ErrorMessage name="Minutes" />
+                    </small>
+                  </Field>
                 </div>
               </div>
             </div>
@@ -162,7 +177,7 @@ limitations under the License.
                           :next-focus-el="previousFocus"
                           @shown="tooltipShowing=true"
                           @hidden="tooltipShowing=false"
-                          v-model="badgeInternal.helpUrl" v-on:keydown.enter.native="handleSubmit(updateBadge)" />
+                          v-model="badgeInternal.helpUrl" v-on:keydown.enter.native="updateBadge" />
 
           <div v-if="!global" data-cy="gemEditContainer">
             <b-form-checkbox v-model="limitTimeframe" class="mt-4"
@@ -180,23 +195,26 @@ limitations under the License.
               <b-row v-if="limitTimeframe" no-gutters class="justify-content-md-center mt-3" key="gemTimeFields">
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* Start Date</label>
-<!--                  <ValidationProvider rules="required|dateOrder" v-slot="{errors}" name="Start Date"-->
+                  <Field rules="required|dateOrder" v-slot="{field}" name="Start Date"
                                       ref="startDateValidationProvider">
                     <datepicker :inline="true" v-model="badgeInternal.startDate" name="startDate"
-                                key="gemFrom" data-cy="startDatePicker"
+                                key="gemFrom" data-cy="startDatePicker" v-bind="field"
                                 aria-required="true"></datepicker>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="startDateError">{{ errors[0] }}
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="startDateError">
+                      <ErrorMessage name="Start Date" />
                     </small>
-<!--                  </ValidationProvider>-->
+                  </Field>
                 </b-col>
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* End Date</label>
-<!--                  <ValidationProvider rules="required|dateOrder|noHistoricalEnd" v-slot="{errors}" name="End Date"-->
-<!--                                      ref="endDateValidationProvider">-->
-                    <datepicker :inline="true" v-model="badgeInternal.endDate" name="endDate"
+                  <Field rules="required|dateOrder|noHistoricalEnd" v-slot="{field}" name="End Date"
+                                      ref="endDateValidationProvider">
+                    <datepicker :inline="true" v-model="badgeInternal.endDate" name="endDate" v-bind="field"
                                 key="gemTo" data-cy="endDatePicker" aria-required="true"></datepicker>
-                    <small role="alert" class="form-text text-danger" v-show="errors[0]" data-cy="endDateError">{{errors[0]}}</small>
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="endDateError">
+                      <ErrorMessage name="End Date" />
+                    </small>
+                  </Field>
                 </b-col>
               </b-row>
             </b-collapse>
@@ -214,7 +232,7 @@ limitations under the License.
       <template v-slot:modal-footer>
         <div class="w-100">
           <div v-if="displayIconManager === false">
-            <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(updateBadge)"
+            <b-button variant="success" size="sm" class="float-right" @click="updateBadge"
                       :disabled="invalid"
                       data-cy="saveBadgeButton">
               Save
@@ -226,11 +244,11 @@ limitations under the License.
         </div>
       </template>
     </b-modal>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { defineRule, ErrorMessage } from 'vee-validate';
   import Datepicker from 'vuejs-datepicker';
   import dayjs from '@/common-components/DayJsCustomizer';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
@@ -251,6 +269,7 @@ limitations under the License.
     mixins: [SaveComponentStateLocallyMixin, MsgBoxMixin],
     components: {
       HelpUrlInput,
+      ErrorMessage,
       InlineHelp,
       IconPicker,
       MarkdownEditor,
@@ -340,14 +359,17 @@ limitations under the License.
         isAwardIcon: false,
       };
     },
-    // created() {
-    //   this.assignCustomValidation();
-    // },
+    created() {
+      this.assignCustomValidation();
+    },
     mounted() {
       document.addEventListener('focusin', this.trackFocus);
       this.loadComponent();
     },
     computed: {
+      invalid() {
+        return false;
+      },
       title() {
         return this.isEdit ? 'Editing Existing Badge' : 'New Badge';
       },
@@ -509,53 +531,51 @@ limitations under the License.
         // only want to validate for a new badge, existing subjects will override
         // name and badge id
         const self = this;
-        extend('uniqueName', {
-          message: (field) => `The value for ${field} is already taken.`,
-          validate(value) {
-            if (self.isEdit && (value === self.badge.name || self.badge.name.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
-              return true;
-            }
-            if (self.global) {
-              return GlobalBadgeService.badgeWithNameExists(value);
-            }
-            return BadgesService.badgeWithNameExists(self.badgeInternal.projectId, value);
-          },
+        defineRule('uniqueName', (value, params, field) => {
+          if (self.isEdit && (value === self.badge.name || self.badge.name.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
+            return true;
+          }
+          let nameExists = false;
+          const message = `The value for ${field.name} is already taken.`;
+          if (self.global) {
+            nameExists = GlobalBadgeService.badgeWithNameExists(value);
+            return nameExists ? nameExists: message;
+          }
+          nameExists = BadgesService.badgeWithNameExists(self.badgeInternal.projectId, value);
+          return nameExists ? nameExists : message;
         }, {
           immediate: false,
         });
 
-        extend('uniqueId', {
-          message: (field) => `The value for ${field} is already taken.`,
-          validate(value) {
-            if (self.isEdit && self.badge.badgeId === value) {
-              return true;
-            }
-            if (self.global) {
-              return GlobalBadgeService.badgeWithIdExists(value);
-            }
-            return BadgesService.badgeWithIdExists(self.badgeInternal.projectId, value);
-          },
+        defineRule('uniqueId', (value, params, field) => {
+          const message = `The value for ${field.name} is already taken.`;
+          if (self.isEdit && self.badge.badgeId === value) {
+            return true;
+          }
+          let idExists = false;
+          if (self.global) {
+            idExists = GlobalBadgeService.badgeWithIdExists(value);
+            return idExists ? idExists : message;
+          }
+          idExists = BadgesService.badgeWithIdExists(self.badgeInternal.projectId, value);
+          return idExists ? idExists : message;
         });
 
         if (this.global) {
-          extend('help_url', {
-            message: (field) => `${field} must start with "http(s)"`,
-            validate(value) {
+          defineRule('help_url', (value, params, field) => {
               if (!value) {
                 return true;
               }
-              return value.startsWith('http') || value.startsWith('https');
-            },
+              const startsWith = value.startsWith('http') || value.startsWith('https');
+              return startsWith ? startsWith : `${field.name} must start with "http(s)"`;
           });
         } else {
-          extend('help_url', {
-            message: (field) => `${field} must start with "/" or "http(s)"`,
-            validate(value) {
+          defineRule('help_url', (value, params, field) => {
               if (!value) {
                 return true;
               }
-              return value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
-            },
+              const startsWith = value.startsWith('http') || value.startsWith('https') || value.startsWith('/');
+              return startsWith ? startsWith : `${field.name} must start with "/" or "http(s)"`;
           });
         }
 
@@ -575,9 +595,7 @@ limitations under the License.
           }
         };
 
-        extend('dateOrder', {
-          message: 'Start Date must come before End Date',
-          validate() {
+        defineRule('dateOrder', (value, params, field) => {
             let valid = true;
             if (self.limitTimeframe && self.badgeInternal.startDate && self.badgeInternal.endDate) {
               valid = dayjs(self.badgeInternal.startDate).isBefore(dayjs(self.badgeInternal.endDate));
@@ -588,20 +606,16 @@ limitations under the License.
                 resetProvider(self.$refs.endDateValidationProvider);
               }
             }
-            return valid;
-          },
+            return valid ? valid : 'Start Date must come before End Date';
         });
 
-        extend('noHistoricalEnd', {
-          message: 'End Date cannot be in the past',
-          validate() {
+        defineRule('noHistoricalEnd', (value, params, field) => {
             let valid = true;
             // only trigger this validation on new badge entry, not edits
             if (self.limitTimeframe && self.badgeInternal.endDate && !self.badge.badgeId) {
               valid = dayjs(self.badgeInternal.endDate).isAfter(dayjs());
             }
-            return valid;
-          },
+            return valid ? valid : 'End Date cannot be in the past';
         });
 
         const validateLimit = (windowDays, windowHours, windowMinutes, validator) => {
@@ -633,53 +647,41 @@ limitations under the License.
           return ((days * 24 * 60) + (hours * 60) + minutes) <= this.$store.getters.config.maxBadgeBonusInMinutes;
         };
 
-        extend('daysMaxTimeLimit', {
-          message: () => this.maxTimeLimitMessage,
-          params: ['hours', 'minutes'],
-          validate(value, { hours, minutes }) {
-            return validateLimit(value, hours, minutes, 'daysMaxTimeLimit');
-          },
+        defineRule('daysMaxTimeLimit', (value, params, field) => {
+          const hours = params[0];
+          const minutes = params[1];
+          const isValid = validateLimit(value, hours, minutes, 'daysMaxTimeLimit');
+          return isValid ? true : this.maxTimeLimitMessage;
         });
-        extend('hoursMaxTimeLimit', {
-          message: () => this.maxTimeLimitMessage,
-          params: ['days', 'minutes'],
-          validate(value, { days, minutes }) {
-            return validateLimit(days, value, minutes, 'hoursMaxTimeLimit');
-          },
+        defineRule('hoursMaxTimeLimit', (value, params, field) => {
+          const days = params[0];
+          const minutes = params[1];
+          const isValid = validateLimit(days, value, minutes, 'hoursMaxTimeLimit');
+          return isValid ? true : this.maxTimeLimitMessage;
         });
-        extend('minutesMaxTimeLimit', {
-          message: () => this.maxTimeLimitMessage,
-          params: ['days', 'hours'],
-          validate(value, { days, hours }) {
-            return validateLimit(days, hours, value, 'minutesMaxTimeLimit');
-          },
+        defineRule('minutesMaxTimeLimit', (value, params, field) => {
+          const days = params[0];
+          const hours = params[1];
+          const isValid = validateLimit(days, hours, value, 'minutesMaxTimeLimit');
+          return isValid ? true : this.maxTimeLimitMessage;
         });
-        extend('cantBe0IfHours0Minutes0', {
-          message: (field) => `${field} must be > 0 if Hours = 0 and Minutes = 0`,
-          validate(value) {
-            if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationHrs, 10) > 0 || parseInt(self.badgeInternal.expirationMins, 10) > 0) {
-              return true;
-            }
-            return false;
-          },
+        defineRule('cantBe0IfHours0Minutes0', (value, params, field) => {
+          if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationHrs, 10) > 0 || parseInt(self.badgeInternal.expirationMins, 10) > 0) {
+            return true;
+          }
+          return `${field.name} must be > 0 if Hours = 0 and Minutes = 0`;
         });
-        extend('cantBe0IfHours0Days0', {
-          message: (field) => `${field} must be > 0 if Hours = 0 and Days = 0`,
-          validate(value) {
-            if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationHrs, 10) > 0 || parseInt(self.badgeInternal.expirationDays, 10) > 0) {
-              return true;
-            }
-            return false;
-          },
+        defineRule('cantBe0IfHours0Days0', (value, params, field) => {
+          if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationHrs, 10) > 0 || parseInt(self.badgeInternal.expirationDays, 10) > 0) {
+            return true;
+          }
+          return `${field.name} must be > 0 if Hours = 0 and Days = 0`;
         });
-        extend('cantBe0IfMins0Days0', {
-          message: (field) => `${field} must be > 0 if Minutes = 0 and Days = 0`,
-          validate(value) {
-            if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationMins, 10) > 0 || parseInt(self.badgeInternal.expirationDays, 10) > 0) {
-              return true;
-            }
-            return false;
-          },
+        defineRule('cantBe0IfMins0Days0', (value, params, field) => {
+          if (parseInt(value, 10) > 0 || parseInt(self.badgeInternal.expirationMins, 10) > 0 || parseInt(self.badgeInternal.expirationDays, 10) > 0) {
+            return true;
+          }
+          return `${field.name} must be > 0 if Minutes = 0 and Days = 0`;
         });
       },
     },

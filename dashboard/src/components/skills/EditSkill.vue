@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit }" slim>
+  <Form ref="observer" v-slot="{ errors }" slim>
     <b-modal :id="skillInternal.skillId" size="xl" :title="title" v-model="show"
              :no-close-on-backdrop="true" :centered="true"
              header-bg-variant="info" header-text-variant="light" no-fade role="dialog" @hide="publishHidden"
@@ -26,17 +26,20 @@ limitations under the License.
             <div class="col-12 col-lg">
               <div class="form-group">
                 <label for="skillName">* Skill Name</label>
-<!--                <ValidationProvider rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250" v-slot="{errors}" name="Skill Name" ref="skillNameProvider">-->
+                <Field rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250" v-slot="{field}" name="Skill Name" ref="skillNameProvider">
                   <input type="text" class="form-control" id="skillName" @input="updateSkillId"
                          v-model="skillInternal.name" v-focus
                          aria-required="true"
-                         v-on:keydown.enter="handleSubmit(saveSkill)"
+                         v-bind="field"
+                         v-on:keydown.enter="saveSkill"
                          data-cy="skillName"
                          aria-describedby="skillNameError"
                          aria-errormessage="skillNameError"
-                         :aria-invalid="errors && errors.length > 0">
-                  <small role="alert" class="form-text text-danger" data-cy="skillNameError" id="skillNameError">{{ errors[0] }}</small>
-<!--                </ValidationProvider>-->
+                         :aria-invalid="errors && Object.keys(errors).length > 0">
+                  <small role="alert" class="form-text text-danger" data-cy="skillNameError" id="skillNameError">
+                    <ErrorMessage name="Skill Name" />
+                  </small>
+                </Field>
               </div>
             </div>
             <div class="col-12 col-lg">
@@ -45,7 +48,7 @@ limitations under the License.
                         :next-focus-el="previousFocus"
                         @shown="tooltipShowing=true"
                         @hidden="tooltipShowing=false"
-                        v-on:keydown.enter.native="handleSubmit(saveSkill)"/>
+                        v-on:keydown.enter.native="saveSkill"/>
             </div>
             <div class="col-12 col-lg-2 mt-2 mt-lg-0">
               <div class="form-group">
@@ -57,15 +60,18 @@ limitations under the License.
                     @hidden="tooltipShowing=false"
                     msg="An optional version for this skill to allow filtering of available skills for different versions of an application"/>
                 </label>
-<!--                <ValidationProvider :rules="{ 'optionalNumeric':true,'min_value':0, 'maxSkillVersion':true, 'maxVersion': !isEdit }" v-slot="{errors}" name="Version">-->
+                <Field :rules="{ 'optionalNumeric':true,'min_value':0, 'maxSkillVersion':true, 'maxVersion': !isEdit }" v-slot="{field}" name="Version">
                   <input class="form-control" type="text" id="skillVersion"
                          v-model="skillInternal.version" :disabled="isEdit"
-                         data-cy="skillVersion" v-on:keydown.enter="handleSubmit(saveSkill)"
+                         v-bind="field"
+                         data-cy="skillVersion" v-on:keydown.enter="saveSkill"
                          aria-describedby="skillVersionError"
                          aria-errormessage="skillVersionError"
-                         :aria-invalid="errors && errors.length > 0"/>
-                  <small role="alert" class="form-text text-danger" data-cy="skillVersionError" id="skillVersionError">{{ errors[0] }}</small>
-<!--                </ValidationProvider>-->
+                         :aria-invalid="errors && Object.keys(errors).length > 0"/>
+                  <small role="alert" class="form-text text-danger" data-cy="skillVersionError" id="skillVersionError">
+                    <ErrorMessage name="Version" />
+                  </small>
+                </Field>
               </div>
             </div>
           </div>
@@ -74,35 +80,41 @@ limitations under the License.
             <div class="col-12 col-lg">
               <div class="form-group mb-1">
                 <label for="pointIncrement">* Point Increment</label>
-<!--                <ValidationProvider rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{errors}" name="Point Increment">-->
+                <Field rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{field}" name="Point Increment">
                   <input class="form-control" type="text" v-model="skillInternal.pointIncrement"
                          aria-required="true"
                          :aria-label="`Point Increment values must range between 1 and ${maxPointIncrement}`"
-                         data-cy="skillPointIncrement" v-on:keydown.enter="handleSubmit(saveSkill)"
+                         v-bind="field"
+                         data-cy="skillPointIncrement" v-on:keydown.enter="saveSkill"
                          id="pointIncrement"
                          aria-describedby="skillPointIncrementError"
                          aria-errormessage="skillPointIncrementError"
-                         :aria-invalid="errors && errors.length > 0"/>
-                  <small role="alert" class="form-text text-danger" data-cy="skillPointIncrementError" id="skillPointIncrementError">{{ errors[0] }}</small>
-<!--                </ValidationProvider>-->
+                         :aria-invalid="errors && Object.keys(errors).length > 0"/>
+                  <small role="alert" class="form-text text-danger" data-cy="skillPointIncrementError" id="skillPointIncrementError">
+                    <ErrorMessage name="Point Increment" />
+                  </small>
+                </Field>
               </div>
             </div>
             <div class="col-12 col-lg">
               <div class="form-group mt-2 mt-lg-0">
                 <label for="numPerformToCompletion">* Occurrences to Completion</label>
-<!--                <ValidationProvider vid="totalOccurrences" rules="optionalNumeric|required|min_value:1|maxNumPerformToCompletion|moreThanMaxWindowOccurrences:@windowMaxOccurrence" v-slot="{errors}" name="Occurrences to Completion" tag="div">-->
+                <Field vid="totalOccurrences" rules="optionalNumeric|required|min_value:1|maxNumPerformToCompletion|moreThanMaxWindowOccurrences:@windowMaxOccurrence" v-slot="{field}" name="Occurrences to Completion" tag="div">
                   <input class="form-control" type="text"
                          v-model="skillInternal.numPerformToCompletion"
                          data-cy="numPerformToCompletion" aria-required="true"
-                         v-on:keydown.enter="handleSubmit(saveSkill)"
+                         v-on:keydown.enter="saveSkill"
+                         v-bind="field"
                          id="numPerformToCompletion"
                          aria-describedby="skillOccurrencesError"
                          aria-errormessage="skillOccurrencesError"
                          :disabled="occurrencesToCompletionDisabled"
                          :aria-label="`Occurrences to Completion values must range between 1 and ${maxPointIncrement}`"
-                         :aria-invalid="errors && errors.length > 0"/>
-                  <small role="alert" class="form-text text-danger" data-cy="skillOccurrencesError" id="skillOccurrencesError">{{ errors[0] }}</small>
-<!--                </ValidationProvider>-->
+                         :aria-invalid="errors && Object.keys(errors).length > 0"/>
+                  <small role="alert" class="form-text text-danger" data-cy="skillOccurrencesError" id="skillOccurrencesError">
+                    <ErrorMessage name="Occurrences to Completion" />
+                  </small>
+                </Field>
               </div>
             </div>
             <div class="col-12 col-lg-3">
@@ -139,47 +151,53 @@ limitations under the License.
                 </label>
                 <div class="row">
                   <div class="col-12 col-sm">
-<!--                    <ValidationProvider rules="optionalNumeric|required|min_value:0|hoursMaxTimeWindow:@timeWindowMinutes|cantBe0IfMins0" vid="timeWindowHours" v-slot="{errors}" name="Hours">-->
+                    <Field rules="optionalNumeric|required|min_value:0|hoursMaxTimeWindow:@timeWindowMinutes|cantBe0IfMins0" vid="timeWindowHours" v-slot="{field}" name="Hours">
                       <div class="input-group">
                         <input class="form-control d-inline" type="text" v-model="skillInternal.pointIncrementIntervalHrs"
                                :disabled="!skillInternal.timeWindowEnabled"
                                :aria-required="skillInternal.timeWindowEnabled"
+                               v-bind="field"
                                ref="timeWindowHours" data-cy="timeWindowHours"
-                               v-on:keydown.enter="handleSubmit(saveSkill)"
+                               v-on:keydown.enter="saveSkill"
                                id="timeWindowHours" :aria-label="`time window hours ${maxTimeWindowMessage}`"
-                               aria-describedby="skillHoursError" :aria-invalid="errors && errors.length > 0"
+                               aria-describedby="skillHoursError" :aria-invalid="errors && Object.keys(errors).length > 0"
                                aria-errormessage="skillHoursError"/>
                         <div class="input-group-append">
                           <span class="input-group-text" id="hours-append">Hours</span>
                         </div>
                       </div>
-                      <small role="alert" class="form-text text-danger" data-cy="skillHoursError" id="skillHoursError">{{ errors[0] }}</small>
-<!--                    </ValidationProvider>-->
+                      <small role="alert" class="form-text text-danger" data-cy="skillHoursError" id="skillHoursError">
+                        <ErrorMessage name="Hours" />
+                      </small>
+                    </Field>
                   </div>
                   <div class="col-12 col-sm">
-<!--                    <ValidationProvider rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeWindow:@timeWindowHours|cantBe0IfHours0" vid="timeWindowMinutes" v-slot="{errors}" name="Minutes">-->
+                    <Field rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeWindow:@timeWindowHours|cantBe0IfHours0" vid="timeWindowMinutes" v-slot="{field}" name="Minutes">
                       <div class="input-group">
                         <input class="form-control d-inline"  type="text" v-model="skillInternal.pointIncrementIntervalMins"
                                :disabled="!skillInternal.timeWindowEnabled" ref="timeWindowMinutes" data-cy="timeWindowMinutes"
-                               v-on:keydown.enter="handleSubmit(saveSkill)"
+                               v-on:keydown.enter="saveSkill"
+                               v-bind="field"
                                :aria-required="skillInternal.timeWindowEnabled"
                                aria-label="time window minutes"
                                aria-describedby="skillMinutesError"
                                aria-errormessage="skillMinutesError"
-                               :aria-invalid="errors && errors.length > 0"/>
+                               :aria-invalid="errors && Object.keys(errors).length > 0"/>
                         <div class="input-group-append">
                           <span class="input-group-text" id="minutes-append">Minutes</span>
                         </div>
                       </div>
-                      <small role="alert" class="form-text text-danger" data-cy="skillMinutesError" id="skillMinutesError">{{ errors[0] }}</small>
-<!--                    </ValidationProvider>-->
+                      <small role="alert" class="form-text text-danger" data-cy="skillMinutesError" id="skillMinutesError">
+                        <ErrorMessage name="Minutes" />
+                      </small>
+                    </Field>
                   </div>
                 </div>
 
               </div>
             </div>
             <div class="col-12 col-lg">
-<!--              <ValidationProvider vid="windowMaxOccurrence" rules="optionalNumeric|required|min_value:1|lessThanTotalOccurrences:@totalOccurrences|maxNumPointIncrementMaxOccurrences" v-slot="{errors}" name="Window's Max Occurrences">-->
+              <Field vid="windowMaxOccurrence" rules="optionalNumeric|required|min_value:1|lessThanTotalOccurrences:@totalOccurrences|maxNumPointIncrementMaxOccurrences" v-slot="{field}" name="Window's Max Occurrences">
                 <div class="form-group">
                   <label for="maxOccurrences">Window's Max Occurrences
                     <inline-help
@@ -192,15 +210,18 @@ limitations under the License.
 
                     <input class="form-control" type="text" v-model="skillInternal.numPointIncrementMaxOccurrences"
                            :disabled="!skillInternal.timeWindowEnabled" data-cy="maxOccurrences"
-                           v-on:keydown.enter="handleSubmit(saveSkill)"
+                           v-on:keydown.enter="saveSkill"
                            id="maxOccurrences"
+                           v-bind="field"
                            :aria-required="skillInternal.timeWindowEnabled"
                            aria-describedby="skillMaxOccurrencesError"
                            aria-errormessage="skillMaxOccurrencesError"
-                           :aria-invalid="errors && errors.length > 0"/>
-                    <small role="alert" class="form-text text-danger" data-cy="skillMaxOccurrencesError" id="skillMaxOccurrencesError">{{ errors[0] }}</small>
+                           :aria-invalid="errors && Object.keys(errors).length > 0"/>
+                    <small role="alert" class="form-text text-danger" data-cy="skillMaxOccurrencesError" id="skillMaxOccurrencesError">
+                      <ErrorMessage name="Window's Max Occurrences" />
+                    </small>
                 </div>
-<!--              </ValidationProvider>-->
+              </Field>
             </div>
           </div>
 
@@ -222,13 +243,16 @@ limitations under the License.
 
             <div class="">
             <div class="control">
-<!--              <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{errors}" name="Skill Description">-->
+              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Skill Description">
                 <markdown-editor v-model="skillInternal.description"
                                  :project-id="skillInternal.projectId"
+                                 v-bind="field"
                                  :skill-id="isEdit ? skillInternal.skillId : null"
                                  data-cy="skillDescription"/>
-                <small role="alert" class="form-text text-danger" data-cy="skillDescriptionError">{{ errors[0] }}</small>
-<!--              </ValidationProvider>-->
+                <small role="alert" class="form-text text-danger" data-cy="skillDescriptionError">
+                  <ErrorMessage name="Skill Description" />
+                </small>
+              </Field>
             </div>
           </div>
 
@@ -237,14 +261,14 @@ limitations under the License.
                           @shown="tooltipShowing=true"
                           @hidden="tooltipShowing=false"
                           v-model="skillInternal.helpUrl"
-                          v-on:keydown.enter.native="handleSubmit(saveSkill)" />
+                          v-on:keydown.enter.native="saveSkill" />
 
           <p v-if="invalid && overallErrMsg" class="text-center text-danger">***{{ overallErrMsg }}***</p>
         </b-container>
 
       <template v-slot:modal-footer>
         <div class="w-100">
-        <b-button variant="success" size="sm" class="float-right" @click="handleSubmit(saveSkill)"
+        <b-button variant="success" size="sm" class="float-right" @click="saveSkill"
                   :disabled="invalid || isLoading"
                   data-cy="saveSkillButton">
           Save
@@ -255,11 +279,11 @@ limitations under the License.
       </div>
       </template>
     </b-modal>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  // import { extend } from 'vee-validate';
+  import { defineRule, ErrorMessage } from 'vee-validate';
   // import { max_value, min_value } from 'vee-validate';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import SelfReportingTypeInput from '@/components/skills/selfReport/SelfReportingTypeInput';
@@ -298,6 +322,7 @@ limitations under the License.
     name: 'EditSkill',
     components: {
       HelpUrlInput,
+      ErrorMessage,
       SkillsSpinner,
       SelfReportingTypeInput,
       InlineHelp,
@@ -408,10 +433,13 @@ limitations under the License.
     mounted() {
       this.loadComponent();
 
-      // this.setupValidation();
+      this.setupValidation();
       document.addEventListener('focusin', this.trackFocus);
     },
     computed: {
+      invalid() {
+        return false;
+      },
       occurrencesToCompletionDisabled() {
         return this.skillInternal && this.skillInternal.selfReportingType
           && (this.skillInternal.selfReportingType === 'Quiz' || this.skillInternal.selfReportingType === 'Video');
@@ -525,77 +553,59 @@ limitations under the License.
       },
       setupValidation() {
         const self = this;
-        extend('uniqueName', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueName', (value, params, field) => {
+            const message = `The value for the ${field.name} is already taken.`;
             if (self.isEdit && (value === self.initial.skillName || self.initial.skillName.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
               return true;
             }
-            return SkillsService.skillWithNameExists(self.projectId, value);
-          },
+            const nameExists = SkillsService.skillWithNameExists(self.projectId, value);
+            return nameExists ? nameExists : message;
         });
 
-        extend('uniqueId', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueId', (value, params, field) => {
+            const message =  `The value for the ${field.name} is already taken.`;
             if (self.isEdit && self.initial.skillId === value) {
               return true;
             }
-            return SkillsService.skillWithIdExists(self.projectId, value);
-          },
+            const idExists = SkillsService.skillWithIdExists(self.projectId, value);
+            return idExists ? idExists : message;
         });
 
-        extend('lessThanTotalOccurrences', {
-          message: () => 'Must be less than or equals to \'Occurrences to Completion\' field',
-          params: ['target'],
-          validate(value, { target }) {
-            return parseInt(target, 10) >= parseInt(value, 10);
-          },
+        defineRule('lessThanTotalOccurrences', (value, params, field) => {
+            const target = params[0];
+            const isValid = parseInt(target, 10) >= parseInt(value, 10);
+            return isValid ? true : 'Must be less than or equals to \'Occurrences to Completion\' field';
         });
-        extend('moreThanMaxWindowOccurrences', {
-          message: () => 'Must be more than or equals to \'Max Occurrences Within Window\' field',
-          params: ['target'],
-          validate(value, { target }) {
-            return parseInt(value, 10) >= parseInt(target, 10);
-          },
+        defineRule('moreThanMaxWindowOccurrences', (value, params, field) => {
+            const target = params[0];
+            const isValid = parseInt(value, 10) >= parseInt(target, 10);
+            return isValid ? true : 'Must be more than or equals to \'Max Occurrences Within Window\' field';
         });
-        extend('cantBe0IfHours0', {
-          message: (field) => `${field} must be > 0 if Hours = 0`,
-          validate(value) {
+        defineRule('cantBe0IfHours0', (value, params, field) => {
             if (parseInt(value, 10) > 0 || parseInt(self.skillInternal.pointIncrementIntervalHrs, 10) > 0) {
               return true;
             }
-            return false;
-          },
+            return `${field.name} must be > 0 if Hours = 0`;
         });
-        extend('cantBe0IfMins0', {
-          message: (field) => `${field} must be > 0 if Minutes = 0`,
-          validate(value) {
+        defineRule('cantBe0IfMins0', (value, params, field) => {
             if (parseInt(value, 10) > 0 || parseInt(self.skillInternal.pointIncrementIntervalMins, 10) > 0) {
               return true;
             }
-            return false;
-          },
+            return `${field.name} must be > 0 if Minutes = 0`;
         });
 
-        extend('maxVersion', {
-          message: () => `Version ${self.initial.latestVersion} is the latest; max supported version is ${self.initial.latestVersion + 1} (latest + 1)`,
-          validate(value) {
+        defineRule('maxVersion', (value, params, field) => {
             if (parseInt(value, 10) > (self.initial.latestVersion + 1)) {
-              return false;
+              return `Version ${self.initial.latestVersion} is the latest; max supported version is ${self.initial.latestVersion + 1} (latest + 1)`;
             }
             return true;
-          },
         });
 
-        extend('selfReportQuiz', {
-          message: (field) => `Test was not selected for the ${field}`,
-          validate() {
+        defineRule('selfReportQuiz', (value, params, field) => {
             if (self.skillInternal.selfReportingType === 'Quiz' && !self.skillInternal.quizId) {
-              return false;
+              return `Test was not selected for the ${field.name}`;
             }
             return true;
-          },
         });
 
         const validateWindow = (windowHours, windowMinutes, validator) => {
@@ -619,19 +629,15 @@ limitations under the License.
           return ((hours * 60) + minutes) <= this.$store.getters.config.maxTimeWindowInMinutes;
         };
 
-        extend('hoursMaxTimeWindow', {
-          message: () => this.maxTimeWindowMessage,
-          params: ['target'],
-          validate(value, { target }) {
-            return validateWindow(value, target, 'hoursMaxTimeWindow');
-          },
+        defineRule('hoursMaxTimeWindow', (value, params, field) => {
+            const target = params[0];
+            const isValid = validateWindow(value, target, 'hoursMaxTimeWindow');
+            return isValid ? true : this.maxTimeWindowMessage;
         });
-        extend('minutesMaxTimeWindow', {
-          message: () => this.maxTimeWindowMessage,
-          params: ['target'],
-          validate(value, { target }) {
-            return validateWindow(target, value, 'minutesMaxTimeWindow');
-          },
+        defineRule('minutesMaxTimeWindow', (value, params, field) => {
+            const target = params[0];
+            const isValid = validateWindow(target, value, 'minutesMaxTimeWindow');
+            return isValid ? true : this.maxTimeWindowMessage;
         });
       },
       saveSkill() {

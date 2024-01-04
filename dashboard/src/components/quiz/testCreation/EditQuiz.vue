@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>
+  <Form ref="observer" v-slot="{errors}" slim>
     <b-modal :id="quiz.quizId" size="xl" :title="title" v-model="show"
              :no-close-on-backdrop="true" :centered="true"
              header-bg-variant="info"
@@ -28,23 +28,22 @@ limitations under the License.
           <div class="col-12">
             <div class="form-group">
           <label for="quizNameInput">* Name</label>
-<!--          <ValidationProvider-->
-<!--            rules="required|minNameLength|maxQuizNameLength|nullValueNotAllowed|uniqueName|customNameValidator"-->
-<!--            :debounce="500"-->
-<!--            v-slot="{errors}"-->
-<!--            name="Quiz Name">-->
+          <Field rules="required|minNameLength|maxQuizNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
+                 :debounce="500" v-slot="{field}" name="Quiz Name">
             <input id="quizNameInput"
                    class="form-control" type="text" v-model="quizInternal.name"
                    v-on:input="updateQuizId"
-                   v-on:keydown.enter="handleSubmit(saveQuiz)"
+                   v-on:keydown.enter="saveQuiz"
                    v-focus
+                   v-bind="field"
                    data-cy="quizName"
-                   :aria-invalid="errors && errors.length > 0"
+                   :aria-invalid="errors && Object.keys(errors).length > 0"
                    aria-errormessage="quizNameError"
                    aria-describedby="quizNameError"/>
-            <small role="alert" class="form-text text-danger" data-cy="quizNameError"
-                   id="quizNameError">{{ errors[0] }}</small>
-<!--          </ValidationProvider>-->
+            <small role="alert" class="form-text text-danger" data-cy="quizNameError" id="quizNameError">
+              <ErrorMessage name="Quiz Name" />
+            </small>
+          </Field>
         </div>
           </div>
         </div>
@@ -53,7 +52,7 @@ limitations under the License.
           <div class="col-12">
             <id-input type="text" label="Quiz/Survey ID" v-model="quizInternal.quizId"
                       additional-validation-rules="uniqueId"
-                      v-on:keydown.enter.native="handleSubmit(saveQuiz)"
+                      v-on:keydown.enter.native="saveQuiz"
                       :next-focus-el="previousFocus"
                       @shown="tooltipShowing=true"
                       @hidden="tooltipShowing=false"/>
@@ -77,15 +76,16 @@ limitations under the License.
 
         <div class="row mt-3" v-if="showDescription">
           <div class="col-12">
-<!--            <ValidationProvider rules="maxDescriptionLength|customDescriptionValidator" :debounce="400"-->
-<!--                                v-slot="{errors}"-->
-<!--                                name="Quiz/Survey Description">-->
+            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="400"
+                                v-slot="{field}" name="Quiz/Survey Description">
               <markdown-editor id="quizDescription"
+                               v-bind="field"
                                :quiz-id="isEdit ? quizInternal.quizId : null"
                                v-model="quizInternal.description" data-cy="quizDescription"></markdown-editor>
-              <small role="alert" class="form-text text-danger mb-3"
-                     data-cy="quizDescriptionError">{{ errors[0] }}</small>
-<!--            </ValidationProvider>-->
+              <small role="alert" class="form-text text-danger mb-3" data-cy="quizDescriptionError">
+                <ErrorMessage name="Quiz/Survey Description" />
+              </small>
+            </Field>
           </div>
         </div>
 
@@ -96,7 +96,7 @@ limitations under the License.
       <template v-slot:modal-footer>
         <div class="w-100">
         <b-button v-if="!loading" variant="success" size="sm" class="float-right"
-                  @click="handleSubmit(saveQuiz)"
+                  @click="saveQuiz"
                   :disabled="invalid"
                   :aria-label="`Save ${quizInternal.type}`"
                   data-cy="saveQuizButton">
@@ -109,11 +109,11 @@ limitations under the License.
       </div>
       </template>
     </b-modal>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { defineRule, ErrorMessage } from 'vee-validate';
   import MarkdownEditor from '@/common-components/utilities/MarkdownEditor';
   import InputSanitizer from '@/components/utils/InputSanitizer';
   import IdInput from '@/components/utils/inputForm/IdInput';
@@ -130,6 +130,7 @@ limitations under the License.
       MarkdownEditor,
       IdInput,
       ReloadMessage,
+      ErrorMessage,
     },
     mixins: [SaveComponentStateLocallyMixin, MsgBoxMixin],
     props: {
@@ -189,6 +190,9 @@ limitations under the License.
       },
     },
     computed: {
+      invalid() {
+        return false;
+      },
       title() {
         return this.isEdit ? 'Editing Existing Quiz/Survey' : 'New Quiz/Survey';
       },
@@ -297,26 +301,31 @@ limitations under the License.
       },
       registerValidation() {
         const self = this;
-        extend('uniqueName', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueName', (value, params, field) => {
             if (self.isEdit && (self.quizInternal.name === value || self.quizInternal.name.localeCompare(value, 'en', { sensitivity: 'base' }) === 0)) {
               return true;
             }
             return QuizService.checkIfQuizNameExist(value)
-              .then((remoteRes) => !remoteRes);
-          },
+              .then((remoteRes) => {
+                if(!remoteRes) {
+                  return true;
+                } else {
+                  return `The value for the ${field.message} is already taken.`
+                }
+              });
         });
 
-        extend('uniqueId', {
-          message: (field) => `The value for the ${field} is already taken.`,
-          validate(value) {
+        defineRule('uniqueId', (value, params, field) => {
             if (self.isEdit && self.quizInternal.quizId === value) {
               return true;
             }
-            return QuizService.checkIfQuizIdExist(value)
-              .then((remoteRes) => !remoteRes);
-          },
+            return QuizService.checkIfQuizIdExist(value).then((remoteRes) => {
+              if(!remoteRes) {
+                return true;
+              } else {
+                return `The value for the ${field.name} is already taken.`;
+              }
+            });
         });
       },
     },

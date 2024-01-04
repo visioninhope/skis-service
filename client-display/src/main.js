@@ -37,7 +37,7 @@ import {
     FormRatingPlugin,
 } from 'bootstrap-vue';
 import {
-  localize, ValidationProvider, ValidationObserver, setInteractionMode,
+  Form, Field,
 } from 'vee-validate';
 import en from 'vee-validate/dist/locale/en.json';
 // import FiltersPlugin from '@/common-components/filter/FiltersPlugin';
@@ -52,8 +52,8 @@ import DevModeUtil from '@/dev/DevModeUtil';
 
 Vue.config.productionTip = false;
 
-Vue.component('ValidationProvider', ValidationProvider);
-Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('Form', Form);
+Vue.component('Field', Field);
 
 Vue.use(VueApexCharts);
 Vue.use(ModalPlugin);
@@ -77,10 +77,10 @@ Vue.use(FormCheckboxPlugin);
 Vue.use(VueAnnouncer);
 Vue.use(FormRatingPlugin);
 
-localize({
-  en,
-});
-setInteractionMode('custom', () => ({ on: ['input', 'change'] }));
+// localize({
+//   en,
+// });
+// setInteractionMode('custom', () => ({ on: ['input', 'change'] }));
 
 require('@/common/interceptors/softwareVersionInterceptor');
 require('@/common/interceptors/upgradeInProgressInterceptor');

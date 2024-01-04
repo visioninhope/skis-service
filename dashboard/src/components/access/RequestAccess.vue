@@ -23,13 +23,13 @@ limitations under the License.
             New <span v-if="isRootAccount">Root </span>Account
           </div>
         </div>
-<!--        <ValidationObserver ref="observer" v-slot="{invalid, handleSubmit}" slim>-->
+        <Form ref="observer" v-slot="{errors}" slim>
           <form @submit.prevent="login">
             <div v-if="!oAuthOnly" class="card">
               <div class="card-body p-4">
                 <div class="form-group">
                   <label for="firstName" class="text-primary">* First Name</label>
-<!--                  <ValidationProvider name="First Name" rules="required|maxFirstNameLength" v-slot="{errors}" :debounce=500>-->
+                  <Field name="First Name" rules="required|maxFirstNameLength" v-slot="{field}" :debounce=500>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -37,16 +37,19 @@ limitations under the License.
                       <input class="form-control" type="text" v-model="loginFields.firstName"
                              id="firstName" :disabled="createInProgress"
                              name="firstName" aria-required="true"
-                             :aria-invalid="errors && errors.length > 0"
+                             v-bind="field"
+                             :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="firstnameError"
                              aria-describedby="firstnameError"/>
                     </div>
-<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="firstnameError">{{ errors[0] }}</small>-->
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" id="firstnameError">
+                      <ErrorMessage name="First Name" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="form-group">
                   <label for="lastName" class="text-primary">* Last Name</label>
-<!--                  <ValidationProvider name="Last Name" rules="required|maxLastNameLength" :debounce=500 v-slot="{errors}">-->
+                  <Field name="Last Name" rules="required|maxLastNameLength" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
@@ -54,16 +57,19 @@ limitations under the License.
                       <input class="form-control" type="text" v-model="loginFields.lastName"
                              id="lastName" :disabled="createInProgress"
                              name="lastName" aria-required="true"
-                             :aria-invalid="errors && errors.length > 0"
+                             v-bind="field"
+                             :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="lastnameError"
                              aria-describedby="lastnameError"/>
                     </div>
-<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="lastnameError">{{ errors[0] }}</small>-->
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" id="lastnameError">
+                      <ErrorMessage name="Last Name" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="form-group">
                   <label for="email" class="text-primary">* Email</label>
-<!--                  <ValidationProvider name="Email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{errors}">-->
+                  <Field name="Email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-envelope"></i></span>
@@ -71,33 +77,39 @@ limitations under the License.
                       <input class="form-control" type="text" v-model="loginFields.email" id="email"
                              :disabled="createInProgress"
                              name="email" aria-required="true"
-                             :aria-invalid="errors && errors.length > 0"
+                             v-bind="field"
+                             :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="emailErrors"
                              aria-describedby="emailErrors"/>
                     </div>
-<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="emailErrors">{{ errors[0] }}</small>-->
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" id="emailErrors">
+                      <ErrorMessage name="Email" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="form-group">
                   <label for="password" class="text-primary">* Password</label>
-<!--                  <ValidationProvider vid="password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{errors}">-->
+                  <Field vid="password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                       </div>
                       <input class="form-control" type="password" v-model="loginFields.password"
                              id="password" :disabled="createInProgress"
+                             v-bind="field"
                              name="password" ref="password" aria-required="true"
-                             :aria-invalid="errors && errors.length > 0"
+                             :aria-invalid="errors && Object.keys(errors).length > 0"
                              aria-errormessage="passwordError"
                              aria-describedby="passwordError"/>
                     </div>
-<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordError">{{ errors[0] }}</small>-->
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" id="passwordError">
+                      <ErrorMessage name="Password" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="form-group">
                   <label for="password_confirmation" class="text-primary">* Confirm Password</label>
-<!--                  <ValidationProvider vid="password_confirmation" name="Password" rules="required|confirmed:password" :debounce=500 v-slot="{errors}">-->
+                  <Field vid="password_confirmation" name="Confirm Password" rules="required|confirmed:@Password" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -105,12 +117,15 @@ limitations under the License.
                       <input class="form-control" type="password" id="password_confirmation"
                              v-model="passwordConfirmation" :disabled="createInProgress"
                              name="password_confirmation" aria-required="true"
-                             :aria-invalid="errors && errors.length"
+                             v-bind="field"
+                             :aria-invalid="errors && Object.keys(errors).length"
                              aria-errormessage="passwordConfirmationError"
                              aria-describedby="passwordConfirmationError"/>
                     </div>
-<!--                    <small role="alert" class="form-text text-danger" v-show="errors[0]" id="passwordConfirmationError">{{ errors[0] }}</small>-->
-<!--                  </ValidationProvider>-->
+                    <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" id="passwordConfirmationError">
+                      <ErrorMessage name="Confirm Password" />
+                    </small>
+                  </Field>
                 </div>
                 <div class="field is-grouped">
                   <div class="control">
@@ -151,14 +166,14 @@ limitations under the License.
             </div>
 
           </form>
-<!--        </ValidationObserver>-->
+        </Form>
       </div>
     </div>
   </div>
 </template>
 <script>
-  // import { extend } from 'vee-validate';
-  // import { required, email, confirmed } from 'vee-validate';
+  import { ErrorMessage, defineRule } from 'vee-validate';
+  import { required, email, confirmed } from '@vee-validate/rules';
   import AccessService from './AccessService';
   import Logo1 from '../brand/Logo1';
   import NavigationErrorMixin from '../utils/NavigationErrorMixin';
@@ -167,18 +182,17 @@ limitations under the License.
   //   ...required,
   //   message: '{_field_} is required',
   // });
-  // extend('email', email);
-  // extend('confirmed', confirmed);
-  // extend('uniqueEmail', {
-  //   message: (fieldName) => `${fieldName} is already used for another account.`,
-  //   validate(value) {
-  //     return AccessService.userWithEmailExists(value);
-  //   },
-  // });
+  defineRule('required', required);
+  defineRule('email', email);
+  defineRule('confirmed', confirmed);
+  defineRule('uniqueEmail', (value, params, field) => {
+      const userExists = AccessService.userWithEmailExists(value);
+      return userExists ? userExists :`${field.name} is already used for another account.`;
+  });
 
   export default {
     name: 'RequestAccount',
-    components: { Logo1 },
+    components: { Logo1, ErrorMessage },
     mixins: [NavigationErrorMixin],
     props: {
       isRootAccount: {
@@ -233,6 +247,9 @@ limitations under the License.
       },
     },
     computed: {
+      invalid() {
+        return false;
+      },
       oAuthOnly() {
         return this.$store.getters.config.oAuthOnly;
       },

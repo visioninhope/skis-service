@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{invalid}" slim>
+  <Form ref="observer" v-slot="{errors}" slim>
     <metrics-card title="Achievements" :no-padding="true" data-cy="achievementsNavigator">
       <div class="row p-3">
         <div class="col-md border-right">
@@ -23,39 +23,41 @@ limitations under the License.
           </b-form-group>
         </div>
           <div class="col-6 col-md border-right">
-<!--            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="From Date"-->
+            <Field rules="dateOrder" v-slot="{field}" name="From Date"
                                 ref="fromDateValidationProvider">
               <b-form-group label="From Date:" label-for="from-date-filter"
                             label-class="text-muted">
                 <b-form-datepicker aria-label="from date filter" id="from-date-filter"
                                    v-model="fromDayFilter" class="mb-2"
+                                   v-bind="field"
                                    aria-errormessage="fromDateError"
                                    aria-describedby="fromDateError"
                                    :aria-invalid="errors && errors.length > 0"
                                    data-cy="achievementsNavigator-fromDateInput">
                 </b-form-datepicker>
               </b-form-group>
-              <small role="alert" id="fromDateError" class="form-text text-danger" v-show="errors[0]"
-                     data-cy="fromDateError">{{ errors[0] }}
+              <small role="alert" id="fromDateError" class="form-text text-danger" v-show="errors[0]" data-cy="fromDateError">
+                <ErrorMessage name="From Date" />
               </small>
-<!--            </ValidationProvider>-->
+            </Field>
           </div>
           <div class="col-6 col-md">
-<!--            <ValidationProvider rules="dateOrder" v-slot="{errors}" name="To Date"-->
+            <Field rules="dateOrder" v-slot="{field}" name="To Date"
                                 ref="toDateValidationProvider">
               <b-form-group label="To Date:" label-for="to-date-filter" label-class="text-muted">
                 <b-form-datepicker aria-label="to date filter" id="to-date-filter"
                                    v-model="toDayFilter" class="mb-2"
+                                   v-bind="field"
                                    aria-errormessage="toDateError"
                                    aria-describedby="toDateError"
                                    :aria-invalid="errors && errors.length > 0"
                                    data-cy="achievementsNavigator-toDateInput">
                 </b-form-datepicker>
               </b-form-group>
-              <small role="alert" id="toDateError" class="form-text text-danger" v-show="errors[0]" data-cy="toDateError">{{
-                  errors[0]
-                }}</small>
-<!--            </ValidationProvider>-->
+              <small role="alert" id="toDateError" class="form-text text-danger" v-show="errors[0]" data-cy="toDateError">
+                <ErrorMessage name="To Date" />
+              </small>
+            </Field>
           </div>
         </div>
         <div class="row px-3">
@@ -129,11 +131,11 @@ limitations under the License.
           </template>
         </skills-b-table>
     </metrics-card>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  import { extend } from 'vee-validate';
+  import { ErrorMessage, defineRule } from 'vee-validate';
   import dayjs from '@/common-components/DayJsCustomizer';
   import SkillsBTable from '../../utils/table/SkillsBTable';
   import MetricsService from '../MetricsService';
@@ -158,10 +160,15 @@ limitations under the License.
 
   export default {
     name: 'AchievementsNavigator',
-    components: { MetricsCard, AchievementType, SkillsBTable },
+    components: { MetricsCard, AchievementType, SkillsBTable, ErrorMessage },
     mounted() {
       // this.customValidation();
       this.reloadTable();
+    },
+    computed: {
+      invalid() {
+        return false;
+      },
     },
     data() {
       return {
@@ -249,22 +256,19 @@ limitations under the License.
       },
       customValidation() {
         const self = this;
-        // extend('dateOrder', {
-        //   message: 'From Date must come before To Date',
-        //   validate() {
-        //     let valid = true;
-        //     if (self.fromDayFilter && self.toDayFilter) {
-        //       valid = dayjs(self.fromDayFilter).isBefore(dayjs(self.toDayFilter));
-        //       if (valid) {
-        //         // manually clear errors in case the orig error occurred when setting startDate,
-        //         // but was fixed by updating endDate (or vise-versa)
-        //         resetProvider(self.$refs.fromDateValidationProvider);
-        //         resetProvider(self.$refs.toDateValidationProvider);
-        //       }
-        //     }
-        //     return valid;
-        //   },
-        // });
+        defineRule('dateOrder', (value, params, field) => {
+            let valid = true;
+            if (self.fromDayFilter && self.toDayFilter) {
+              valid = dayjs(self.fromDayFilter).isBefore(dayjs(self.toDayFilter));
+              if (valid) {
+                // manually clear errors in case the orig error occurred when setting startDate,
+                // but was fixed by updating endDate (or vise-versa)
+                resetProvider(self.$refs.fromDateValidationProvider);
+                resetProvider(self.$refs.toDateValidationProvider);
+              }
+            }
+            return valid ? valid : 'From Date must come before To Date';
+        });
       },
       reset() {
         this.usernameFilter = '';

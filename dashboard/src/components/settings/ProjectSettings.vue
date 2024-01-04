@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <template>
-  <ValidationObserver ref="observer" v-slot="{ invalid, handleSubmit }" slim>
+  <Form ref="observer" v-slot="{ errors }" slim>
   <div>
     <sub-page-header title="Project Settings"/>
     <simple-card>
@@ -69,8 +69,7 @@ limitations under the License.
             </div>
           </div>
 
-<!--          <ValidationProvider rules="root_help_url|customUrlValidator" v-slot="{errors}"-->
-<!--                              name="Root Help Url">-->
+          <Field rules="root_help_url|customUrlValidator" v-slot="{field}" name="Root Help Url">
             <div class="row mt-3">
               <div class="col-md-5 col-xl-3 text-secondary" id="rootHelpUrlLabel">
                 Root Help Url:
@@ -79,23 +78,25 @@ limitations under the License.
                   msg="Optional root for Skills' 'Help Url' parameter. When configured 'Help Url' can use relative path to this root."/>
               </div>
               <div class="col-md-7 col-xl-9">
-                <b-form-input v-model="settings.helpUrlHost.value"
-                              placeholder="http://www.HelpArticlesHost.com"
-                              data-cy="rootHelpUrlInput"
-                              v-on:input="helpUrlHostChanged"
-                              aria-describedby="rootHelpUrlError"
-                              aria-errormessage="rootHelpUrlError"
-                              aria-labelledby="rootHelpUrlLabel">
-                </b-form-input>
+                <input v-model="settings.helpUrlHost.value"
+                       placeholder="http://www.HelpArticlesHost.com"
+                       data-cy="rootHelpUrlInput"
+                       class="form-control"
+                       v-bind="field"
+                       v-on:input="helpUrlHostChanged"
+                       aria-describedby="rootHelpUrlError"
+                       aria-errormessage="rootHelpUrlError"
+                       aria-labelledby="rootHelpUrlLabel">
               </div>
             </div>
-            <div v-if="errors && errors.length > 0" class="row">
+            <div v-if="errors && Object.keys(errors).length > 0" class="row">
               <div class="col">
-                <small role="alert" class="form-text text-danger" id="rootHelpUrlError"
-                       data-cy="rootHelpUrlError">{{ errors[0] }}</small>
+                <small role="alert" class="form-text text-danger" id="rootHelpUrlError" data-cy="rootHelpUrlError">
+                  <ErrorMessage name="Root Help Url" />
+                </small>
               </div>
             </div>
-<!--          </ValidationProvider>-->
+          </Field>
 
           <div class="row mt-3">
             <div class="col-md-5 col-xl-3 text-secondary" id="selfReportLabel">
@@ -183,8 +184,7 @@ limitations under the License.
 
               <b-collapse id="customLabelsCollapse" :visible="showCustomLabelsConfigToggle">
                 <b-card class="mt-1">
-<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
-<!--                                      name="Project Display Text">-->
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Project Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="projectDisplayTextLabel">
                         Project Display Text:
@@ -193,22 +193,22 @@ limitations under the License.
                           msg='The word "Project" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <b-form-input v-model="settings.projectDisplayName.value"
+                        <input class="form-control" type="text" v-model="settings.projectDisplayName.value"
                                       data-cy="projectDisplayTextInput"
+                                      v-bind="field"
                                       v-on:input="projectDisplayNameChanged"
                                       aria-labelledby="projectDisplayTextLabel">
-                        </b-form-input>
                       </div>
                     </div>
-                    <div v-if="errors && errors.length > 0" class="row">
+                    <div v-if="errors && Object.keys(errors).length > 0" class="row">
                       <div class="col">
-                        <small role="alert" class="form-text text-danger" id="projectDisplayTextError"
-                               data-cy="projectDisplayTextError">{{ errors[0] }}</small>
+                        <small role="alert" class="form-text text-danger" id="projectDisplayTextError" data-cy="projectDisplayTextError">
+                          <ErrorMessage name="Project Display Text" />
+                        </small>
                       </div>
                     </div>
-<!--                  </ValidationProvider>-->
-<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
-<!--                                      name="Subject Display Text">-->
+                  </Field>
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Subject Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="subjectDisplayTextLabel">
                         Subject Display Text:
@@ -217,22 +217,22 @@ limitations under the License.
                           msg='The word "Subject" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <b-form-input v-model="settings.subjectDisplayName.value"
+                        <input class="form-control" type="text" v-model="settings.subjectDisplayName.value"
                                       data-cy="subjectDisplayTextInput"
+                                      v-bind="field"
                                       v-on:input="subjectDisplayNameChanged"
                                       aria-labelledby="subjectDisplayTextLabel">
-                        </b-form-input>
                       </div>
                     </div>
-                    <div v-if="errors && errors.length > 0" class="row">
+                    <div v-if="errors && Object.keys(errors).length > 0" class="row">
                       <div class="col">
-                        <small role="alert" class="form-text text-danger" id="subjectDisplayTextError"
-                               data-cy="subjectDisplayTextError">{{ errors[0] }}</small>
+                        <small role="alert" class="form-text text-danger" id="subjectDisplayTextError" data-cy="subjectDisplayTextError">
+                          <ErrorMessage name="Subject Display Text" />
+                        </small>
                       </div>
                     </div>
-<!--                  </ValidationProvider>-->
-<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
-                                      name="Group Display Text">
+                  </Field>
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Group Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="groupDisplayTextLabel">
                         Group Display Text:
@@ -241,23 +241,23 @@ limitations under the License.
                           msg='The word "Group" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <b-form-input v-model="settings.groupDisplayName.value"
+                        <input class="form-control" type="text" v-model="settings.groupDisplayName.value"
                                       data-cy="groupDisplayTextInput"
+                                      v-bind="field"
                                       v-on:input="groupDisplayNameChanged"
                                       aria-labelledby="groupDisplayTextLabel">
-                        </b-form-input>
                       </div>
                     </div>
-                    <div v-if="errors && errors.length > 0" class="row">
+                    <div v-if="errors && Object.keys(errors).length > 0" class="row">
                       <div class="col">
-                        <small role="alert" class="form-text text-danger" id="groupDisplayTextError"
-                               data-cy="groupDisplayTextError">{{ errors[0] }}</small>
+                        <small role="alert" class="form-text text-danger" id="groupDisplayTextError" data-cy="groupDisplayTextError">
+                          <ErrorMessage name="Group Display Text" />
+                        </small>
                       </div>
                     </div>
-<!--                  </ValidationProvider>-->
+                  </Field>
 
-<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
-<!--                                      name="Skill Display Text">-->
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Skill Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="skillDisplayTextLabel">
                         Skill Display Text:
@@ -266,22 +266,22 @@ limitations under the License.
                           msg='The word "Skill" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <b-form-input v-model="settings.skillDisplayName.value"
+                        <input class="form-control" type="text" v-model="settings.skillDisplayName.value"
                                       data-cy="skillDisplayTextInput"
+                                      v-bind="field"
                                       v-on:input="skillDisplayNameChanged"
                                       aria-labelledby="skillDisplayTextLabel">
-                        </b-form-input>
                       </div>
                     </div>
-                    <div v-if="errors && errors.length > 0" class="row">
+                    <div v-if="errors && Object.keys(errors).length > 0" class="row">
                       <div class="col">
-                        <small role="alert" class="form-text text-danger" id="skillDisplayTextError"
-                               data-cy="skillDisplayTextError">{{ errors[0] }}</small>
+                        <small role="alert" class="form-text text-danger" id="skillDisplayTextError" data-cy="skillDisplayTextError">
+                          <ErrorMessage name="Skill Display Text" />
+                        </small>
                       </div>
                     </div>
-<!--                  </ValidationProvider>-->
-<!--                  <ValidationProvider rules="maxCustomLabelLength" v-slot="{errors}"-->
-<!--                                      name="Level Display Text">-->
+                  </Field>
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Level Display Text">
                     <div class="row">
                       <div class="col-md-5 col-xl-3 text-secondary" id="levelDisplayTextLabel">
                         Level Display Text:
@@ -290,20 +290,21 @@ limitations under the License.
                           msg='The word "Level" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <b-form-input v-model="settings.levelDisplayName.value"
+                        <input class="form-control" type="text" v-model="settings.levelDisplayName.value"
                                       data-cy="levelDisplayTextInput"
+                                      v-bind="field"
                                       v-on:input="levelDisplayNameChanged"
                                       aria-labelledby="levelDisplayTextLabel">
-                        </b-form-input>
                       </div>
                     </div>
-                    <div v-if="errors && errors.length > 0" class="row">
+                    <div v-if="errors && Object.keys(errors).length > 0" class="row">
                       <div class="col">
-                        <small role="alert" class="form-text text-danger" id="levelDisplayTextError"
-                               data-cy="levelDisplayTextError">{{ errors[0] }}</small>
+                        <small role="alert" class="form-text text-danger" id="levelDisplayTextError" data-cy="levelDisplayTextError">
+                          <ErrorMessage name="Level Display Text" />
+                        </small>
                       </div>
                     </div>
-<!--                  </ValidationProvider>-->
+                  </Field>
                 </b-card>
               </b-collapse>
             </div>
@@ -334,7 +335,7 @@ limitations under the License.
 
           <div class="row">
             <div class="col">
-              <b-button variant="outline-success" @click="handleSubmit(save)" :disabled="invalid || !isDirty" data-cy="saveSettingsBtn">
+              <b-button variant="outline-success" @click="save" :disabled="invalid || !isDirty" data-cy="saveSettingsBtn">
                 Save <i class="fas fa-arrow-circle-right"/>
               </b-button>
 
@@ -353,11 +354,11 @@ limitations under the License.
       </simple-card>
 
     </div>
-  </ValidationObserver>
+  </Form>
 </template>
 
 <script>
-  // import { extend, ValidationProvider } from 'vee-validate';
+  import { defineRule, Field, ErrorMessage } from 'vee-validate';
   import { SkillsReporter } from '@skilltree/skills-client-js';
   import MsgBoxMixin from '@/components/utils/modal/MsgBoxMixin';
   import SettingService from './SettingsService';
@@ -371,15 +372,13 @@ limitations under the License.
   const discoverableProgressAndRanking = 'dpr';
   const privateInviteOnly = 'pio';
 
-  // extend('root_help_url', {
-  //   message: (field) => `${field} must start with "http(s)"`,
-  //   validate(value) {
-  //     if (!value) {
-  //       return true;
-  //     }
-  //     return value.startsWith('http') || value.startsWith('https');
-  //   },
-  // });
+  defineRule('root_help_url', (value, params, field) => {
+      if (!value) {
+        return true;
+      }
+      const isValid = value.startsWith('http') || value.startsWith('https');
+      return isValid ? isValid : `${field.name} must start with "http(s)"`;
+  });
 
   export default {
     name: 'ProjectSettings',
@@ -389,7 +388,8 @@ limitations under the License.
       InlineHelp,
       SimpleCard,
       SubPageHeader,
-      // ValidationProvider,
+      ErrorMessage,
+      // Field,
     },
     data() {
       return {
@@ -519,6 +519,9 @@ limitations under the License.
       this.loadSettings();
     },
     computed: {
+      invalid() {
+        return false;
+      },
       isDirty() {
         const foundDirty = Object.values(this.settings).find((item) => item.dirty);
         return !!foundDirty;
