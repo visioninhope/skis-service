@@ -20,8 +20,8 @@ limitations under the License.
             <label class="label" for="publicUrl">* Public URL <InlineHelp target-id="publicUrlHelp" msg="Because it is possible for the SkillTree dashboard
             to be deployed behind a load balancer or proxy, it is necessary to configure the public url so that email
             based communications from the system can provide valid links back to the SkillTree dashboard."/></label>
-            <Field rules="required" name="Public URL" v-slot="{ field }" :debounce=500>
-              <input class="form-control" type="text" v-model="emailInfo.publicUrl" name="publicUrl"
+            <Field rules="required" name="Public URL" v-slot="{ field }" :debounce=500 v-model="emailInfo.publicUrl">
+              <input class="form-control" type="text" name="publicUrl"
                      data-cy="publicUrlInput" aria-required="true"
                     id="publicUrl"
                      v-bind="field"
@@ -34,8 +34,8 @@ limitations under the License.
           </div>
           <div class="form-group">
             <label class="label" for="fromEmail">* From Email <InlineHelp target-id="fromEmailHelp" msg="The From email address used in all email originating from the SkillTree application"/></label>
-            <Field :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ field }" :debounce=500>
-              <input class="form-control" type="text" v-model="emailInfo.fromEmail" name="fromEmail"
+            <Field :rules="{email:{require_tld:false,allow_ip_domain:true}}" name="From Email" v-slot="{ field }" :debounce=500 v-model="emailInfo.fromEmail">
+              <input class="form-control" type="text" name="fromEmail"
                      data-cy="fromEmailInput" id="fromEmail"
                      v-bind="field"
                     :aria-invalid="errors && Object.keys(errors).length  > 0"
@@ -47,8 +47,8 @@ limitations under the License.
           </div>
       <div class="form-group">
         <label class="label" for="emailHost">* Host</label>
-        <Field name="Host" :debounce=500 v-slot="{field}" rules="required">
-          <input class="form-control" type="text" v-model="emailInfo.host" name="host"
+        <Field name="Host" :debounce=500 v-slot="{field}" rules="required" v-model="emailInfo.host">
+          <input class="form-control" type="text" name="host"
                  data-cy="hostInput" aria-required="true"
                  v-bind="field"
                   :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -61,8 +61,8 @@ limitations under the License.
       </div>
       <div class="form-group">
         <label class="label" for="emailPort">* Port</label>
-        <Field name="Port" :debounce=500 v-slot="{field}" rules="required|min_value:1|max_value:65535">
-          <input class="form-control" type="text" v-model="emailInfo.port" name="port"
+        <Field name="Port" :debounce=500 v-slot="{field}" v-model="emailInfo.port" rules="required|min_value:1|max_value:65535">
+          <input class="form-control" type="text" name="port"
                  data-cy="portInput" aria-required="true"
                  v-bind="field"
                   :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -75,8 +75,8 @@ limitations under the License.
       </div>
       <div class="form-group">
         <label class="label" for="emailProtocol">* Protocol</label>
-        <Field name="Protocol" :debounce=500 v-slot="{field}" rules="required">
-          <input class="form-control" type="text" v-model="emailInfo.protocol" name="protocol"
+        <Field name="Protocol" :debounce=500 v-slot="{field}" rules="required" v-model="emailInfo.protocol">
+          <input class="form-control" type="text" name="protocol"
                  data-cy="protocolInput" aria-required="true"
                  v-bind="field"
                   :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -100,8 +100,8 @@ limitations under the License.
       <div id="auth-div" v-if="emailInfo.authEnabled">
         <div class="form-group">
           <label class="label" for="emailUsername">* Username</label>
-          <Field name="Username" :debounce=500 v-slot="{field}" rules="required">
-            <input class="form-control" type="text" v-model="emailInfo.username" name="username"
+          <Field name="Username" :debounce=500 v-slot="{field}" rules="required" v-model="emailInfo.username">
+            <input class="form-control" type="text" name="username"
                    data-cy="emailUsername" aria-required="true"
                    v-bind="field"
                    :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -114,8 +114,8 @@ limitations under the License.
         </div>
         <div class="form-group">
           <label class="label" for="emailPassword">* Password</label>
-          <Field name="Password" :debounce=500 v-slot="{field}" rules="required">
-            <input class="form-control" type="text" v-model="emailInfo.password" name="password"
+          <Field name="Password" :debounce=500 v-slot="{field}" rules="required" v-model="emailInfo.password">
+            <input class="form-control" type="text" name="password"
                    data-cy="emailPassword" aria-required="true"
                    v-bind="field"
                     :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -140,7 +140,7 @@ limitations under the License.
           Test
           <i :class="testButtonClass"></i>
         </button>
-        <button class="btn btn-outline-success" type="button" v-on:click="saveEmailSettings" :disabled="invalid || pristine || missingRequiredValues() || isSaving || isTesting" data-cy="emailSettingsSave">
+        <button class="btn btn-outline-success" type="button" v-on:click="saveEmailSettings" :disabled="invalid || missingRequiredValues() || isSaving || isTesting" data-cy="emailSettingsSave">
           Save
           <i :class="[isSaving ? 'fa fa-circle-notch fa-spin fa-3x-fa-fw' : 'fas fa-arrow-circle-right']"></i>
         </button>

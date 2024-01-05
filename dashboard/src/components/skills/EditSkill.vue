@@ -26,9 +26,9 @@ limitations under the License.
             <div class="col-12 col-lg">
               <div class="form-group">
                 <label for="skillName">* Skill Name</label>
-                <Field rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250" v-slot="{field}" name="Skill Name" ref="skillNameProvider">
+                <Field rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueName|customNameValidator" :debounce="250" v-slot="{field}" name="Skill Name" ref="skillNameProvider" v-model="skillInternal.name">
                   <input type="text" class="form-control" id="skillName" @input="updateSkillId"
-                         v-model="skillInternal.name" v-focus
+                         v-focus
                          aria-required="true"
                          v-bind="field"
                          v-on:keydown.enter="saveSkill"
@@ -60,9 +60,9 @@ limitations under the License.
                     @hidden="tooltipShowing=false"
                     msg="An optional version for this skill to allow filtering of available skills for different versions of an application"/>
                 </label>
-                <Field :rules="{ 'optionalNumeric':true,'min_value':0, 'maxSkillVersion':true, 'maxVersion': !isEdit }" v-slot="{field}" name="Version">
+                <Field :rules="{ 'optionalNumeric':true,'min_value':0, 'maxSkillVersion':true, 'maxVersion': !isEdit }" v-slot="{field}" name="Version" v-model="skillInternal.version">
                   <input class="form-control" type="text" id="skillVersion"
-                         v-model="skillInternal.version" :disabled="isEdit"
+                         :disabled="isEdit"
                          v-bind="field"
                          data-cy="skillVersion" v-on:keydown.enter="saveSkill"
                          aria-describedby="skillVersionError"
@@ -80,8 +80,8 @@ limitations under the License.
             <div class="col-12 col-lg">
               <div class="form-group mb-1">
                 <label for="pointIncrement">* Point Increment</label>
-                <Field rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{field}" name="Point Increment">
-                  <input class="form-control" type="text" v-model="skillInternal.pointIncrement"
+                <Field rules="optionalNumeric|required|min_value:1|maxPointIncrement" v-slot="{field}" name="Point Increment" v-model="skillInternal.pointIncrement">
+                  <input class="form-control" type="text"
                          aria-required="true"
                          :aria-label="`Point Increment values must range between 1 and ${maxPointIncrement}`"
                          v-bind="field"
@@ -99,9 +99,8 @@ limitations under the License.
             <div class="col-12 col-lg">
               <div class="form-group mt-2 mt-lg-0">
                 <label for="numPerformToCompletion">* Occurrences to Completion</label>
-                <Field vid="totalOccurrences" rules="optionalNumeric|required|min_value:1|maxNumPerformToCompletion|moreThanMaxWindowOccurrences:@windowMaxOccurrence" v-slot="{field}" name="Occurrences to Completion" tag="div">
+                <Field vid="totalOccurrences" rules="optionalNumeric|required|min_value:1|maxNumPerformToCompletion|moreThanMaxWindowOccurrences:@windowMaxOccurrence" v-slot="{field}" name="Occurrences to Completion" tag="div" v-model="skillInternal.numPerformToCompletion">
                   <input class="form-control" type="text"
-                         v-model="skillInternal.numPerformToCompletion"
                          data-cy="numPerformToCompletion" aria-required="true"
                          v-on:keydown.enter="saveSkill"
                          v-bind="field"
@@ -151,9 +150,9 @@ limitations under the License.
                 </label>
                 <div class="row">
                   <div class="col-12 col-sm">
-                    <Field rules="optionalNumeric|required|min_value:0|hoursMaxTimeWindow:@timeWindowMinutes|cantBe0IfMins0" vid="timeWindowHours" v-slot="{field}" name="Hours">
+                    <Field rules="optionalNumeric|required|min_value:0|hoursMaxTimeWindow:@timeWindowMinutes|cantBe0IfMins0" vid="timeWindowHours" v-slot="{field}" name="Hours" v-model="skillInternal.pointIncrementIntervalHrs">
                       <div class="input-group">
-                        <input class="form-control d-inline" type="text" v-model="skillInternal.pointIncrementIntervalHrs"
+                        <input class="form-control d-inline" type="text"
                                :disabled="!skillInternal.timeWindowEnabled"
                                :aria-required="skillInternal.timeWindowEnabled"
                                v-bind="field"
@@ -172,9 +171,9 @@ limitations under the License.
                     </Field>
                   </div>
                   <div class="col-12 col-sm">
-                    <Field rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeWindow:@timeWindowHours|cantBe0IfHours0" vid="timeWindowMinutes" v-slot="{field}" name="Minutes">
+                    <Field rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeWindow:@timeWindowHours|cantBe0IfHours0" vid="timeWindowMinutes" v-slot="{field}" name="Minutes" v-model="skillInternal.pointIncrementIntervalMins">
                       <div class="input-group">
-                        <input class="form-control d-inline"  type="text" v-model="skillInternal.pointIncrementIntervalMins"
+                        <input class="form-control d-inline"  type="text"
                                :disabled="!skillInternal.timeWindowEnabled" ref="timeWindowMinutes" data-cy="timeWindowMinutes"
                                v-on:keydown.enter="saveSkill"
                                v-bind="field"
@@ -197,7 +196,7 @@ limitations under the License.
               </div>
             </div>
             <div class="col-12 col-lg">
-              <Field vid="windowMaxOccurrence" rules="optionalNumeric|required|min_value:1|lessThanTotalOccurrences:@totalOccurrences|maxNumPointIncrementMaxOccurrences" v-slot="{field}" name="Window's Max Occurrences">
+              <Field vid="windowMaxOccurrence" rules="optionalNumeric|required|min_value:1|lessThanTotalOccurrences:@totalOccurrences|maxNumPointIncrementMaxOccurrences" v-slot="{field}" name="Window's Max Occurrences" v-model="skillInternal.numPointIncrementMaxOccurrences">
                 <div class="form-group">
                   <label for="maxOccurrences">Window's Max Occurrences
                     <inline-help
@@ -208,7 +207,7 @@ limitations under the License.
                       msg="Once this Max Occurrences has been reached, points will not be incremented until outside of the configured Time Window."/>
                   </label>
 
-                    <input class="form-control" type="text" v-model="skillInternal.numPointIncrementMaxOccurrences"
+                    <input class="form-control" type="text"
                            :disabled="!skillInternal.timeWindowEnabled" data-cy="maxOccurrences"
                            v-on:keydown.enter="saveSkill"
                            id="maxOccurrences"
@@ -243,9 +242,8 @@ limitations under the License.
 
             <div class="">
             <div class="control">
-              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Skill Description">
-                <markdown-editor v-model="skillInternal.description"
-                                 :project-id="skillInternal.projectId"
+              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Skill Description" v-model="skillInternal.description">
+                <markdown-editor :project-id="skillInternal.projectId"
                                  v-bind="field"
                                  :skill-id="isEdit ? skillInternal.skillId : null"
                                  data-cy="skillDescription"/>

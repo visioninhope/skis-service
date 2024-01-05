@@ -35,10 +35,10 @@ limitations under the License.
             <div class="form-group">
               <label for="projectIdInput">* {{ nameLabelTxt }}</label>
 <!--             uniqueName -->
-              <Field rules="required|minNameLength|maxProjectNameLength|customNameValidator|nullValueNotAllowed" name="Project Name" v-slot="{ field }">
+              <Field rules="required|minNameLength|maxProjectNameLength|customNameValidator|nullValueNotAllowed" name="Project Name" v-slot="{ field }" v-model="internalProject.name">
 <!--                                  v-slot="{errors}"-->
 <!--                                  :debounce="250"-->
-                <input class="form-control" type="text" v-model="internalProject.name"
+                <input class="form-control" type="text"
                        v-on:input="updateProjectId"
                        v-on:keydown.enter="updateProject"
                        v-bind="field"
@@ -77,8 +77,8 @@ limitations under the License.
             <Form>
               <div class="row">
                 <div class="col-lg">
-                  <Field rules="projectCommunityRequirements" name="Failed Minimum Requirement" v-slot="{ field }" type="checkbox" :value="internalProject.enableProtectedUserCommunity">
-                    <b-form-checkbox v-model="internalProject.enableProtectedUserCommunity" v-bind="field"
+                  <Field rules="projectCommunityRequirements" name="Failed Minimum Requirement" v-slot="{ field }" type="checkbox" :value="internalProject.enableProtectedUserCommunity" v-model="internalProject.enableProtectedUserCommunity">
+                    <b-form-checkbox v-bind="field"
                                      name="check-button" inline switch data-cy="restrictCommunity">
 <!--                                                           @change="userCommunityChanged" -->
                       Restrict <i class="fas fa-shield-alt text-danger" aria-hidden="true" /> Access to <b class="text-primary">{{ userCommunityRestrictedDescriptor }}</b> users only
@@ -108,9 +108,8 @@ limitations under the License.
         </div>
         <div class="row">
           <div class="mt-2 col-12">
-              <Field rules="maxDescriptionLength|customProjectDescriptionValidator" v-slot="{ field }" name="Project Description">
+              <Field v-model="internalProject.description" rules="maxDescriptionLength|customProjectDescriptionValidator" v-slot="{ field }" name="Project Description">
                 <markdown-editor v-if="!isEdit || descriptionLoaded"
-                                 v-model="internalProject.description"
                                  v-bind="field"
                                  :project-id="internalProject.projectId"
                                  :allow-attachments="isEdit || !showManageUserCommunity"

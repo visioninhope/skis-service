@@ -29,9 +29,9 @@ limitations under the License.
             <div class="form-group">
           <label for="quizNameInput">* Name</label>
           <Field rules="required|minNameLength|maxQuizNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
-                 :debounce="500" v-slot="{field}" name="Quiz Name">
+                 :debounce="500" v-slot="{field}" name="Quiz Name" v-model="quizInternal.name">
             <input id="quizNameInput"
-                   class="form-control" type="text" v-model="quizInternal.name"
+                   class="form-control" type="text"
                    v-on:input="updateQuizId"
                    v-on:keydown.enter="saveQuiz"
                    v-focus
@@ -76,12 +76,12 @@ limitations under the License.
 
         <div class="row mt-3" v-if="showDescription">
           <div class="col-12">
-            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="400"
+            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="400" v-model="quizInternal.description"
                                 v-slot="{field}" name="Quiz/Survey Description">
               <markdown-editor id="quizDescription"
                                v-bind="field"
                                :quiz-id="isEdit ? quizInternal.quizId : null"
-                               v-model="quizInternal.description" data-cy="quizDescription"></markdown-editor>
+                               data-cy="quizDescription"></markdown-editor>
               <small role="alert" class="form-text text-danger mb-3" data-cy="quizDescriptionError">
                 <ErrorMessage name="Quiz/Survey Description" />
               </small>

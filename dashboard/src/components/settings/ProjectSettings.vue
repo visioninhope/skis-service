@@ -69,7 +69,7 @@ limitations under the License.
             </div>
           </div>
 
-          <Field rules="root_help_url|customUrlValidator" v-slot="{field}" name="Root Help Url">
+          <Field rules="root_help_url|customUrlValidator" v-model="settings.helpUrlHost.value" v-slot="{field}" name="Root Help Url">
             <div class="row mt-3">
               <div class="col-md-5 col-xl-3 text-secondary" id="rootHelpUrlLabel">
                 Root Help Url:
@@ -78,8 +78,7 @@ limitations under the License.
                   msg="Optional root for Skills' 'Help Url' parameter. When configured 'Help Url' can use relative path to this root."/>
               </div>
               <div class="col-md-7 col-xl-9">
-                <input v-model="settings.helpUrlHost.value"
-                       placeholder="http://www.HelpArticlesHost.com"
+                <input placeholder="http://www.HelpArticlesHost.com"
                        data-cy="rootHelpUrlInput"
                        class="form-control"
                        v-bind="field"
@@ -184,7 +183,7 @@ limitations under the License.
 
               <b-collapse id="customLabelsCollapse" :visible="showCustomLabelsConfigToggle">
                 <b-card class="mt-1">
-                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Project Display Text">
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" v-model="settings.projectDisplayName.value" name="Project Display Text">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="projectDisplayTextLabel">
                         Project Display Text:
@@ -193,7 +192,7 @@ limitations under the License.
                           msg='The word "Project" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <input class="form-control" type="text" v-model="settings.projectDisplayName.value"
+                        <input class="form-control" type="text"
                                       data-cy="projectDisplayTextInput"
                                       v-bind="field"
                                       v-on:input="projectDisplayNameChanged"
@@ -208,7 +207,7 @@ limitations under the License.
                       </div>
                     </div>
                   </Field>
-                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Subject Display Text">
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Subject Display Text" v-model="settings.subjectDisplayName.value">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="subjectDisplayTextLabel">
                         Subject Display Text:
@@ -217,7 +216,7 @@ limitations under the License.
                           msg='The word "Subject" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <input class="form-control" type="text" v-model="settings.subjectDisplayName.value"
+                        <input class="form-control" type="text"
                                       data-cy="subjectDisplayTextInput"
                                       v-bind="field"
                                       v-on:input="subjectDisplayNameChanged"
@@ -232,7 +231,7 @@ limitations under the License.
                       </div>
                     </div>
                   </Field>
-                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Group Display Text">
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Group Display Text" v-model="settings.groupDisplayName.value">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="groupDisplayTextLabel">
                         Group Display Text:
@@ -241,7 +240,7 @@ limitations under the License.
                           msg='The word "Group" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <input class="form-control" type="text" v-model="settings.groupDisplayName.value"
+                        <input class="form-control" type="text"
                                       data-cy="groupDisplayTextInput"
                                       v-bind="field"
                                       v-on:input="groupDisplayNameChanged"
@@ -257,7 +256,7 @@ limitations under the License.
                     </div>
                   </Field>
 
-                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Skill Display Text">
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Skill Display Text" v-model="settings.skillDisplayName.value">
                     <div class="row mb-1">
                       <div class="col-md-5 col-xl-3 text-secondary" id="skillDisplayTextLabel">
                         Skill Display Text:
@@ -266,7 +265,7 @@ limitations under the License.
                           msg='The word "Skill" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <input class="form-control" type="text" v-model="settings.skillDisplayName.value"
+                        <input class="form-control" type="text"
                                       data-cy="skillDisplayTextInput"
                                       v-bind="field"
                                       v-on:input="skillDisplayNameChanged"
@@ -281,7 +280,7 @@ limitations under the License.
                       </div>
                     </div>
                   </Field>
-                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Level Display Text">
+                  <Field rules="maxCustomLabelLength" v-slot="{field}" name="Level Display Text" v-model="settings.levelDisplayName.value">
                     <div class="row">
                       <div class="col-md-5 col-xl-3 text-secondary" id="levelDisplayTextLabel">
                         Level Display Text:
@@ -290,7 +289,7 @@ limitations under the License.
                           msg='The word "Level" may be overloaded to some organizations.  You can change the value displayed to users in Skills Display here.'/>
                       </div>
                       <div class="col-md-7 col-xl-9">
-                        <input class="form-control" type="text" v-model="settings.levelDisplayName.value"
+                        <input class="form-control" type="text"
                                       data-cy="levelDisplayTextInput"
                                       v-bind="field"
                                       v-on:input="levelDisplayNameChanged"

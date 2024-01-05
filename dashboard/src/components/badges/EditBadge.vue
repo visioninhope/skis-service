@@ -33,8 +33,8 @@ limitations under the License.
               <div class="form-group">
                 <label for="badgeName">* Badge Name</label>
                 <Field rules="required|minNameLength|maxBadgeNameLength|nullValueNotAllowed|uniqueName|customNameValidator"
-                                    v-slot="{field}" name="Badge Name" :debounce="250">
-                  <input v-focus class="form-control" id="badgeName" type="text" v-model="badgeInternal.name"
+                                    v-slot="{field}" name="Badge Name" :debounce="250" v-model="badgeInternal.name">
+                  <input v-focus class="form-control" id="badgeName" type="text"
                          @input="updateBadgeId" aria-required="true" data-cy="badgeName"
                          v-on:keydown.enter="updateBadge"
                          :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -57,9 +57,8 @@ limitations under the License.
 
           <div class="mt-3">
             <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}"
-                                name="Badge Description">
-              <markdown-editor v-model="badgeInternal.description"
-                               :project-id="badgeInternal.projectId"
+                                name="Badge Description" v-model="badgeInternal.description">
+              <markdown-editor :project-id="badgeInternal.projectId"
                                v-bind="field"
                                :skill-id="isEdit ? badgeInternal.skillId : null"
                                @input="updateDescription"></markdown-editor>
@@ -107,9 +106,9 @@ limitations under the License.
               </div>
               <div class="row" v-if="badgeInternal.timeLimitEnabled">
                 <div class="col-12 col-sm">
-                  <Field rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{field}" name="Days">
+                  <Field v-model="badgeInternal.expirationDays" rules="optionalNumeric|required|min_value:0|daysMaxTimeLimit:@timeLimitHours,@timeLimitMinutes|cantBe0IfHours0Minutes0" vid="timeLimitDays" v-slot="{field}" name="Days">
                     <div class="input-group">
-                      <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationDays"
+                      <input class="form-control d-inline" type="text"
                              :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              v-bind="field"
@@ -128,9 +127,9 @@ limitations under the License.
                   </Field>
                 </div>
                 <div class="col-12 col-sm">
-                  <Field rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{field}" name="Hours">
+                  <Field v-model="badgeInternal.expirationHrs" rules="optionalNumeric|required|min_value:0|max_value:23|hoursMaxTimeLimit:@timeLimitDays,@timeLimitMinutes|cantBe0IfMins0Days0" vid="timeLimitHours" v-slot="{field}" name="Hours">
                     <div class="input-group">
-                      <input class="form-control d-inline" type="text" v-model="badgeInternal.expirationHrs"
+                      <input class="form-control d-inline" type="text"
                              :disabled="!badgeInternal.timeLimitEnabled"
                              :aria-required="badgeInternal.timeLimitEnabled"
                              v-bind="field"
@@ -149,9 +148,9 @@ limitations under the License.
                   </Field>
                 </div>
                 <div class="col-12 col-sm">
-                  <Field rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{field}" name="Minutes">
+                  <Field v-model="badgeInternal.expirationMins" rules="optionalNumeric|required|min_value:0|max_value:59|minutesMaxTimeLimit:@timeLimitDays,@timeLimitHours|cantBe0IfHours0Days0" vid="timeLimitMinutes" v-slot="{field}" name="Minutes">
                     <div class="input-group">
-                      <input class="form-control d-inline"  type="text" v-model="badgeInternal.expirationMins"
+                      <input class="form-control d-inline"  type="text"
                               :disabled="!badgeInternal.timeLimitEnabled" ref="timeLimitMinutes" data-cy="timeLimitMinutes"
                              v-on:keydown.enter="updateBadge"
                              v-bind="field"
@@ -196,8 +195,8 @@ limitations under the License.
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* Start Date</label>
                   <Field rules="required|dateOrder" v-slot="{field}" name="Start Date"
-                                      ref="startDateValidationProvider">
-                    <datepicker :inline="true" v-model="badgeInternal.startDate" name="startDate"
+                                      ref="startDateValidationProvider" v-model="badgeInternal.startDate">
+                    <datepicker :inline="true" name="startDate"
                                 key="gemFrom" data-cy="startDatePicker" v-bind="field"
                                 aria-required="true"></datepicker>
                     <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="startDateError">
@@ -208,8 +207,8 @@ limitations under the License.
                 <b-col cols="12" md="4" style="min-width: 20rem;">
                   <label class="label mt-2">* End Date</label>
                   <Field rules="required|dateOrder|noHistoricalEnd" v-slot="{field}" name="End Date"
-                                      ref="endDateValidationProvider">
-                    <datepicker :inline="true" v-model="badgeInternal.endDate" name="endDate" v-bind="field"
+                                      ref="endDateValidationProvider" v-model="badgeInternal.endDate">
+                    <datepicker :inline="true" name="endDate" v-bind="field"
                                 key="gemTo" data-cy="endDatePicker" aria-required="true"></datepicker>
                     <small role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0" data-cy="endDateError">
                       <ErrorMessage name="End Date" />

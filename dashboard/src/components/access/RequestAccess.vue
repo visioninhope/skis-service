@@ -29,12 +29,12 @@ limitations under the License.
               <div class="card-body p-4">
                 <div class="form-group">
                   <label for="firstName" class="text-primary">* First Name</label>
-                  <Field name="First Name" rules="required|maxFirstNameLength" v-slot="{field}" :debounce=500>
+                  <Field name="First Name" v-model="loginFields.firstName" rules="required|maxFirstNameLength" v-slot="{field}" :debounce=500>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                       </div>
-                      <input class="form-control" type="text" v-model="loginFields.firstName"
+                      <input class="form-control" type="text"
                              id="firstName" :disabled="createInProgress"
                              name="firstName" aria-required="true"
                              v-bind="field"
@@ -49,12 +49,12 @@ limitations under the License.
                 </div>
                 <div class="form-group">
                   <label for="lastName" class="text-primary">* Last Name</label>
-                  <Field name="Last Name" rules="required|maxLastNameLength" :debounce=500 v-slot="{field}">
+                  <Field name="Last Name" v-model="loginFields.lastName" rules="required|maxLastNameLength" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                       </div>
-                      <input class="form-control" type="text" v-model="loginFields.lastName"
+                      <input class="form-control" type="text"
                              id="lastName" :disabled="createInProgress"
                              name="lastName" aria-required="true"
                              v-bind="field"
@@ -69,12 +69,12 @@ limitations under the License.
                 </div>
                 <div class="form-group">
                   <label for="email" class="text-primary">* Email</label>
-                  <Field name="Email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{field}">
+                  <Field name="Email" v-model="loginFields.email" rules="required|email|uniqueEmail" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-envelope"></i></span>
                       </div>
-                      <input class="form-control" type="text" v-model="loginFields.email" id="email"
+                      <input class="form-control" type="text" id="email"
                              :disabled="createInProgress"
                              name="email" aria-required="true"
                              v-bind="field"
@@ -89,12 +89,12 @@ limitations under the License.
                 </div>
                 <div class="form-group">
                   <label for="password" class="text-primary">* Password</label>
-                  <Field vid="password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{field}">
+                  <Field vid="password" v-model="loginFields.password" name="Password" rules="required|minPasswordLength|maxPasswordLength" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                       </div>
-                      <input class="form-control" type="password" v-model="loginFields.password"
+                      <input class="form-control" type="password"
                              id="password" :disabled="createInProgress"
                              v-bind="field"
                              name="password" ref="password" aria-required="true"
@@ -109,13 +109,13 @@ limitations under the License.
                 </div>
                 <div class="form-group">
                   <label for="password_confirmation" class="text-primary">* Confirm Password</label>
-                  <Field vid="password_confirmation" name="Confirm Password" rules="required|confirmed:@Password" :debounce=500 v-slot="{field}">
+                  <Field vid="password_confirmation" v-model="passwordConfirmation" name="Confirm Password" rules="required|confirmed:@Password" :debounce=500 v-slot="{field}">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                       </div>
                       <input class="form-control" type="password" id="password_confirmation"
-                             v-model="passwordConfirmation" :disabled="createInProgress"
+                             :disabled="createInProgress"
                              name="password_confirmation" aria-required="true"
                              v-bind="field"
                              :aria-invalid="errors && Object.keys(errors).length"

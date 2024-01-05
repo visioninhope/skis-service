@@ -23,10 +23,10 @@ limitations under the License.
           <div class="card-body">
             <div v-if="!pkiAuthenticated">
               <label for="profileFirstName">* First Name</label>
-              <Field name="First Name" :debounce=500 v-slot="{field}" rules="required|maxFirstNameLength">
+              <Field name="First Name" :debounce=500 v-slot="{field}" rules="required|maxFirstNameLength" v-model="loginFields.first">
                 <div class="input-group">
                   <input class="form-control"
-                         type="text" v-model="loginFields.first" name="first" aria-required="true"
+                         type="text" name="first" aria-required="true"
                          id="profileFirstName"
                          v-bind="field"
                          :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -38,10 +38,10 @@ limitations under the License.
               </Field>
 
               <label class="mt-2" for="profileLastName">* Last Name</label>
-              <Field name="Last Name" :debounce=500 v-slot="{field}" rules="required|maxLastNameLength">
+              <Field name="Last Name" :debounce=500 v-slot="{field}" rules="required|maxLastNameLength" v-model="loginFields.last">
                 <div class="input-group">
-                  <input class="form-control" type="text" v-model="loginFields.last" name="last" aria-required="true"
-                      id="profileLastName" v-input="field"
+                  <input class="form-control" type="text" name="last" aria-required="true"
+                      id="profileLastName" v-bind="field"
                       :aria-invalid="errors && Object.keys(errors).length > 0"
                       aria-errormessage="lastnameError" aria-describedby="lastnameError"/>
                 </div>
@@ -51,9 +51,9 @@ limitations under the License.
               </Field>
             </div>
             <label class="mt-2" for="profileNickname">Primary Name</label>
-            <Field name="Primary Name" :debounce=500 v-slot="{field}" rules="maxNicknameLength">
+            <Field name="nickname" type="text" :debounce=500 v-slot="{field}" rules="maxNicknameLength" v-model="loginFields.nickname">
               <div class="input-group">
-                <input class="form-control" type="text" v-model="loginFields.nickname" name="nickname"
+                <input class="form-control"
                     id="profileNickname" v-bind="field"
                     :aria-invalid="errors && Object.keys(errors).length > 0"
                     aria-errormessage="nicknameError" aria-describedby="nicknameError"/>
@@ -77,6 +77,7 @@ limitations under the License.
 </template>
 
 <script>
+  import { ErrorMessage } from 'vee-validate';
   import SettingsService from './SettingsService';
   import LoadingContainer from '../utils/LoadingContainer';
   import SubPageHeader from '../utils/pages/SubPageHeader';
@@ -85,7 +86,7 @@ limitations under the License.
   export default {
     name: 'GeneralSettings',
     mixins: [ToastSupport],
-    components: { SubPageHeader, LoadingContainer },
+    components: { SubPageHeader, LoadingContainer, ErrorMessage },
     data() {
       return {
         isLoading: true,

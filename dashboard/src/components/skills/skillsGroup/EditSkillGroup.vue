@@ -32,8 +32,8 @@ limitations under the License.
             <div class="form-group">
               <label for="groupNameInput">* Group Name</label>
               <Field rules="required|minNameLength|maxSkillNameLength|nullValueNotAllowed|uniqueGroupName|customNameValidator"
-                                  v-slot="{field}" :debounce="250" name="Group Name">
-                <input class="form-control" type="text" v-model="internalGroup.name"
+                                  v-slot="{field}" :debounce="250" name="Group Name" v-model="internalGroup.name">
+                <input class="form-control" type="text"
                        v-on:input="updateId"
                        v-on:keydown.enter="updateGroup"
                        v-focus
@@ -62,9 +62,8 @@ limitations under the License.
 
         <div class="mt-3">
           <div class="control">
-            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Group Description">
+            <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Group Description" v-model="internalGroup.description">
               <markdown-editor v-if="internalGroup && (!isEdit || !isLoading)"
-                               v-model="internalGroup.description"
                                :project-id="internalGroup.projectId"
                                v-bind="field"
                                :skill-id="isEdit ? internalGroup.skillId : null"

@@ -23,8 +23,8 @@ limitations under the License.
         <div class="card-body">
           <div class="form-group">
             <label class="label" for="resetTokenExpiration">* Token Expiration <InlineHelp target-id="resetTokenExpirationHelp" msg="How long password reset and email confirmation tokens remain valid before they expire"/></label>
-            <Field rules="required|iso8601" name="Token Expiration" v-slot="{ field }" :debounce=500>
-              <input class="form-control" type="text" v-model="resetTokenExpiration" name="resetTokenExpiration"
+            <Field rules="required|iso8601" name="Token Expiration" v-slot="{ field }" :debounce=500 v-model="resetTokenExpiration">
+              <input class="form-control" type="text" name="resetTokenExpiration"
                      data-cy="resetTokenExpiration" aria-required="true"
                       id="resetTokenExpiration"
                      v-bind="field"
@@ -39,8 +39,8 @@ limitations under the License.
 
           <div class="form-group">
             <label class="label" for="customHeader">Custom Header <InlineHelp target-id="customHeaderHelp" msg="HTML (and in-line css) to display as a header for the dashboard application"/></label>
-            <Field rules="noscript|max:3000" name="Custom Header" v-slot="{ field }">
-              <textarea class="form-control" name="customHeader" data-cy="customHeader" rows="3" v-model="customHeader"
+            <Field rules="noscript|max:3000" name="Custom Header" v-slot="{ field }" v-model="customHeader">
+              <textarea class="form-control" name="customHeader" data-cy="customHeader" rows="3"
                   id="customHeader" v-bind="field"
                   :aria-invalid="errors && errors.length > 0"
                   aria-errormessage="customHeaderError" aria-describedby="customHeaderError"/>
@@ -52,8 +52,8 @@ limitations under the License.
 
           <div class="form-group">
             <label class="label" for="customFooter">Custom Footer <InlineHelp target-id="customFooterHelp" msg="HTML (and in-line css) to display as a footer for the dashboard application"/></label>
-            <Field rules="noscript|max:3000" name="Custom Footer" v-slot="{ field }">
-              <textarea class="form-control" name="customFooter" data-cy="customFooter" v-model="customFooter" rows="3"
+            <Field rules="noscript|max:3000" name="Custom Footer" v-slot="{ field }" v-model="customFooter">
+              <textarea class="form-control" name="customFooter" data-cy="customFooter" rows="3"
                         id="customFooter"
                         v-bind="field"
                         :aria-invalid="errors && errors.length > 0"
@@ -65,9 +65,8 @@ limitations under the License.
           </div>
 
           <div class="form-group">
-            <Field rules="noscript" v-slot="{field}" name="User Agreement">
-              <markdown-editor v-model="userAgreement"
-                               @input="updateUserAgreement"
+            <Field rules="noscript" v-slot="{field}" name="User Agreement" v-model="userAgreement">
+              <markdown-editor @input="updateUserAgreement"
                                label="User Agreement"
                                :allow-attachments="false"
                                :resizable="true"
@@ -84,7 +83,7 @@ limitations under the License.
 
           <p v-if="invalid && overallErrMsg" class="text-center text-danger" role="alert">***{{ overallErrMsg }}***</p>
           <div>
-            <button class="btn btn-outline-success" type="button" v-on:click="saveSystemSettings" :disabled="invalid || (pristine===true)"
+            <button class="btn btn-outline-success" type="button" v-on:click="saveSystemSettings" :disabled="invalid"
                     data-cy="saveSystemSettings">
               Save
               <i :class="[isSaving ? 'fa fa-circle-notch fa-spin fa-3x-fa-fw' : 'fas fa-arrow-circle-right']"></i>

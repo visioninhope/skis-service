@@ -28,8 +28,8 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <Field :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ field }">
-                <textarea class="form-control" name="htmlEmailHeader" data-cy="htmlEmailHeader" rows="3" v-model="htmlHeader"
+              <Field :rules="{'noscript':true,'max':3000, 'required':htmlHeaderRequired}" vid="htmlHeader" name="HTML Header" v-slot="{ field }" v-model="htmlHeader">
+                <textarea class="form-control" name="htmlEmailHeader" data-cy="htmlEmailHeader" rows="3"
                           id="htmlEmailHeader"
                           v-bind="field"
                           :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -53,8 +53,8 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ field }">
-                <textarea class="form-control" name="plaintextEmailHeader" data-cy="plaintextEmailHeader" rows="3" v-model="plainTextHeader"
+              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextHeaderRequired}" vid="plaintextHeader" name="Plaintext Header" v-slot="{ field }" v-model="plainTextHeader">
+                <textarea class="form-control" name="plaintextEmailHeader" data-cy="plaintextEmailHeader" rows="3"
                           id="plaintextEmailHeader"
                           v-bind="field"
                           :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -83,8 +83,8 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <Field :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ field }">
-              <textarea class="form-control" name="htmlEmailFooter" data-cy="htmlEmailFooter" v-model="htmlFooter" rows="3"
+              <Field :rules="{'noscript':true,'max':3000, 'required':htmlFooterRequired}" vid="htmlFooter" name="HTML Footer" v-slot="{ field }" v-model="htmlFooter">
+              <textarea class="form-control" name="htmlEmailFooter" data-cy="htmlEmailFooter" rows="3"
                         id="htmlEmailFooter"
                         :aria-invalid="errors && Object.keys(errors).length > 0"
                         v-bind="field"
@@ -108,8 +108,8 @@ limitations under the License.
               </div>
             </template>
             <div class="mt-2 content-height">
-              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ field }">
-              <textarea class="form-control" name="plaintextEmailFooter" data-cy="plaintextEmailFooter" v-model="plainTextFooter" rows="3"
+              <Field :rules="{'noscript':true,'max':3000, 'required':plaintextFooterRequired}" v-model="plainTextFooter" vid="plaintextFooter" name="Plaintext Footer" v-slot="{ field }">
+              <textarea class="form-control" name="plaintextEmailFooter" data-cy="plaintextEmailFooter" rows="3"
                         id="plaintextEmailFooter"
                         v-bind="field"
                         :aria-invalid="errors && Object.keys(errors).length > 0"

@@ -23,7 +23,7 @@ limitations under the License.
                    @hidden="tooltipHidden"
                    msg="If project level 'Root Help Url' is specified then this path will be relative to 'Root Help Url'"/>
     </label>
-      <Field rules="help_url|customUrlValidator" v-slot="{field}" name="Help URL/Path">
+      <Field rules="help_url|customUrlValidator" v-slot="{field}" name="Help URL/Path" v-model="internalValue">
           <b-input-group>
             <template #prepend v-if="projConfigRootHelpUrl">
               <b-input-group-text><i class="fas fa-cogs mr-1"></i>
@@ -43,7 +43,7 @@ limitations under the License.
             <input
               class="form-control"
               id="skillHelpUrl"
-              v-model="internalValue" data-cy="skillHelpUrl"
+              data-cy="skillHelpUrl"
               v-bind="field"
               aria-describedby="skillHelpUrlError"
               aria-errormessage="skillHelpUrlError">

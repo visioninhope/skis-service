@@ -24,11 +24,11 @@ limitations under the License.
         </div>
           <div class="col-6 col-md border-right">
             <Field rules="dateOrder" v-slot="{field}" name="From Date"
-                                ref="fromDateValidationProvider">
+                                ref="fromDateValidationProvider" v-model="fromDayFilter">
               <b-form-group label="From Date:" label-for="from-date-filter"
                             label-class="text-muted">
                 <b-form-datepicker aria-label="from date filter" id="from-date-filter"
-                                   v-model="fromDayFilter" class="mb-2"
+                                   class="mb-2"
                                    v-bind="field"
                                    aria-errormessage="fromDateError"
                                    aria-describedby="fromDateError"
@@ -42,11 +42,11 @@ limitations under the License.
             </Field>
           </div>
           <div class="col-6 col-md">
-            <Field rules="dateOrder" v-slot="{field}" name="To Date"
+            <Field rules="dateOrder" v-slot="{field}" name="To Date" v-model="toDayFilter"
                                 ref="toDateValidationProvider">
               <b-form-group label="To Date:" label-for="to-date-filter" label-class="text-muted">
                 <b-form-datepicker aria-label="to date filter" id="to-date-filter"
-                                   v-model="toDayFilter" class="mb-2"
+                                   class="mb-2"
                                    v-bind="field"
                                    aria-errormessage="toDateError"
                                    aria-describedby="toDateError"

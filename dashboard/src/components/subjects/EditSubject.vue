@@ -34,9 +34,9 @@ limitations under the License.
                 <div class="media-body">
                   <div class="form-group">
                     <label for="subjName">Subject Name</label>
-                    <Field rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" name="Subject Name" v-slot="{ field }">
+                    <Field rules="required|minNameLength|maxSubjectNameLength|nullValueNotAllowed|uniqueName|customNameValidator" name="Subject Name" v-slot="{ field }" v-model="subjectInternal.name">
                       <input type="text" class="form-control" id="subjName" @input="updateSubjectId"
-                             v-model="subjectInternal.name" v-on:input="updateSubjectId"
+                             v-on:input="updateSubjectId"
                              v-on:keydown.enter="updateSubject"
                              v-focus aria-required="true"
                              v-bind="field"

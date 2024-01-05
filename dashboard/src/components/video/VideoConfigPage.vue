@@ -65,7 +65,7 @@ limitations under the License.
                      placeholder="Upload file from my computer by clicking Browse or drag-n-dropping it here..."
                      drop-placeholder="Drop file here..." />
 
-        <Field v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ field }" name="Video File" :immediate="true">
+        <Field v-if="videoConf.isInternallyHosted" rules="videoMimeTypesValidation|videoMaxSizeValidation" v-slot="{ field }" name="Video File" :immediate="true" v-model="videoConf.hostedFileName">
         <b-input-group>
           <template #prepend>
             <b-input-group-text><i class="fas fa-server mr-1"></i>
@@ -74,7 +74,6 @@ limitations under the License.
           </template>
           <b-form-input id="videoUrlInput"
                         v-bind="field"
-                        v-model="videoConf.hostedFileName"
                         data-cy="videoUrl"
                         :disabled="isReadOnly" />
           <b-input-group-append>
@@ -89,9 +88,8 @@ limitations under the License.
         <div v-if="videoConf.file && videoUploadWarningMessage" data-cy="videoUploadWarningMessage"
           class="alert alert-danger mt-1"><i class="fas fa-exclamation-circle" aria-hidden="true"/> {{ videoUploadWarningMessage }}</div>
 
-        <Field v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ field }" name="Video URL">
+        <Field v-if="!showFileUpload && !videoConf.isInternallyHosted" rules="customUrlValidator" :debounce="250" v-slot="{ field }" name="Video URL" v-model="videoConf.url">
             <b-form-input id="videoUrlInput"
-                          v-model="videoConf.url"
                           v-bind="field"
                           data-cy="videoUrl"
                           @input="validate"
@@ -114,10 +112,9 @@ limitations under the License.
             </div>
           </div>
         </template>
-        <Field rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Captions">
+        <Field rules="maxVideoCaptionsLength|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Captions" v-model="videoConf.captions">
           <b-form-textarea
             id="videoCaptionsInput"
-            v-model="videoConf.captions"
             v-bind="field"
             placeholder="Enter captions using The Web Video Text Tracks (WebVTT) format (optional)"
             rows="3"
@@ -132,10 +129,9 @@ limitations under the License.
       </b-form-group>
 
       <b-form-group label="Transcript:" label-for="videoTranscriptInput">
-        <Field rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Video Transcript">
+        <Field rules="maxVideoTranscriptLength|customDescriptionValidator|videoUrlMustBePresent" :debounce="250" v-slot="{ field }" name="Video Transcript" v-model="videoConf.transcript">
         <b-form-textarea
           id="videoTranscriptInput"
-          v-model="videoConf.transcript"
           v-bind="field"
           placeholder="Please enter video's transcript here. Video transcript will be available for download (optional)"
           rows="3"

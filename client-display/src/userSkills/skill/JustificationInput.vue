@@ -22,12 +22,11 @@ limitations under the License.
           </div>
           <div class="row">
             <div class="col-12">
-              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ field }" name="Approval Justification">
+              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{ field }" name="Approval Justification" v-model="approvalRequestedMsg">
                 <markdown-editor class="form-text"
                                  :id="`approvalRequiredMsg-${skill.skillId}`"
                                  ref="approvalRequiredMsg"
                                  v-bind="field"
-                                 v-model="approvalRequestedMsg"
                                  :project-id="skill.projectId"
                                  :skill-id="skill.skillId"
                                  data-cy="selfReportMsgInput"

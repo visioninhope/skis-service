@@ -32,12 +32,12 @@ limitations under the License.
             <div class="card-body p-4">
               <div class="form-group">
                 <label for="username" class="text-primary">Email Address</label>
-                <Field name="Email Address" rules="required|email|minUsernameLength" v-slot="{ field }" :validateOnChange=false>
+                <Field name="Email Address" rules="required|email|minUsernameLength" v-slot="{ field }" :validateOnChange=false v-model="loginFields.username">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-envelope"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="username" tabindex="0" v-model="loginFields.username" placeholder="Enter email" v-bind="field"
+                    <input type="text" class="form-control" id="username" tabindex="0" placeholder="Enter email" v-bind="field"
                            :aria-invalid="errors && errors.length > 0 ? null : true"
                            aria-errormessage="emailHelp"
                            aria-describedby="emailHelp" >
@@ -57,14 +57,13 @@ limitations under the License.
                     <small class="text-muted"><b-link tabindex="0" @click="forgotPassword" data-cy="forgotPassword">Forgot Password?</b-link></small>
                   </div>
                 </div>
-                <Field name="Password" rules="required|minPasswordLength|maxPasswordLength" v-slot="{ field }">
+                <Field name="Password" v-model="loginFields.password" rules="required|minPasswordLength|maxPasswordLength" v-slot="{ field }">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
                     <input type="password" class="form-control" id="inputPassword" tabindex="0" placeholder="Password"
                            v-bind="field"
-                           v-model="loginFields.password"
                            aria-errormessage="passwordHelp"
                            aria-describedby="passwordHelp"
                            @animationstart="onAnimationStart"

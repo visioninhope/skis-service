@@ -56,7 +56,7 @@ import {
 
 import { SkillsConfiguration, SkillsReporter } from '@skilltree/skills-client-js';
 import {
-  Form, Field,
+  Form, Field, ErrorMessage,
 } from 'vee-validate';
 import en from 'vee-validate';
 import Vuex from 'vuex';
@@ -88,12 +88,15 @@ import { setupNavGuards } from '@/router/RouterNavGuards'
 import { configureCompat } from 'vue'
 
 configureCompat({
-  MODE: 2
+  MODE: 2,
+  // COMPONENT_V_MODEL: false,
+  // RENDER_FUNCTION: true,
 });
 
 Vue.component('apexchart', VueApexCharts);
 Vue.component('Form', Form);
 Vue.component('Field', Field);
+Vue.component('ErrorMessage', ErrorMessage);
 Vue.use(Vuex);
 
 Vue.use(ButtonPlugin);

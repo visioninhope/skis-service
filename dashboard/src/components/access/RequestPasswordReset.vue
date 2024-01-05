@@ -28,13 +28,12 @@ limitations under the License.
 
               <div class="form-group">
                 <label for="username" class="text-secondary font-weight-bold">* Email Address</label>
-                <Field name="Email Address" rules="required|minUsernameLength|email" :debounce=300 v-slot="{field}">
+                <Field name="Email Address" v-model="username" rules="required|minUsernameLength|email" :debounce=300 v-slot="{field}">
                   <input type="text" class="form-control" id="username" tabindex="1" placeholder="Enter email"
                          aria-errormessage="emailHelp"
                          aria-describedby="emailHelp"
                          v-bind="field"
                          :aria-invalid="errors && Object.keys(errors).length > 0"
-                         v-model="username"
                          data-cy="forgotPasswordEmail"
                         aria-required="true">
                     <small id="emailHelp" role="alert" class="form-text text-danger" v-show="Object.keys(errors).length > 0">
