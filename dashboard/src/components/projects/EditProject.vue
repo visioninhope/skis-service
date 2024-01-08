@@ -41,6 +41,7 @@ limitations under the License.
                 <input class="form-control" type="text"
                        v-on:input="updateProjectId"
                        v-on:keydown.enter="updateProject"
+                       v-model="internalProject.name"
                        v-bind="field"
                        v-focus
                        data-cy="projectName"
@@ -108,12 +109,11 @@ limitations under the License.
         </div>
         <div class="row">
           <div class="mt-2 col-12">
-              <Field v-model="internalProject.description" rules="maxDescriptionLength|customProjectDescriptionValidator" v-slot="{ field }" name="Project Description">
+              <Field  rules="maxDescriptionLength|customProjectDescriptionValidator"  name="Project Description">
                 <markdown-editor v-if="!isEdit || descriptionLoaded"
-                                 v-bind="field"
                                  :project-id="internalProject.projectId"
                                  :allow-attachments="isEdit || !showManageUserCommunity"
-                                 @input="updateDescription" />
+                                 v-model="internalProject.description" />
                 <small role="alert" class="form-text text-danger mb-3" data-cy="projectDescriptionError">
                   <ErrorMessage name="Project Description" />
                 </small>
@@ -124,14 +124,14 @@ limitations under the License.
         <p v-if="invalid && overallErrMsg" class="text-center text-danger mt-2" aria-live="polite"><small>***{{ overallErrMsg }}***</small></p>
       </b-container>
 
-      <div slot="modal-footer" class="w-100">
+      <template v-slot:modal-footer class="w-100">
         <b-button variant="success" size="sm" class="float-right" @click="updateProject" data-cy="saveProjectButton" :disabled="invalid">
           <span>{{ saveBtnTxt }}</span>
         </b-button>
         <b-button variant="secondary" size="sm" class="float-right mr-2" @click="close" data-cy="closeProjectButton">
           Cancel
         </b-button>
-      </div>
+      </template>
     </b-modal>
   </Form>
 </template>
@@ -150,7 +150,6 @@ limitations under the License.
   import ReloadMessage from '../utils/ReloadMessage';
 
   export default {
-    name: 'EditProject',
     components: {
       IdInput,
       MarkdownEditor,
@@ -269,7 +268,11 @@ limitations under the License.
 
         ProjectService.loadDescription(this.project.projectId).then((data) => {
           this.originalProject.description = data.description;
-          this.startLoadingFromState();
+          const copyOfInternalProject = Object.assign({}, this.internalProject);
+          Object.assign(copyOfInternalProject, this.originalProject);
+          this.saveComponentState(this.componentName, copyOfInternalProject).then(() => {
+            this.startLoadingFromState();
+          });
         });
       },
       startLoadingFromState() {
@@ -350,9 +353,6 @@ limitations under the License.
         if (!this.isEdit && !this.canEditProjectId) {
           this.internalProject.projectId = InputSanitizer.removeSpecialChars(this.internalProject.name);
         }
-      },
-      updateDescription(event) {
-        this.internalProject.description = event;
       },
       userCommunityChanged() {
         setTimeout(() => {

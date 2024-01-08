@@ -31,6 +31,7 @@ limitations under the License.
                          v-focus
                          aria-required="true"
                          v-bind="field"
+                         v-model="skillInternal.name"
                          v-on:keydown.enter="saveSkill"
                          data-cy="skillName"
                          aria-describedby="skillNameError"
@@ -242,9 +243,10 @@ limitations under the License.
 
             <div class="">
             <div class="control">
-              <Field rules="maxDescriptionLength|customDescriptionValidator" :debounce="250" v-slot="{field}" name="Skill Description" v-model="skillInternal.description">
+              <Field rules="maxDescriptionLength|customDescriptionValidator"
+                     :debounce="250" name="Skill Description">
                 <markdown-editor :project-id="skillInternal.projectId"
-                                 v-bind="field"
+                                 v-model="skillInternal.description"
                                  :skill-id="isEdit ? skillInternal.skillId : null"
                                  data-cy="skillDescription"/>
                 <small role="alert" class="form-text text-danger" data-cy="skillDescriptionError">

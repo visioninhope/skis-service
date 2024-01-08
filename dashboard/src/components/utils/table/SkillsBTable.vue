@@ -100,9 +100,6 @@ limitations under the License.
   let uid = 0;
 
   export default {
-    compatConfig: {
-      MODE: 3, // opt-in to Vue 3 behavior for this component only
-    },
     name: 'SkillsBTable',
     props: ['items', 'options', 'tableStoredStateId'],
     mixins: [PersistedSortMixin],

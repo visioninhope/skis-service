@@ -25,15 +25,19 @@ limitations under the License.
       return {
         db: null,
         store: null,
+        shouldSaveComponentState: true,
       };
     },
     methods: {
       saveComponentState(key, data) {
-        let dataToSave = data;
-        if (isProxy(dataToSave)) {
-          dataToSave = toRaw(dataToSave);
+        if (this.shouldSaveComponentState) {
+          let dataToSave = data;
+          if (isProxy(dataToSave)) {
+            dataToSave = toRaw(dataToSave);
+          }
+          return set(key, dataToSave);
         }
-        set(key, dataToSave);
+        return Promise.resolve(true);
       },
       loadComponentState(key) {
         return get(key);

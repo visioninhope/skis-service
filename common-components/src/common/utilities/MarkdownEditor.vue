@@ -19,20 +19,20 @@ limitations under the License.
            data-cy="markdownEditorLabel"
            :class="`${labelClass}`"
            for="toastuiEditor" @click="focusOnMarkdownEditor">{{ label }}</label>
-    <editor id="toastuiEditor" :style="resizable ? {resize: 'vertical', overflow: 'auto'} : {}"
-      class="markdown"
-      data-cy="markdownEditorInput"
-      ref="toastuiEditor"
-      initialEditType="wysiwyg"
-      previewStyle="tab"
-      :initialValue="valueInternal"
-      :options="editorOptions"
-      :height="markdownHeight"
-      @change="onEditorChange"
-      @keydown="handleTab"
-      @focus="handleFocus"
-      @load="fixAccessibilityIssues"
-    ></editor>
+    <toast-ui-editor
+        id="toastuiEditor"
+        class="markdown"
+        data-cy="markdownEditorInput"
+        ref="toastuiEditor"
+        :style="resizable ? {resize: 'vertical', overflow: 'auto'} : {}"
+        :options="editorOptions"
+        :height="markdownHeight"
+        :initialValue="valueInternal"
+        @change="onEditorChange"
+        @keydown="handleTab"
+        @focus="handleFocus"
+        @load="fixAccessibilityIssues"
+        />
     <div class="editor-help-footer border px-3 py-2 rounded-bottom">
       <div class="row small">
         <div class="col">
@@ -63,18 +63,20 @@ limitations under the License.
 </template>
 
 <script>
-  import '@toast-ui/editor/dist/toastui-editor.css';
-  import { Editor } from '@toast-ui/vue-editor';
   import fontSize from 'tui-editor-plugin-font-size';
   import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
   import MarkdownMixin from './MarkdownMixin';
   import MarkdownAccessibilityMixin from './MarkdownAccessibilityMixin';
   import FileUploadService from './FileUploadService';
+  import ToastUiEditor from './ToastUiEditor.vue';
 
   export default {
     name: 'MarkdownEditor',
-    components: { Editor },
+    components: { ToastUiEditor },
     mixins: [MarkdownMixin, MarkdownAccessibilityMixin],
+    emits: {
+      input: null,
+    },
     props: {
       value: String,
       resizable: {
@@ -124,7 +126,7 @@ limitations under the License.
     },
     data() {
       return {
-        valueInternal: this.value,
+        valueInternal: this.value || '',
         intervalId: null,
         intervalRuns: 0,
         maxIntervalAttempts: 8,
@@ -214,7 +216,7 @@ limitations under the License.
       htmlText() {
         return this.$refs.toastuiEditor.invoke('getHTML');
       },
-      onEditorChange() {
+       onEditorChange() {
         this.attachmentError = '';
 
         // This looks for an image at the start of the description and adds a newline before it

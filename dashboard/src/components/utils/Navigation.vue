@@ -96,7 +96,7 @@ limitations under the License.
     mounted() {
       this.collapsed = this.getCollapsedFromLocalStorage();
     },
-    destroyed() {
+    unmounted() {
       window.removeEventListener('resize', this.handleResize);
     },
     methods: {

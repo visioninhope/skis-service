@@ -40,6 +40,7 @@ limitations under the License.
                              v-on:keydown.enter="updateSubject"
                              v-focus aria-required="true"
                              v-bind="field"
+                             v-model="subjectInternal.name"
                              aria-errormessage="subjectNameError"
                              aria-describedby="subjectNameError"
                              :aria-invalid="errors && Object.keys(errors).length > 0"
@@ -59,7 +60,8 @@ limitations under the License.
                         @hidden="tooltipShowing=false"/>
 
               <div class="mt-3">
-                <Field rules="maxDescriptionLength|customDescriptionValidator" name="Subject Description">
+                <Field rules="maxDescriptionLength|customDescriptionValidator"
+                       name="Subject Description">
                   <markdown-editor v-model="subjectInternal.description"
                                    :project-id="subjectInternal.projectId"
                                    :skill-id="isEdit ? subjectInternal.subjectId : null"
@@ -141,7 +143,10 @@ limitations under the License.
     },
     props: {
       subject: Object,
-      isEdit: Boolean,
+      isEdit: {
+        type: Boolean,
+        default: false,
+      },
       value: Boolean,
     },
     data() {
@@ -275,9 +280,10 @@ limitations under the License.
             if (!res) {
               this.overallErrMsg = 'Form did NOT pass validation, please fix and try to Save again';
             } else {
-              this.publishHidden({ update: true });
+              this.shouldSaveComponentState = false;
               this.subjectInternal.subjectName = InputSanitizer.sanitize(this.subjectInternal.subjectName);
               this.subjectInternal.subjectId = InputSanitizer.sanitize(this.subjectInternal.subjectId);
+              this.publishHidden({ update: true });
               this.$emit('subject-saved', this.subjectInternal);
             }
           });
