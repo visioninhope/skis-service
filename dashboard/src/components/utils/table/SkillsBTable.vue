@@ -62,11 +62,8 @@ limitations under the License.
         </div>
       </template>
 
-      <!-- use named slots with b-table component -->
-      <slot v-for="slot in Object.keys($slots)" :name="slot" :slot="slot"/>
-
       <!-- use scoped slots to the b-table component -->
-      <template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope">
+      <template v-for="slot in Object.keys($slots)" v-slot:[slot]="scope">
         <slot :name="slot" v-bind="scope"/>
       </template>
 
@@ -103,6 +100,9 @@ limitations under the License.
   let uid = 0;
 
   export default {
+    compatConfig: {
+      MODE: 3, // opt-in to Vue 3 behavior for this component only
+    },
     name: 'SkillsBTable',
     props: ['items', 'options', 'tableStoredStateId'],
     mixins: [PersistedSortMixin],
