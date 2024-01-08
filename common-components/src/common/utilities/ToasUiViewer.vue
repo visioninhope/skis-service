@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 <script setup>
-  import { onMounted } from 'vue'
+  import { onMounted } from 'vue';
   import '@toast-ui/editor/dist/toastui-editor-viewer.css';
   import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 
@@ -26,7 +26,6 @@ limitations under the License.
       default: '300px',
     },
   });
-
 
   const container = {
     viewer: null,
@@ -49,7 +48,7 @@ limitations under the License.
       result = container.viewer[methodName](...args);
     }
     return result;
-  };
+  }
 
   defineExpose({
     invoke,

@@ -23,9 +23,9 @@ limitations under the License.
   // also available events: 'blur', 'keyup', 'beforeConvertWysiwygToMarkdown', 'beforePreviewRender', 'caretChange',
 </script>
 <script setup>
-  import { onMounted } from 'vue'
-  import '@toast-ui/editor/dist/toastui-editor.css';
-  import Editor from '@toast-ui/editor';
+  import '@toast-ui/editor/dist/toastui-editor.css'; // eslint-disable-line
+  import Editor from '@toast-ui/editor'; // eslint-disable-line
+  import { onMounted } from 'vue'; // eslint-disable-line
 
   const props = defineProps({
     options: Object,
@@ -44,7 +44,7 @@ limitations under the License.
     },
   });
 
-  const emit = defineEmits(editorEvents)
+  const emit = defineEmits(editorEvents);
   const eventOptions = {};
   editorEvents.forEach((event) => {
     eventOptions[event] = (...args) => {
@@ -77,7 +77,7 @@ limitations under the License.
     }
 
     return result;
-  };
+  }
 
   defineExpose({
     invoke,

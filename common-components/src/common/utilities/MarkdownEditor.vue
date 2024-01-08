@@ -216,7 +216,7 @@ limitations under the License.
       htmlText() {
         return this.$refs.toastuiEditor.invoke('getHTML');
       },
-       onEditorChange() {
+      onEditorChange() {
         this.attachmentError = '';
 
         // This looks for an image at the start of the description and adds a newline before it

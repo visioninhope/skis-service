@@ -37,9 +37,9 @@ import {
     FormRatingPlugin,
 } from 'bootstrap-vue';
 import {
-  Form, Field,
+  // Form,
+    Field,
 } from 'vee-validate';
-import en from 'vee-validate/dist/locale/en.json';
 // import FiltersPlugin from '@/common-components/filter/FiltersPlugin';
 // import TimeDurationFilter from '@/common-components/filter/TimeDurationFilter';
 import '@/common-components/filter/ByteFilter';
@@ -52,7 +52,7 @@ import DevModeUtil from '@/dev/DevModeUtil';
 
 Vue.config.productionTip = false;
 
-Vue.component('Form', Form);
+// Vue.component('Form', Form);
 Vue.component('Field', Field);
 
 Vue.use(VueApexCharts);
