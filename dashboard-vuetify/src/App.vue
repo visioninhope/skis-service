@@ -213,9 +213,4 @@ onMounted(() => {
 </template>
 
 <style>
-@layer bootstrap, primevue;
-
-@import 'bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
-@import 'primevue/resources/themes/lara-light-green/theme.css';
-@import 'primeicons/primeicons.css';
 </style>

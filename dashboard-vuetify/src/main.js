@@ -1,6 +1,12 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import App from './App.vue'
@@ -18,11 +24,20 @@ import Message from 'primevue/message'
 import Menu from 'primevue/menu'
 import ProgressSpinner from 'primevue/progressspinner'
 import Breadcrumb from 'primevue/breadcrumb'
+import '@mdi/font/css/materialdesignicons.css'
 
 const app = createApp(App)
 
 app.use(router)
 app.use(store)
+const vuetify = createVuetify({
+  components,
+  directives,
+  icons: {
+    defaultSet: 'mdi'
+  },
+})
+app.use(vuetify)
 app.use(PrimeVue)
 app.use(ToastService)
 app.component('Button', Button)
