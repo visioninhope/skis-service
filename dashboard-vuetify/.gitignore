@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 src/common-components
+
+.vite
